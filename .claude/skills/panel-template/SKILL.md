@@ -12,7 +12,7 @@ description: The approved uk_speaks.ai panel reel look (white default, dark Nigh
 - Examples he approved: "Still sending the / BORING EXCEL / to clients?" · "Stop making the / SAME AI SLIDES / Fix it free in 3 steps".
 
 ## Body — three layouts
-1. **Full face**: grade 0.3, captions white on the chest (y≈1300), key word big in a yellow gradient with the small word above.
+1. **Full face**: grade 0.3, captions on the chest, BLACK text with a white outline (never gold/yellow), key word big with the small word above.
 2. **Half panel**: panel slides DOWN from the top to y=1000 in 0.45 s (ease-in-out) while the video zooms out to 0.72 into a centred rounded card (R=44), bottom 36 px above the frame. Sides = panel colour (never blur). His head overlaps the panel edge by up to 110 px using ISNet person masks (fine hair, edge decontamination above the line). Captions black on the paper just above his head.
 3. **Full-screen card**: opaque. White grid cards (scenes.html: links, download, upload, flow, before/after) with black captions at the bottom; dark `#0d0e11` "THE RESULT" card with no captions.
 

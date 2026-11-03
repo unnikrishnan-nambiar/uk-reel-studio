@@ -19,6 +19,7 @@ Follow `.claude/skills/edit-reel/SKILL.md` step by step. Short version:
 - **Animations, never raw screen recordings** in the reel. Mock-ups are clean HTML (windows, chats, slides, diagrams).
 - Mix three layouts: full face ↔ half panel (panel slides down, video zooms out into a rounded card, his hair overlaps the panel) ↔ full-screen animation cards. Change layout every 3–7 s.
 - Sides around the video card use the panel colour (never blur). Rounded corners (R=44).
+- Captions are BLACK (white outline on the face), never gold/yellow.
 - English captions, 1–2 words per chunk, key word in `{BRACES}`. Translate his Manglish faithfully. **Never invent claims, numbers or results.** Illustrative mock-ups (sample decks, sample chats) are fine but tell him in the final message.
 - No branding (no handle, logo, watermark, end card). No emoji, stickers or bouncy ad effects.
 - Output 1080×1920, 60 fps, −14 LUFS. No covers unless he asks.

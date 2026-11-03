@@ -1,0 +1,15 @@
+{
+ "name": "storage-reel",
+ "theme": "white",
+ "hook": {"a": 0.12, "b": 3.62, "l1": "Stop buying a", "l2": "NEW LAPTOP", "sub": "Try this free prompt first", "red_size": 140,
+          "caps": [[0.05, "The biggest problem with my laptop:"], [2.6, "storage."]]},
+ "body_segs": [[3.62,7.85],[8.12,16.05],[16.28,21.74],[22.01,23.18],[23.43,29.29],[29.84,32.23],[32.41,32.95],[33.16,35.39],[35.52,37.33],[37.53,41.91]],
+ "tr": [[26.9,26.91,0,1],[31.62,32.07,1,0]],
+ "ks": 0.72, "yo": 520, "pb": 1000, "grade": 0.3,
+ "panel_ranges": [[26.8,32.2]],
+ "mask_rows": [300, 1700],
+ "cards": [],
+ "caps": [[3.66,"It keeps"],[5.2,"{HANGING}"],[6.1,"my old {MACBOOK}"],[8.27,"To fix it"],[9.41,"I thought of buying"],[10.05,"a {NEW LAPTOP}"],
+  [11.23,"But {FIRST}"],[12.03,"I gave {CLAUDE}"],[12.93,"a {DETAILED PROMPT}"],[14.9,"and {FULL ACCESS}"],
+  [37.53,"Want the {PROMPT}"],[38.9,"Comment"],[39.4,"{STORAGE}"],[40.6,"for the full {GUIDE}"]]
+}
