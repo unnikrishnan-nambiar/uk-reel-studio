@@ -1,0 +1,22 @@
+{
+ "name": "ppt-reel",
+ "theme": "white",
+ "_note": "All times in seconds. hook a/b, body_segs and caps are SOURCE times (src60.mp4). tr, cards and panel_ranges are BODY times (after cutting). LAY/scene times inside overlay.html are BODY times too.",
+ "hook": {"a": 0.5, "b": 5.36, "l1": "Stop making the", "l2": "SAME AI SLIDES", "sub": "Fix it free in 3 steps", "red_size": 118,
+          "caps": [[0.05, "Making presentations with Claude?"], [2.2, "Every one has the same template, same theme?"]]},
+ "body_segs": [[5.50,8.58],[8.72,10.06],[10.30,14.25],[14.65,17.42],[17.55,20.92],[21.05,26.90],[27.13,29.10],[29.33,34.47],[34.73,39.24],[39.52,41.78]],
+ "tr": [[1.0,1.45,0,1],[14.44,14.45,1,0],[20.9,20.91,0,1],[27.47,27.92,1,0]],
+ "ks": 0.72, "yo": 825, "pb": 1000, "grade": 0.3,
+ "panel_ranges": [[0.9,4.5],[8.3,11.2],[22.2,28.0]],
+ "mask_rows": [0, 1400],
+ "cards": [
+  {"t0": 11.14, "t1": 14.51, "scene": "download", "s0": 1.4, "speed": 1.5, "scale": 0.85},
+  {"t0": 15.6, "t1": 20.36, "scene": "upload", "s0": 0.5, "speed": 1.9, "s1": 9.4, "scale": 0.85}
+ ],
+ "caps": [[5.56,"So here's"],[6.2,"the {FIX}"],[7.48,"Just do {THIS}"],[8.78,"Watch till"],[9.26,"the {END}"],
+  [10.33,"{STEP 1}"],[11.27,"Your {CONTENT}"],[12.61,"in one {FILE}"],[13.49,"and {SAVE} it"],
+  [14.73,"{STEP 2}"],[15.83,"Go to these"],[16.47,"{WEBSITES}"],[17.61,"pick a {TEMPLATE}"],[18.8,"you {LIKE}"],[19.79,"and {DOWNLOAD} it"],
+  [21.13,"{STEP 3}"],[22.09,"this {PROMPT}"],[23.67,"the {TEMPLATE}"],[24.93,"your {CONTENT}"],[25.61,"upload to {CLAUDE}"],
+  [29.4,"a great {PRESENTATION}"],[31.01,"with {STORYTELLING}"],[32.11,"{RULES}"],[33.07,"and a clear {FLOW}"],
+  [34.77,"Want the {GUIDE}?"],[35.9,"Comment"],[36.35,"{PPT}"],[37.65,"I'll {DM} you"],[38.43,"the guide"],[39.6,"{FOLLOW}"],[40.26,"let's do the rest"],[40.9,"with {AI}"]]
+}

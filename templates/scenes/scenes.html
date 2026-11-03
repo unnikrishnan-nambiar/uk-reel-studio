@@ -1,0 +1,209 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+@font-face{font-family:IN;src:url(../fonts/inter-latin-600-normal.woff2);font-weight:600}
+@font-face{font-family:IN;src:url(../fonts/inter-latin-700-normal.woff2);font-weight:700}
+@font-face{font-family:IN;src:url(../fonts/inter-latin-800-normal.woff2);font-weight:800}
+html,body{margin:0}
+#st{position:relative;width:1080px;height:1920px;overflow:hidden;background:#fff;font-family:IN;color:#0a0a0a;-webkit-font-smoothing:antialiased;
+ background-image:linear-gradient(#efefef 2px,transparent 2px),linear-gradient(90deg,#efefef 2px,transparent 2px);background-size:48px 48px}
+.a{position:absolute}
+.sc{display:none}
+.card{background:#fff;border:3px solid #0a0a0a;border-radius:36px;box-shadow:8px 8px 0 #0a0a0a}
+.h1{font:800 76px/1.02 IN;letter-spacing:-.04em}
+.pill{display:inline-block;background:#0a0a0a;color:#fff;font:800 26px IN;letter-spacing:.14em;padding:12px 24px;border-radius:999px}
+img.sl{display:block;border-radius:14px;border:2px solid #0a0a0a}
+#cur{position:absolute;width:64px;height:64px;z-index:50;display:none}
+#ring{position:absolute;width:90px;height:90px;border-radius:50%;border:6px solid #0a0a0a;z-index:49;display:none}
+.chip{display:flex;align-items:center;gap:18px;background:#f2f2f2;border:2.5px solid #0a0a0a;border-radius:22px;padding:16px 22px;font:700 32px IN}
+.ficon{width:56px;height:68px;border-radius:10px;color:#fff;font:800 18px IN;display:flex;align-items:flex-end;justify-content:center;padding-bottom:8px;box-sizing:border-box}
+.bub{border-radius:34px;padding:28px 34px;font:600 34px/1.4 IN}
+.me{background:#0a0a0a;color:#fff;border-bottom-right-radius:10px}
+.ai{background:#fff;border:3px solid #0a0a0a;border-bottom-left-radius:10px}
+html.dark #st{background-color:#0E0F13;color:#F4F1EA;background-image:linear-gradient(#1a1d25 2px,transparent 2px),linear-gradient(90deg,#1a1d25 2px,transparent 2px)}
+html.dark .card{background:#161A22;border-color:#2A2F3A;box-shadow:8px 8px 0 #2A2F3A;color:#F4F1EA}
+html.dark .pill{background:#C6FF3D;color:#0E0F13}
+html.dark .chip{background:#1d222c;border-color:#2A2F3A;color:#F4F1EA}
+html.dark .ai{background:#161A22;border-color:#2A2F3A}
+html.dark .me{background:#C6FF3D;color:#0E0F13}
+html.dark img.sl{border-color:#2A2F3A}
+</style></head><body><div id="st">
+
+<!-- LINKS -->
+<div class="sc" id="links">
+  <div class="a" id="lk_t" style="left:84px;top:330px"><span class="pill">STEP 2</span><div class="h1" style="margin-top:28px">Free templates.<br>Download the .pptx</div></div>
+  <div id="lk_list"></div>
+</div>
+
+<!-- DOWNLOAD -->
+<div class="sc" id="download">
+  <div class="a card" id="br" style="left:60px;top:260px;width:954px;height:1420px;overflow:hidden">
+    <div style="height:110px;border-bottom:3px solid #0a0a0a;display:flex;align-items:center;gap:16px;padding:0 30px;background:#f2f2f2">
+      <div style="width:22px;height:22px;border-radius:50%;background:#0a0a0a"></div><div style="width:22px;height:22px;border-radius:50%;background:#9ca3af"></div><div style="width:22px;height:22px;border-radius:50%;background:#d1d5db"></div>
+      <div style="flex:1;margin-left:18px;height:62px;border-radius:31px;background:#fff;border:2.5px solid #0a0a0a;display:flex;align-items:center;padding:0 26px;font:700 32px IN"><span id="url"></span><span id="caret" style="width:3px;height:36px;background:#0a0a0a;margin-left:4px"></span></div>
+    </div>
+    <div id="dl_grid" class="a" style="left:36px;top:150px;width:880px"></div>
+    <div id="dl_det" class="a" style="left:36px;top:150px;width:880px;display:none">
+      <img class="sl" src="img/home-bakery-after-1.png" style="width:880px">
+      <div style="display:flex;gap:16px;margin-top:22px">
+        <img class="sl" src="img/home-bakery-after-2.png" style="width:280px"><img class="sl" src="img/home-bakery-after-3.png" style="width:280px"><img class="sl" src="img/home-bakery-after-5.png" style="width:280px">
+      </div>
+      <div style="font:800 46px IN;margin-top:30px">Sunrise Pitch template</div>
+      <div style="font:600 30px IN;color:#525252;margin-top:8px">Free · 25 slide layouts</div>
+      <div id="dl_btn" style="margin-top:30px;display:inline-flex;align-items:center;gap:14px;background:#0a0a0a;color:#fff;font:800 36px IN;padding:24px 40px;border-radius:999px">Download ↓</div>
+      <div id="dl_menu" class="card" style="position:absolute;left:0;top:980px;width:520px;padding:10px 0;display:none;box-shadow:6px 6px 0 #0a0a0a;border-radius:26px">
+        <div id="dl_pp" style="font:800 34px IN;padding:22px 30px;border-radius:18px;margin:0 10px">PowerPoint (.pptx)</div>
+        <div style="font:600 34px IN;padding:22px 30px;color:#525252">Google Slides</div>
+      </div>
+    </div>
+  </div>
+  <div class="a" id="toast" style="left:150px;top:1720px;width:780px;display:none"><div class="chip" style="background:#0a0a0a;color:#fff;justify-content:center"><div class="ficon" style="background:#d24726">PPT</div>template.pptx · Downloaded ✓</div></div>
+</div>
+
+<!-- UPLOAD -->
+<div class="sc" id="upload">
+  <div class="a" style="left:84px;top:300px"><span class="pill">STEP 3</span><div class="h1" style="margin-top:28px;font-size:66px">Upload both files</div></div>
+  <div class="a card" id="chat" style="left:60px;top:560px;width:954px;height:1080px;overflow:hidden">
+    <div style="height:100px;border-bottom:3px solid #0a0a0a;display:flex;align-items:center;justify-content:center;font:800 38px IN;background:#f2f2f2">Claude</div>
+    <div id="up_msg" class="a" style="right:30px;top:140px;width:760px;display:none">
+      <div style="display:flex;gap:14px;justify-content:flex-end;margin-bottom:14px" id="up_msgchips"></div>
+      <div class="bub me" id="up_msgtxt"></div>
+    </div>
+    <div class="a" id="up_bar" style="left:24px;right:24px;bottom:24px;border:3px solid #0a0a0a;border-radius:34px;background:#fff;padding:22px">
+      <div id="up_chips" style="display:flex;gap:14px;margin-bottom:0"></div>
+      <div style="display:flex;align-items:flex-end;gap:18px">
+        <div id="plus" style="flex:none;width:76px;height:76px;border-radius:50%;border:3px solid #0a0a0a;font:700 54px/68px IN;text-align:center">+</div>
+        <div id="up_in" style="flex:1;font:600 30px/1.4 IN;color:#9ca3af;min-height:76px;display:flex;align-items:center">Reply to Claude…</div>
+        <div id="send" style="flex:none;width:76px;height:76px;border-radius:50%;background:#d1d5db;color:#fff;font:800 40px/76px IN;text-align:center">↑</div>
+      </div>
+    </div>
+    <div class="a card" id="menu" style="left:30px;bottom:150px;width:520px;padding:10px;display:none;border-radius:26px;box-shadow:6px 6px 0 #0a0a0a">
+      <div id="menu1" style="font:800 34px IN;padding:22px 26px;border-radius:18px">📎 Upload a file</div>
+      <div style="font:600 34px IN;padding:22px 26px;color:#525252">📷 Take a photo</div>
+    </div>
+    <div class="a" id="picker" style="left:0;right:0;bottom:0;height:640px;background:#fff;border-top:3px solid #0a0a0a;border-radius:36px 36px 0 0;display:none;padding:34px 40px;box-sizing:border-box">
+      <div style="font:800 36px IN;margin-bottom:22px">Choose files</div>
+      <div id="pk_list"></div>
+      <div id="pk_add" style="position:absolute;right:40px;top:26px;background:#0a0a0a;color:#fff;font:800 32px IN;padding:16px 34px;border-radius:999px">Add (0)</div>
+    </div>
+  </div>
+  <div class="a" id="tip" style="left:120px;top:1680px;width:840px;display:none">
+    <div class="chip" style="background:#FFD43B;justify-content:center;font-size:34px">Use a .md file: plain text = fewer tokens</div>
+  </div>
+</div>
+
+<!-- FLOW -->
+<div class="sc" id="flow">
+  <div class="a card" style="left:60px;top:250px;width:954px;height:1430px;overflow:hidden">
+    <div style="height:100px;border-bottom:3px solid #0a0a0a;display:flex;align-items:center;justify-content:center;font:800 38px IN;background:#f2f2f2">Claude</div>
+    <div id="fl" class="a" style="left:30px;right:30px;top:130px"></div>
+  </div>
+</div>
+
+<!-- BEFORE / AFTER -->
+<div class="sc" id="ba">
+  <div class="a" id="ba_t" style="left:84px;top:300px;width:920px"><span class="pill" id="ba_pill">NORMAL AI DECK</span><div class="h1" id="ba_h" style="margin-top:28px;font-size:68px">Every slide looks<br>the same</div></div>
+  <div id="ba_g"></div>
+</div>
+
+<svg id="cur" viewBox="0 0 24 24"><path d="M4 2l15 11-6.5 1.2L16 21l-3 1.4-3.3-6.6L4 20z" fill="#0a0a0a" stroke="#fff" stroke-width="1.5" stroke-linejoin="round"/></svg>
+<div id="ring"></div>
+</div>
+<script>
+const Q=new URLSearchParams(location.search), S=Q.get('s')||'links';if(Q.get('theme')==='dark')document.documentElement.classList.add('dark');
+const $=id=>document.getElementById(id);
+const cl=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
+const eo=x=>1-Math.pow(1-cl(x),3), eio=x=>{x=cl(x);return x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2};
+const back=x=>{x=cl(x);const c=1.5;return 1+(c+1)*Math.pow(x-1,3)+c*Math.pow(x-1,2)};
+const p=(t,a,d=.45)=>cl((t-a)/d);
+function pop(el,t,a,dy=60,d=.5){const k=p(t,a,d);el.style.opacity=eo(k);el.style.transform=`translateY(${(1-eo(k))*dy}px) scale(${.94+.06*back(k)})`;}
+function slideX(el,t,a,dx=1100,d=.55){const k=eo(p(t,a,d));el.style.opacity=cl(p(t,a,d)*2);el.style.transform=`translateX(${(1-k)*dx}px)`;}
+// cursor path: list of [t,x,y], clicks: list of t
+function cursor(t,path,clicks){
+  const c=$('cur'),r=$('ring');if(t<path[0][0]){c.style.display='none';r.style.display='none';return}
+  c.style.display='block';let x=path[0][1],y=path[0][2];
+  for(let i=1;i<path.length;i++){const [t0,x0,y0]=path[i-1],[t1,x1,y1]=path[i];if(t>=t0){const k=eio((t-t0)/(t1-t0||1));x=x0+(x1-x0)*k;y=y0+(y1-y0)*k}}
+  let sc=1;r.style.display='none';
+  for(const ct of clicks){if(t>=ct&&t<ct+.45){const k=(t-ct)/.45;sc=1-.18*Math.sin(Math.PI*Math.min(1,k*2));r.style.display='block';r.style.left=(x-45)+'px';r.style.top=(y-45)+'px';r.style.opacity=1-k;r.style.transform=`scale(${.4+k*1.1})`}}
+  c.style.left=(x-14)+'px';c.style.top=(y-8)+'px';c.style.transform=`scale(${sc})`;
+}
+function type(el,txt,t,a,cps=22){const n=Math.floor(cl((t-a)*cps,0,txt.length));el.textContent=txt.slice(0,n);return n}
+const DUR={links:6.5,download:8,upload:9.5,flow:11,ba:7};
+// ---------- build
+if(S==='links'){
+  const L=[['Slidesgo','slidesgo.com','img/late-payments-after-1.png'],['Figma Community','figma.com/community','img/meeting-notes-after-1.png'],['Microsoft PowerPoint','powerpoint.cloud.microsoft','img/home-bakery-after-1.png']];
+  $('lk_list').innerHTML=L.map((l,i)=>`<div class="a card lk" style="left:60px;top:${700+i*300}px;width:954px;height:250px;display:flex;align-items:center;gap:30px;padding:0 30px;box-sizing:border-box">
+   <div style="flex:none;width:76px;height:76px;border-radius:50%;background:#0a0a0a;color:#fff;font:800 40px/76px IN;text-align:center">${i+1}</div>
+   <img class="sl" src="${l[2]}" style="width:300px">
+   <div style="min-width:0"><div style="font:800 48px/1.1 IN;letter-spacing:-.02em">${l[0]}</div><div style="font:700 32px IN;color:#404040;margin-top:10px">${l[1]}</div><div style="margin-top:16px;display:inline-block;background:#FFD43B;font:800 22px IN;letter-spacing:.12em;padding:8px 16px;border-radius:999px;border:2px solid #0a0a0a">FREE</div></div></div>`).join('');
+}
+if(S==='download'){
+  const G=['late-payments-after-1','home-bakery-after-1','meeting-notes-after-1','late-payments-after-2','meeting-notes-after-5','home-bakery-after-2'];
+  $('dl_grid').innerHTML=G.map((g,i)=>`<div class="a dg" style="left:${(i%2)*452}px;top:${Math.floor(i/2)*330}px;width:428px"><img class="sl" src="img/${g}.png" style="width:428px"><div style="font:700 26px IN;margin-top:12px">${['Bold pitch','Sunrise Pitch','Clean proposal','Big numbers','Dark cards','Street launch'][i]}</div></div>`).join('');
+}
+if(S==='upload'){
+  const F=[['content.md','MD','#0a0a0a','1 KB'],['template.pptx','PPT','#d24726','2.4 MB'],['photo_0912.jpg','JPG','#9ca3af','3.1 MB'],['budget.xlsx','XLS','#9ca3af','40 KB']];
+  $('pk_list').innerHTML=F.map((f,i)=>`<div class="pk" style="display:flex;align-items:center;gap:24px;padding:18px 16px;border-radius:20px;margin-bottom:8px"><div class="ficon" style="background:${f[2]}">${f[1]}</div><div style="flex:1"><div style="font:700 34px IN">${f[0]}</div><div style="font:600 24px IN;color:#737373">${f[3]}</div></div><div class="ck" style="width:50px;height:50px;border-radius:50%;border:3px solid #0a0a0a;font:800 30px/44px IN;text-align:center"></div></div>`).join('');
+  const chip=(f)=>`<div class="chip" style="font-size:26px;padding:12px 16px;gap:12px"><div class="ficon" style="background:${f[2]};width:40px;height:50px;font-size:14px;padding-bottom:5px">${f[1]}</div>${f[0]}</div>`;
+  $('up_chips').innerHTML=chip(F[0])+chip(F[1]);$('up_msgchips').innerHTML=chip(F[0])+chip(F[1]);
+}
+const PROMPT='Act as a senior presentation strategist and executive designer. I\'ve uploaded 2 files: a PowerPoint template (use its DESIGN only) and my content file (use its FACTS only)…';
+if(S==='flow'){
+  $('fl').innerHTML=`
+  <div class="bub ai fl0" style="width:760px;font-size:31px"><b>Before I plan, a few questions:</b><div id="fq" style="margin-top:12px"></div></div>
+  <div class="bub me fl1" style="margin:24px 0 0 auto;width:600px;font-size:30px">1. Late payments 2. Shop partners 3. Approve reminders 4. 7 slides 5. Confident</div>
+  <div class="bub ai fl2" style="width:800px;margin-top:24px;font-size:31px"><b>Plan + 1 sample slide.</b> Core message: reminders get us paid 12 days faster.<img class="sl" src="img/late-payments-after-3.png" style="width:100%;margin-top:18px"></div>
+  <div class="bub me fl3" style="margin:24px 0 0 auto;width:fit-content">approved ✓</div>
+  <div class="bub ai fl4" style="width:800px;margin-top:24px;padding:22px"><div class="chip" style="background:#fff;font-size:30px"><div class="ficon" style="background:#d24726">PPT</div><div><div>late-payments.pptx</div><div style="font:600 24px IN;color:#737373">7 slides · charts · animations</div></div></div>
+   <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:16px">${[1,2,3,4,5,6,7].map(i=>`<img class="sl th" src="img/late-payments-after-${i}.png" style="width:100%;border-width:1.5px;border-radius:8px">`).join('')}</div></div>`;
+}
+if(S==='ba'){
+  const B=[1,2,3,4].map(i=>`img/late-payments-before-${i}.png`),A=[1,2,3,4,5,6].map(i=>`img/late-payments-after-${[1,2,3,4,5,7][i-1]}.png`);
+  $('ba_g').innerHTML=B.map((s,i)=>`<img class="a sl bb" src="${s}" style="left:${60+(i%2)*490}px;top:${640+Math.floor(i/2)*310}px;width:464px">`).join('')+A.map((s,i)=>`<img class="a sl aa" src="${s}" style="left:${60+(i%2)*490}px;top:${640+Math.floor(i/2)*310}px;width:464px;box-shadow:6px 6px 0 #0a0a0a">`).join('');
+}
+// ---------- frame
+function frame(t){
+  document.querySelectorAll('.sc').forEach(e=>e.style.display='none');$(S).style.display='block';
+  if(S==='links'){pop($('lk_t'),t,.1);document.querySelectorAll('.lk').forEach((e,i)=>slideX(e,t,.7+i*.45));cursor(-1,[[0,0,0]],[]);}
+  if(S==='download'){
+    pop($('br'),t,0,80);const n=type($('url'),'slidesgo.com',t,.5,14);$('caret').style.opacity=(t<1.5&&Math.floor(t*3)%2==0)?1:0;
+    const det=t>=3.0;$('dl_grid').style.display=det?'none':'block';$('dl_det').style.display=det?'block':'none';
+    document.querySelectorAll('.dg').forEach((e,i)=>pop(e,t,1.4+i*.08,40,.4));
+    if(det)pop($('dl_det'),t,3.0,30,.35);
+    $('dl_menu').style.display=t>=4.7?'block':'none';if(t>=4.7)pop($('dl_menu'),t,4.7,20,.3);
+    $('dl_pp').style.background=t>=5.4?'#FFD43B':'transparent';
+    $('toast').style.display=t>=5.9?'block':'none';if(t>=5.9)pop($('toast'),t,5.9,80,.45);
+    cursor(t,[[1.6,700,1500],[2.4,770,540],[2.9,770,540],[3.5,540,1400],[3.95,250,1330],[4.4,250,1330],[5.0,330,1440],[5.4,330,1440],[6.5,600,1800]],[2.8,4.3,5.35]);
+  }
+  if(S==='upload'){
+    pop($('chat'),t,0,80);
+    $('menu').style.display=(t>=.95&&t<1.75)?'block':'none';if(t>=.95)pop($('menu'),t,.95,20,.25);
+    $('menu1').style.background=t>=1.5?'#FFD43B':'transparent';
+    const pk=t>=1.75&&t<3.55;$('picker').style.display=pk?'block':'none';if(pk){const k=eo(p(t,1.75,.4));$('picker').style.transform=`translateY(${(1-k)*640}px)`}
+    const sel=[t>=2.3,t>=2.85];document.querySelectorAll('.pk').forEach((e,i)=>{const on=i<2&&sel[i];e.style.background=on?'#f2f2f2':'transparent';e.querySelector('.ck').textContent=on?'✓':'';e.querySelector('.ck').style.background=on?'#FFD43B':'#fff'});
+    $('pk_add').textContent=`Add (${sel.filter(Boolean).length})`;
+    const chipsOn=t>=3.55&&t<7.4;$('up_chips').style.display=chipsOn?'flex':'none';$('up_chips').style.marginBottom='18px';if(chipsOn)pop($('up_chips'),t,3.55,20,.35);
+    $('tip').style.display=t>=3.9?'block':'none';if(t>=3.9)pop($('tip'),t,3.9,60,.45);
+    const inn=$('up_in');if(t>=4.8&&t<7.4){inn.style.color='#0a0a0a';const k=cl((t-4.8)/1.0);inn.textContent=PROMPT.slice(0,Math.floor(k*PROMPT.length));inn.style.maxHeight='170px';inn.style.overflow='hidden';inn.style.display='block'}else if(t>=7.4){inn.style.color='#9ca3af';inn.textContent='Reply to Claude…';inn.style.display='flex'}else{inn.style.color='#9ca3af';inn.textContent='Reply to Claude…';inn.style.display='flex'}
+    $('send').style.background=(t>=4.8&&t<7.4)?'#0a0a0a':'#d1d5db';
+    $('up_msg').style.display=t>=7.4?'block':'none';if(t>=7.4){$('up_msgtxt').textContent=PROMPT;pop($('up_msg'),t,7.4,60,.45)}
+    cursor(t,[[0.3,700,1500],[0.75,144,1556],[1.2,144,1556],[1.45,250,1345],[1.7,250,1345],[2.1,880,1146],[2.3,880,1146],[2.65,880,1254],[2.85,880,1254],[3.25,884,1056],[3.5,884,1056],[4.4,600,1450],[4.8,600,1450],[6.9,930,1556],[7.2,930,1556],[8.2,700,1500]],[0.85,1.5,2.25,2.8,3.4,7.1]);
+  }
+  if(S==='flow'){
+    const b=document.querySelectorAll('#fl .bub');[0,2.6,3.9,6.2,7.2].forEach((a,i)=>{b[i].style.display=t>=a?'block':'none';if(t>=a)pop(b[i],t,a,50,.4)});
+    const qs=['1. Topic?','2. Audience?','3. Goal?','4. How many slides?','5. Tone?'];$('fq').innerHTML=qs.map((q,i)=>`<div style="opacity:${eo(p(t,.4+i*.35,.3))}">${q}</div>`).join('');
+    document.querySelectorAll('#fl .th').forEach((e,i)=>pop(e,t,7.6+i*.15,20,.3));
+    // scroll chat up when content grows
+    const sc=t<5.2?0:t<6.6?eio((t-5.2)/.8)*520:520+eio((t-6.6)/.8)*560;$('fl').style.transform=`translateY(${-sc}px)`;
+    cursor(-1,[[0,0,0]],[]);
+  }
+  if(S==='ba'){
+    pop($('ba_t'),t,.05);const sw=t>=3.0;
+    $('ba_pill').textContent=sw?'TEMPLATE + MY PROMPT':'NORMAL AI DECK';$('ba_pill').style.background=sw?'#FFD43B':'#0a0a0a';$('ba_pill').style.color=sw?'#0a0a0a':'#fff';
+    $('ba_h').innerHTML=sw?'Every point gets<br>its own layout':'Every slide looks<br>the same';if(sw)pop($('ba_h'),t,3.0,30,.4);
+    document.querySelectorAll('.bb').forEach((e,i)=>{e.style.display=sw?'none':'block';if(!sw)pop(e,t,.5+i*.2,40,.4)});
+    document.querySelectorAll('.aa').forEach((e,i)=>{e.style.display=sw?'block':'none';if(sw){const k=p(t,3.2+i*.22,.5);e.style.opacity=eo(k);e.style.transform=`scale(${.6+.4*back(k)}) rotate(${(1-eo(k))*(i%2?4:-4)}deg)`}});
+    cursor(-1,[[0,0,0]],[]);
+  }
+}
+window.DUR=DUR[S];
+if(Q.get('k')){const st=$('st'),w=document.createElement('div');w.style.cssText=`position:absolute;inset:0;transform-origin:540px 120px;transform:scale(${Q.get('k')})`;while(st.firstChild)w.appendChild(st.firstChild);st.appendChild(w);}
+</script></body></html>
