@@ -2,17 +2,24 @@
 @font-face{font-family:IN;src:url(fonts/inter-latin-800-normal.woff2);font-weight:800}
 .t{position:absolute;left:0;right:0;text-align:center;font:800 76px/1.05 IN;letter-spacing:-.02em;color:#fff;-webkit-text-stroke:14px #000;paint-order:stroke fill;white-space:nowrap}
 .r{color:#ff2d2d;font-size:140px;line-height:1;letter-spacing:-.03em;-webkit-text-stroke:18px #000}
-#hcap{position:absolute;left:40px;right:40px;top:1420px;text-align:center;font:800 58px/1.1 IN;color:#fff;-webkit-text-stroke:10px #000;paint-order:stroke fill}
+#hcap{position:absolute;left:40px;right:40px;top:1420px;text-align:center;font:800 58px/1.1 IN;color:#111;-webkit-text-stroke:10px #fff;paint-order:stroke fill}
+.bx{position:absolute;left:0;right:0;text-align:center;display:none}
+.bx span{display:inline-block;font:800 64px/1.12 IN;letter-spacing:-.025em;padding:14px 34px 18px;border-radius:26px;white-space:nowrap}
+.bk span{background:#0d0d0d;color:#FFF06A}
+.yl span{background:#FFD84D;color:#0d0d0d;font-size:112px;line-height:1.02;padding:10px 38px 16px;border-radius:30px}
+.cap-box #hcap{color:#FFF06A;-webkit-text-stroke:0;background:#0d0d0d;left:auto;right:auto;display:inline-block;padding:10px 26px 14px;border-radius:20px;position:relative;top:0}
+#hcw{position:absolute;left:0;right:0;top:0;text-align:center}.cap-box #hcw{top:1420px}
 </style>
 <div id="s" style="position:relative;width:1080px;height:1920px;overflow:hidden">
 <div class="t" style="top:200px" id="t1"></div>
 <div class="t r" style="top:290px" id="t2"></div>
 <div class="t" style="top:450px" id="t3"></div>
-<div id="hcap"></div></div>
+<div class="bx bk" id="b1" style="top:260px"><span></span></div><div class="bx yl" id="b2" style="top:368px"><span></span></div><div class="bx bk" id="b3" style="top:510px"><span></span></div>
+<div id="hcw"><div id="hcap"></div></div></div>
 <script>
 const C=x=>Math.max(0,Math.min(1,x)),P=(t,a,d)=>C((t-a)/d),eo=x=>1-Math.pow(1-x,3);
 let CFG,CH=[];const $=i=>document.getElementById(i);
-window.setup=async(cfg)=>{CFG=cfg;if(cfg.red_size)document.getElementById('t2').style.fontSize=cfg.red_size+'px';$('t1').textContent=cfg.l1;$('t2').textContent=cfg.l2;$('t3').textContent=cfg.sub;await document.fonts.load('800 40px IN');await document.fonts.ready;
+window.setup=async(cfg)=>{CFG=cfg;if(cfg.small_size)['t1','t3'].forEach(i=>document.getElementById(i).style.fontSize=cfg.small_size+'px');if(cfg.hook_y)document.querySelectorAll('.t').forEach(e=>{e.style.top=(parseInt(e.style.top||getComputedStyle(e).top)+cfg.hook_y)+'px'});if(cfg.red_size)document.getElementById('t2').style.fontSize=cfg.red_size+'px';$('t1').textContent=cfg.l1;if(cfg.style==='box'){document.querySelectorAll('.t').forEach(e=>e.style.display='none');[['b1',cfg.l1],['b2',cfg.l2],['b3',cfg.sub]].forEach(([i,x])=>{$(i).style.display='block';$(i).firstChild.textContent=x;if(cfg.hook_y)$(i).style.top=(parseInt($(i).style.top)+cfg.hook_y)+'px'});document.body.classList.add('cap-box')}$('t2').textContent=cfg.l2;$('t3').textContent=cfg.sub;await document.fonts.load('800 40px IN');await document.fonts.ready;
  const caps=cfg.caps.concat([[99,'']]);
  for(let i=0;i<caps.length-1;i++){const w=caps[i][1].split(' ');const g=[];for(let j=0;j<w.length;j+=2)g.push(w.slice(j,j+2).join(' '));
   const t0=caps[i][0],d=(Math.min(caps[i+1][0],cfg.b-cfg.a)-t0)/g.length;g.forEach((x,k)=>CH.push([t0+k*d,x]))}

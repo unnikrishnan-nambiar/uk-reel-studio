@@ -1,0 +1,178 @@
+{
+ "name": "gemini-students",
+ "theme": "white",
+ "hook": {
+  "a": 0.18,
+  "b": 4.45,
+  "l1": "Stop. Only 2 months left.",
+  "l2": "1 YEAR FREE",
+  "sub": "of paid Google AI",
+  "red_size": 140,
+  "caps": [
+   [
+    0.1,
+    "Only 2 months left"
+   ],
+   [
+    1.4,
+    "for students to get"
+   ],
+   [
+    2.0,
+    "Google AI Plus"
+   ],
+   [
+    3.0,
+    "free for 1 year"
+   ]
+  ],
+  "style": "box"
+ },
+ "body_segs": [
+  [
+   4.45,
+   8.9
+  ],
+  [
+   9.14,
+   12.01
+  ],
+  [
+   12.2,
+   15.92
+  ],
+  [
+   16.22,
+   21.85
+  ],
+  [
+   22.16,
+   26.34
+  ],
+  [
+   26.55,
+   30.45
+  ],
+  [
+   31.31,
+   34.56
+  ]
+ ],
+ "tr": [],
+ "ks": 0.72,
+ "yo": 700,
+ "pb": 1000,
+ "grade": 0.3,
+ "panel_ranges": [],
+ "cards": [],
+ "caps": [
+  [
+   4.74,
+   "If you're a"
+  ],
+  [
+   5.12,
+   "{COLLEGE STUDENT}"
+  ],
+  [
+   6.08,
+   "go to {GEMINI FOR STUDENTS}"
+  ],
+  [
+   7.5,
+   "verify your {STUDENT STATUS}"
+  ],
+  [
+   9.2,
+   "and it's {FREE}"
+  ],
+  [
+   10.34,
+   "For using AI,"
+  ],
+  [
+   11.06,
+   "this is the {BEST PLAN}"
+  ],
+  [
+   12.18,
+   "Got a {STUDENT}"
+  ],
+  [
+   12.7,
+   "at home?"
+  ],
+  [
+   13.68,
+   "Anyone can {USE IT}"
+  ],
+  [
+   14.56,
+   "on a {PERSONAL ACCOUNT}"
+  ],
+  [
+   16.22,
+   "Gemini's {FEATURES}"
+  ],
+  [
+   17.3,
+   "{NOTEBOOK}"
+  ],
+  [
+   18.0,
+   "{VIDEO GENERATION}"
+  ],
+  [
+   18.84,
+   "{GOOGLE}"
+  ],
+  [
+   19.9,
+   "free"
+  ],
+  [
+   20.5,
+   "plus {CLOUD STORAGE}"
+  ],
+  [
+   22.24,
+   "For proper {VIBE CODING}"
+  ],
+  [
+   23.58,
+   "you need {PRO}"
+  ],
+  [
+   24.36,
+   "How to do it {FREE}"
+  ],
+  [
+   25.28,
+   "in my {NEXT VIDEO}"
+  ],
+  [
+   26.56,
+   "Want the {LINK}"
+  ],
+  [
+   27.52,
+   "Comment {LINK}"
+  ],
+  [
+   28.34,
+   "{FOLLOW}"
+  ],
+  [
+   29.42,
+   "for more {AI}"
+  ],
+  [
+   31.43,
+   "Send this to the friend"
+  ],
+  [
+   32.2,
+   "who says AI is {EXPENSIVE}"
+  ]
+ ]
+}

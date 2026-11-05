@@ -15,11 +15,12 @@ Follow `.claude/skills/edit-reel/SKILL.md` step by step. Short version:
 ## House rules (all approved by him — never break them)
 - **Template:** white panel template by default (`theme: "white"`); dark Night Studio version only when he asks (`theme: "dark"`). See `.claude/skills/panel-template/SKILL.md`.
 - **One font: Inter** (800 for titles, 600/700 small). No italics, no serif, no other fonts.
-- **Hook:** static, full face, at the top from frame 0. 3 lines with thick black outline: small white line / BIG RED key words / small white line. Hook text matches what he says in the first sentence. Score ≥ 90 with `./reel score`, he confirms in chat.
+- **Hook:** static, full face, at the top from frame 0. 3 stacked BOXES (`"style": "box"` in job.json): yellow text on a black box / BIG black key words on a yellow box / yellow text on a black box. Hook text matches what he says in the first sentence. Score ≥ 90 with `./reel score`, he confirms in chat.
 - **Animations, never raw screen recordings** in the reel. Mock-ups are clean HTML (windows, chats, slides, diagrams).
 - Mix three layouts: full face ↔ half panel (panel slides down, video zooms out into a rounded card, his hair overlaps the panel) ↔ full-screen animation cards. Change layout every 3–7 s.
 - Sides around the video card use the panel colour (never blur). Rounded corners (R=44).
-- Captions are BLACK (white outline on the face), never gold/yellow.
+- **Words on boxes:** key words = black text on a yellow box (#FFD84D); other caption words = yellow text (#FFF06A) on a black box (#0d0d0d). Never gold/yellow-gradient text. See `jobs/gemini-example/overlay.html`.
+- His own screen recordings go FULL SCREEN (steady, sharp parts only; hide emails/IDs and price plans he doesn't want shown). Logos/images as rounded cards above his eyes.
 - English captions, 1–2 words per chunk, key word in `{BRACES}`. Translate his Manglish faithfully. **Never invent claims, numbers or results.** Illustrative mock-ups (sample decks, sample chats) are fine but tell him in the final message.
 - No branding (no handle, logo, watermark, end card). No emoji, stickers or bouncy ad effects.
 - Output 1080×1920, 60 fps, −14 LUFS. No covers unless he asks.
