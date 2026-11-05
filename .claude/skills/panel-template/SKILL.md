@@ -26,8 +26,8 @@ description: The approved uk_speaks.ai panel reel look (white default, dark Nigh
 - Both overlay.html and scenes.html switch with `?theme=dark` (CSS under `html.dark`). Check hair at full resolution for halos on dark.
 
 ## Words on boxes (Nov 2026)
-- Hook: 3 stacked boxes — black box + yellow text (64px) / yellow box + black text, BIG (112px) / black box + yellow text. Set `"style": "box"` in job.json hook.
-- Captions: key word in `{BRACES}` → yellow box `#FFD84D`, black text; lead-in and plain words → black box `#0d0d0d`, yellow text `#FFF06A`. Copy the CSS from `jobs/gemini-example/overlay.html`.
+- Hook: ONE box (never stacked), whole hook on ~2 lines, 72px: yellow text on black (default) or black on yellow (`"box_color": "yellow"`). Set `"style": "box"` and `"box_text"` in job.json hook.
+- Captions: one box per chunk, never stacked/side by side. Chunk with a `{KEY}` word → one yellow box `#FFD84D`, black text; plain chunk → one black box `#0d0d0d`, yellow text `#FFF06A`. Copy the CSS from `jobs/gemini-example/overlay.html`.
 - Screen recordings he sends: full screen, 1.06→1.0 zoom-in, 0.15 s fades (`jobs/gemini-example/mk_broll_full.py`).
 
 ## Look rules

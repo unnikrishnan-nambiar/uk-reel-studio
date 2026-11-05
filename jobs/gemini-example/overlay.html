@@ -81,7 +81,7 @@ function caption(t){
   const L=lay(t),c=$('cap');let cur=null;for(const x of CAPS)if(t>=x[0]&&t<x[1])cur=x;
   if(!cur||L==='d'){c.innerHTML='';return}
   const m=cur[2].match(/^(.*?)\{(.+)\}(.*)$/);
-  let h;if(m){const pre=(m[1]+' ').trim();h=(pre?`<div class="ab">${pre}</div>`:'')+`<div class="ce">${m[2]}</div>`+(m[3].trim()?`<div class="ab" style="margin-top:6px">${m[3].trim()}</div>`:'')}else h=`<div class="cw">${cur[2]}</div>`;
+  let h;if(m){const pre=(m[1]+' ').trim();h=`<div class="ce" style="font-size:64px!important">${(pre?pre+' ':'')+m[2]+(m[3].trim()?' '+m[3].trim():'')}</div>`}else h=`<div class="cw">${cur[2]}</div>`;
   c.className='on-'+(L==='w'?'w':L);c.innerHTML=h;
   const k=p(t,cur[0],.22);c.style.opacity=eo(k);c.style.transform=`translateY(${(1-eo(k))*14}px)`;
   const H=c.getBoundingClientRect().height;
