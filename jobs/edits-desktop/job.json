@@ -1,0 +1,18 @@
+{
+ "name": "edits-desktop",
+ "theme": "white",
+ "hook": {"a": 0.18, "b": 3.47, "l1": "", "l2": "", "sub": "", "style": "box",
+  "box_text": "Stop. Instagram Edits is now on your desktop. No more phone edits",
+  "caps": [[0.0, "First thing this morning"], [1.3, "Instagram Edits"], [2.55, "is on desktop"]]},
+ "body_segs": [[3.76, 5.25], [5.40, 9.63], [9.88, 14.72], [15.27, 24.0]],
+ "tr": [], "ks": 0.72, "yo": 700, "pb": 1000, "grade": 0.3, "panel_ranges": [], "cards": [],
+ "caps": [
+  [3.82, "No more struggling"], [4.4, "on your {PHONE}"],
+  [5.45, "{FONTS}"], [5.94, "{MUSIC}"], [6.38, "{COLOUR GRADING}"], [7.21, "it's all there"],
+  [7.73, "Right now"], [7.93, "{MAC ONLY}"], [8.67, "{WINDOWS} soon"],
+  [9.95, "Best part"], [10.71, "it has {MCP}"], [11.59, "connect {CLAUDE CODE}"], [12.81, "full {EDITING WORKFLOWS}"], [13.95, "set up"],
+  [15.35, "To {DOWNLOAD}"], [16.17, "and the full guide"], [16.71, "comment {EDITS}"],
+  [17.55, "Want a"], [18.21, "{WORKFLOW TUTORIAL}?"], [19.91, "tell me in comments"], [20.77, "I'll {RESEARCH} it"],
+  [21.75, "Anyway"], [22.11, "{FOLLOW}"], [22.81, "more with {AI}"]
+ ]
+}

@@ -16,3 +16,13 @@ jobs/*/hook/
 jobs/*/*.png
 jobs/*/*.log
 .DS_Store
+models
+__pycache__/
+jobs/*/logo/
+jobs/*/fr/
+jobs/*/*.jpg
+jobs/*/*.sh
+jobs/*/edit.json
+jobs/*/caps_body.json
+jobs/*/words.json
+jobs/*/silences.json

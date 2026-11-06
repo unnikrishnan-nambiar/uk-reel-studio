@@ -1,0 +1,66 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+@font-face{font-family:IN;src:url(../../templates/fonts/inter-latin-600-normal.woff2);font-weight:600}
+@font-face{font-family:IN;src:url(../../templates/fonts/inter-latin-700-normal.woff2);font-weight:700}
+@font-face{font-family:IN;src:url(../../templates/fonts/inter-latin-800-normal.woff2);font-weight:800}
+html,body{margin:0;background:transparent}
+#st{position:relative;width:1080px;height:1920px;overflow:hidden;font-family:IN;-webkit-font-smoothing:antialiased}
+.a{position:absolute;left:0;right:0;text-align:center}
+.yb{display:inline-block;background:#FFD84D;color:#0d0d0d;font:800 84px/1.02 IN;padding:12px 34px 18px;border-radius:24px}
+.bb{display:inline-block;background:#0d0d0d;color:#FFF06A;font:800 52px/1.1 IN;padding:10px 26px 14px;border-radius:20px}
+.wt{color:#fff;font:800 60px/1.1 IN;letter-spacing:-.02em}
+.term{position:absolute;left:70px;width:940px;border-radius:26px;overflow:hidden;background:#16181d;box-shadow:0 0 0 2px #2c3038,0 30px 60px rgba(0,0,0,.5)}
+.tb{height:72px;display:flex;align-items:center;gap:12px;padding:0 24px;background:#22252c;color:#c9ccd3;font:700 32px IN}
+.dot{width:16px;height:16px;border-radius:50%}
+.tx{padding:30px 34px 36px;font:700 46px/1.4 IN;color:#e9e9e9;text-align:left;min-height:170px}
+.ok{color:#FFD84D}
+.line{position:absolute;left:538px;width:4px;background:#FFD84D;border-radius:2px}
+#cap{position:absolute;left:0;right:0;text-align:center}
+#cap div{margin:0 auto}
+.cw{display:inline-block;background:#0d0d0d;color:#FFF06A;font:800 56px/1.1 IN;padding:10px 26px 14px;border-radius:20px}
+.ce{display:inline-block;background:#FFD84D;color:#0d0d0d;font:800 72px/1.04 IN;padding:10px 30px 16px;border-radius:24px;text-transform:uppercase}
+</style></head><body><div id="st">
+<div class="a" id="lb" style="top:496px"><span class="bb" style="font-size:34px;padding:4px 18px 8px">INSTAGRAM EDITS · DESKTOP</span></div>
+<div id="mcp">
+ <div class="a" id="m1" style="top:610px"><span class="yb">MCP</span></div>
+ <div class="line" id="m2" style="top:735px;height:70px"></div>
+ <div class="term" id="m3" style="top:820px"><div class="tb"><span class="dot" style="background:#ff5f57"></span><span class="dot" style="background:#febc2e"></span><span class="dot" style="background:#28c840"></span><span style="margin-left:14px">Claude Code</span></div><div class="tx" id="tt"></div></div>
+</div>
+<div id="cta">
+ <div class="a" id="c1" style="top:1330px"><span class="bb" id="c1t">Comment</span></div>
+ <div class="a" id="c2" style="top:1410px"><span class="yb" id="c2t" style="font-size:150px;padding:18px 60px 28px;border-radius:36px">EDITS</span></div>
+</div>
+<div id="cap"></div>
+</div>
+<script>
+const Q=new URLSearchParams(location.search),PASS=Q.get('pass')||'T';
+const $=id=>document.getElementById(id);const cl=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
+const eo=x=>1-Math.pow(1-cl(x),3);const p=(t,a,d=.45)=>cl((t-a)/d);
+function pop(el,t,a,dy=30,d=.4){const k=p(t,a,d);el.style.opacity=eo(k);el.style.transform=`translateY(${(1-eo(k))*dy}px)`}
+let CAPS=[];window.setCaps=c=>{CAPS=c};
+const CARD=[0.2,1.9],MCP=[6.79,10.56],CTA=[11.44,17.64];
+const inn=(t,r)=>t>=r[0]&&t<r[1];
+function caption(t){
+  const c=$('cap');let cur=null;for(const x of CAPS)if(t>=x[0]&&t<x[1])cur=x;
+  if(!cur){c.innerHTML='';return}
+  const m=cur[2].match(/^(.*?)\{(.+)\}(.*)$/);
+  c.innerHTML=m?`<div class="ce">${(m[1]+m[2]+m[3]).trim()}</div>`:`<div class="cw">${cur[2]}</div>`;
+  const k=p(t,cur[0],.2);c.style.opacity=eo(k);c.style.transform=`translateY(${(1-eo(k))*12}px)`;
+  c.style.top=(inn(t,CTA)?1570:inn(t,MCP)?1480:1440)+'px';
+}
+const TYPE='> edit my reel in Instagram Edits';
+window.frame=t=>{
+  if(PASS==='P'){$('st').style.display='none';return}
+  const LBR=inn(t,CARD)?CARD:inn(t,CTA)?CTA:null;$('lb').style.display=LBR?'block':'none';if(LBR){pop($('lb'),t,LBR[0]+.25,10);if(t>LBR[1]-.2)$('lb').style.opacity=(LBR[1]-t)/.2}
+  $('mcp').style.display=inn(t,MCP)?'block':'none';
+  if(inn(t,MCP)){const a=MCP[0];pop($('m1'),t,a+.25);pop($('m2'),t,a+.5,0,.3);pop($('m3'),t,a+.7);
+    const n=Math.floor(cl((t-a-1.0)/1.3)*TYPE.length);let h=TYPE.slice(0,n);
+    if(t>a+2.6)h+='<br><span class="ok">✓ Rough cut ready in Edits</span>';$('tt').innerHTML=h;
+    const f=cl((MCP[1]-t)/.12);$('mcp').style.opacity=f}
+  $('cta').style.display=inn(t,CTA)?'block':'none';
+  if(inn(t,CTA)){const a=CTA[0],sw=12.84;
+    if(t<sw){$('c1t').textContent='Comment';$('c2t').textContent='EDITS';$('c2t').style.fontSize='110px';pop($('c1'),t,a+.2);pop($('c2'),t,a+.35)}
+    else{$('c1t').textContent='Want the workflow';$('c2t').textContent='TUTORIAL?';$('c2t').style.fontSize='92px';pop($('c1'),t,sw);pop($('c2'),t,sw+.12)}
+    $('cta').style.opacity=cl((CTA[1]-t)/.12)}
+  caption(t);
+};
+</script></body></html>
