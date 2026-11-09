@@ -125,7 +125,7 @@ window.frame=t=>{
       document.querySelectorAll('.cbf').forEach((e,i)=>{e.style.width=(+e.dataset.w*eo(p(t,13.1+i*.12,.6)))+'%'});
       const ex=t>=14.1;document.querySelectorAll('.cb').forEach((e,i)=>{e.style.outline=(ex&&(i===1||i===3))?'4px solid #FFD84D':'none';e.style.outlineOffset='14px';e.style.borderRadius='16px'})}
     const w2=t>=24.72&&t<33.11;$('w2').style.display=w2?'block':'none';
-    if(w2){pop($('w2h'),t,24.8);[27.85,28.95,29.9].forEach((a,i)=>sx(document.querySelectorAll('.s2')[i],t,a-0.1,500));pop($('w2w'),t,30.4,40,.45);
+    if(w2){pop($('w2h'),t,24.8);[25.1,25.6,26.1].forEach((a,i)=>sx(document.querySelectorAll('.s2')[i],t,a,500));pop($('w2w'),t,30.4,40,.45);
       let h=ASK.slice(0,Math.floor(cl((t-30.9)/1.1)*ASK.length));if(t>32.3)h+='<br><span style="color:#FFD84D">✓ Here’s your spending by category…</span>';$('w2t').innerHTML=h}
     caption(t);
   }

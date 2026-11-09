@@ -1,4 +1,4 @@
-import numpy as np, cv2
+import numpy as np, cv2, os
 _V={}
 def vignette(h,w,fx=0.54,fy=0.42,strength=0.30):
     k=(h,w,fx,fy,strength)
@@ -7,7 +7,8 @@ def vignette(h,w,fx=0.54,fy=0.42,strength=0.30):
         r=np.sqrt(dx*dx+dy*dy); v=1-strength*np.clip((r-0.35)/0.75,0,1)**1.6
         _V[k]=v[:,:,None].astype(np.float32)
     return _V[k]
-def grade(img, amt=1.0, vig=True):
+def grade(img, amt=1.0, vig=True, warm=None):
+    warm=float(os.environ.get('REEL_WARM','0')) if warm is None else warm
     x=img.astype(np.float32)/255.0  # BGR
     b,g,r=x[:,:,0],x[:,:,1],x[:,:,2]
     lum=0.114*b+0.587*g+0.299*r
@@ -19,6 +20,8 @@ def grade(img, amt=1.0, vig=True):
     sh=np.clip(1-lum*1.6,0,1)**2; hi=np.clip((lum-0.45)/0.55,0,1)**1.5
     tone=np.concatenate([0.045*sh-0.035*hi, 0.012*sh+0.006*hi, -0.025*sh+0.045*hi],axis=2)*amt  # B,G,R
     x=x+tone
+    if warm:  # gentle warm shift: more red/yellow, less blue (B,G,R)
+        x=x+np.array([-0.035,0.006,0.03],np.float32)*warm
     # saturation / vibrance
     l2=(0.114*x[:,:,0]+0.587*x[:,:,1]+0.299*x[:,:,2])[:,:,None]
     sat=np.abs(x-l2).max(axis=2,keepdims=True)
