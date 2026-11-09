@@ -71,6 +71,7 @@ html,body{margin:0;background:transparent}
     <div id="w2t" style="padding:26px 34px;font:700 36px/1.5 IN;min-height:120px"></div>
   </div>
 </div>
+<div class="a" id="rc" style="left:0;right:0;top:215px;text-align:center;display:none"><span class="pill" id="rct" style="font-size:32px;box-shadow:0 10px 30px rgba(0,0,0,.5)"></span></div>
 <div id="cap"></div>
 </div>
 <script>
@@ -117,16 +118,18 @@ window.frame=t=>{
       $('p5a').textContent=hd?'XXXX XXXX 7890':'5012 3456 7890';$('p5n').textContent=t>=36.9?'██████████':'Rahul Menon';$('p5p').textContent=t>=37.3?'█████ █████':'98470 12345'}
   } else {
     $('panel').style.display='none';
-    const w1=t>=8.80&&t<16.17;$('w1').style.display=w1?'block':'none';
+    const w1=t>=8.80&&t<16.17&&!(t>=10.70&&t<12.90);$('w1').style.display=w1?'block':'none';
     if(w1){const bars=t>=12.9;pop($('w1h'),t,8.85);
       $('w1p').textContent=bars?'BY CATEGORY':'BANK STATEMENT';$('w1t').innerHTML=bars?'Where your<br>money goes':'Where did my<br>salary go?';
       document.querySelectorAll('.tx').forEach((e,i)=>{e.style.display=bars?'none':'flex';pop(e,t,9.2+i*.22,30,.35)});
       document.querySelectorAll('.cb').forEach((e,i)=>{e.style.display=bars?'block':'none';pop(e,t,12.95+i*.12,20,.3)});
       document.querySelectorAll('.cbf').forEach((e,i)=>{e.style.width=(+e.dataset.w*eo(p(t,13.1+i*.12,.6)))+'%'});
       const ex=t>=14.1;document.querySelectorAll('.cb').forEach((e,i)=>{e.style.outline=(ex&&(i===1||i===3))?'4px solid #FFD84D':'none';e.style.outlineOffset='14px';e.style.borderRadius='16px'})}
-    const w2=t>=24.72&&t<33.11;$('w2').style.display=w2?'block':'none';
+    const w2=t>=24.72&&t<25.20;$('w2').style.display=w2?'block':'none';
     if(w2){pop($('w2h'),t,24.8);[25.1,25.6,26.1].forEach((a,i)=>sx(document.querySelectorAll('.s2')[i],t,a,500));pop($('w2w'),t,30.4,40,.45);
       let h=ASK.slice(0,Math.floor(cl((t-30.9)/1.1)*ASK.length));if(t>32.3)h+='<br><span style="color:#FFD84D">✓ Here’s your spending by category…</span>';$('w2t').innerHTML=h}
+    const RC=[[10.70,12.90,'YOUR BREAKDOWN · DETAILS BLURRED'],[25.20,28.90,'STEP 1 · MAKE A PROJECT'],[28.90,31.40,'STEP 2 · UPLOAD + PROMPT'],[31.40,33.11,'STEP 3 · CHATGPT DOES THE REST']];
+    let rc=null;for(const r of RC)if(t>=r[0]&&t<r[1])rc=r;$('rc').style.display=rc?'block':'none';if(rc){$('rct').textContent=rc[2];pop($('rc'),t,rc[0],20,.3)}
     caption(t);
   }
 };
