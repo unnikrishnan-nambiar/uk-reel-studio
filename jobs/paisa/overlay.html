@@ -1,0 +1,133 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+@font-face{font-family:IN;src:url(../../templates/fonts/inter-latin-600-normal.woff2);font-weight:600}
+@font-face{font-family:IN;src:url(../../templates/fonts/inter-latin-700-normal.woff2);font-weight:700}
+@font-face{font-family:IN;src:url(../../templates/fonts/inter-latin-800-normal.woff2);font-weight:800}
+html,body{margin:0;background:transparent}
+#st{position:relative;width:1080px;height:1920px;overflow:hidden;font-family:IN;color:#F4F1EA;-webkit-font-smoothing:antialiased}
+.a{position:absolute}
+.paper{position:absolute;left:0;top:0;width:1080px;overflow:hidden;background:radial-gradient(90% 70% at 50% 40%,#1b1f29 0%,#12141a 65%,#0b0c10 100%)}
+.full{position:absolute;inset:0;background:radial-gradient(90% 60% at 50% 35%,#1b1f29 0%,#111318 60%,#0a0b0e 100%)}
+.pill{display:inline-block;background:#FFD84D;color:#0d0d0d;font:800 28px IN;letter-spacing:.14em;padding:12px 26px;border-radius:999px}
+.ttl{font:800 60px/1.05 IN;letter-spacing:-.035em;color:#F4F1EA}
+.row{display:flex;align-items:center;gap:24px;background:#161A22;border-radius:26px;padding:20px 28px;box-shadow:0 0 0 2px #2A2F3A,0 20px 40px rgba(0,0,0,.4);box-sizing:border-box}
+.num{flex:none;width:62px;height:62px;border-radius:50%;background:#FFD84D;color:#0d0d0d;font:800 32px/62px IN;text-align:center}
+.big{font:800 40px IN;letter-spacing:-.02em}
+.sub{font:700 28px IN;color:#9aa0ab;margin-top:4px}
+.amt{margin-left:auto;font:800 36px IN;color:#FFD84D}
+.bar{height:44px;border-radius:12px;background:#FFD84D}
+.win{border-radius:24px;overflow:hidden;background:#161A22;box-shadow:0 0 0 2px #2A2F3A,0 34px 70px rgba(0,0,0,.55)}
+.tb{height:66px;display:flex;align-items:center;gap:12px;padding:0 24px;background:#1f2430;font:700 28px IN;color:#cfd3da}
+.dot{width:16px;height:16px;border-radius:50%}
+.tag{font:700 22px IN;letter-spacing:.16em;color:#6f7682}
+#cap{position:absolute;left:0;right:0;text-align:center}
+.cw{display:inline-block;background:#0d0d0d;color:#FFF06A;font:800 56px/1.1 IN;padding:10px 26px 14px;border-radius:20px}
+.ce{display:inline-block;background:#FFD84D;color:#0d0d0d;font:800 76px/1.04 IN;padding:10px 30px 16px;border-radius:24px;text-transform:uppercase;letter-spacing:-.02em}
+</style></head><body><div id="st">
+
+<!-- ===== PANEL (pass P) ===== -->
+<div id="panel" class="paper" style="height:1000px;display:none">
+  <div id="p1" class="a" style="inset:0">
+    <div class="a" id="p1h" style="left:0;right:0;top:200px;text-align:center"><span class="pill" id="p1d">DAY 1 · SALARY</span></div>
+    <div class="a" id="p1a" style="left:0;right:0;top:300px;text-align:center;font:800 170px IN;letter-spacing:-.05em">₹40,000</div>
+    <div class="a" id="p1b" style="left:140px;top:520px;width:800px;height:30px;border-radius:15px;background:#2A2F3A"><div id="p1f" style="height:100%;border-radius:15px;background:#FFD84D;width:100%"></div></div>
+  </div>
+  <div id="p2" class="a" style="inset:0">
+    <div class="a" id="p2h" style="left:90px;top:190px"><span class="pill">FINANCE AGENT</span><span class="ttl" style="font-size:50px;margin-left:20px;vertical-align:middle">inside ChatGPT</span></div>
+    <div id="p2l"></div>
+  </div>
+  <div id="p3" class="a" style="inset:0">
+    <div class="a" id="p3h" style="left:90px;top:190px"><span class="pill">SUBSCRIPTIONS FOUND</span></div>
+    <div id="p3l"></div>
+  </div>
+  <div id="p4" class="a" style="inset:0">
+    <div class="a" id="p4h" style="left:90px;top:190px"><span class="pill">YOUR PLAN</span></div>
+    <div id="p4l"></div>
+  </div>
+  <div id="p5" class="a" style="inset:0">
+    <div class="a" id="p5h" style="left:90px;top:190px"><span class="pill">BEFORE YOU UPLOAD</span></div>
+    <div class="a win" id="p5w" style="left:90px;top:300px;width:900px">
+      <div class="tb"><span class="dot" style="background:#ff5f57"></span><span class="dot" style="background:#febc2e"></span><span class="dot" style="background:#28c840"></span><span style="margin-left:14px">bank-statement.pdf</span></div>
+      <div style="padding:26px 34px;font:700 36px/1.7 IN">
+        <div>Name: <span id="p5n">Rahul Menon</span></div>
+        <div>A/c No: <span id="p5a">5012 3456 7890</span></div>
+        <div style="color:#9aa0ab">Phone: <span id="p5p">98470 12345</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== TOP (pass T): full cards ===== -->
+<div id="w1" class="full" style="display:none">
+  <div class="a" id="w1h" style="left:90px;top:250px"><span class="pill" id="w1p">BANK STATEMENT</span><div class="ttl" id="w1t" style="margin-top:24px">Where did my<br>salary go?</div></div>
+  <div id="w1rows"></div>
+  <div id="w1bars"></div>
+  <div class="a tag" style="left:90px;top:1500px">SAMPLE DATA</div>
+</div>
+<div id="w2" class="full" style="display:none">
+  <div class="a" id="w2h" style="left:90px;top:250px"><span class="pill">3 STEPS</span><div class="ttl" style="margin-top:24px">Your finance agent<br>in ChatGPT</div></div>
+  <div id="w2l"></div>
+  <div class="a win" id="w2w" style="left:90px;top:1110px;width:900px">
+    <div class="tb"><span class="dot" style="background:#ff5f57"></span><span class="dot" style="background:#febc2e"></span><span class="dot" style="background:#28c840"></span><span style="margin-left:14px">ChatGPT · Project: My Money</span></div>
+    <div id="w2t" style="padding:26px 34px;font:700 36px/1.5 IN;min-height:120px"></div>
+  </div>
+</div>
+<div id="cap"></div>
+</div>
+<script>
+const Q=new URLSearchParams(location.search),PASS=Q.get('pass')||'T';
+const $=id=>document.getElementById(id);const cl=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
+const eo=x=>1-Math.pow(1-cl(x),3);const back=x=>{x=cl(x);const c=1.4;return 1+(c+1)*Math.pow(x-1,3)+c*Math.pow(x-1,2)};
+const p=(t,a,d=.45)=>cl((t-a)/d);
+function pop(el,t,a,dy=40,d=.45){const k=p(t,a,d);el.style.opacity=eo(k);el.style.transform=`translateY(${(1-eo(k))*dy}px)`}
+function sx(el,t,a,dx=300,d=.5){const k=p(t,a,d);el.style.opacity=eo(k);el.style.transform=`translateX(${(1-eo(k))*dx}px)`}
+const row=(n,b,s,amt,x,y,w,cls)=>`<div class="a row ${cls}" style="left:${x}px;top:${y}px;width:${w}px">${n?`<div class="num">${n}</div>`:''}<div><div class="big">${b}</div>${s?`<div class="sub">${s}</div>`:''}</div>${amt?`<div class="amt">${amt}</div>`:''}</div>`;
+$('p2l').innerHTML=[['50 · 30 · 20','needs · wants · savings'],['Emergency fund','6 months of expenses'],['Track every rupee','by category']].map((r,i)=>row(i+1,r[0],r[1],'',90,310+i*150,900,'r2')).join('');
+$('p3l').innerHTML=[['OTT app','₹649'],['Music app','₹119'],['Cloud storage','₹130']].map((r,i)=>row('',r[0],'every month',r[1],90,300+i*135,900,'r3')).join('')+
+ `<div class="a" id="p3t" style="left:0;right:0;top:720px;text-align:center"><span class="pill" style="font-size:34px">₹898 / MONTH GONE</span></div>`;
+$('p4l').innerHTML=[['Save first','20% of salary, on salary day'],['Emergency fund','6 months of expenses'],['Investing basics','start small, learn first']].map((r,i)=>row(i+1,r[0],r[1],'',90,310+i*150,900,'r4')).join('');
+const TX=[['Food delivery','₹420'],['UPI · shop','₹1,250'],['EMI','₹8,500'],['OTT app','₹649'],['Cab','₹310'],['Online shopping','₹2,999']];
+$('w1rows').innerHTML=TX.map((r,i)=>row('',r[0],'',r[1],90,560+i*125,900,'tx')).join('');
+const CAT=[['Food',28],['Shopping',22],['EMI',21],['Subscriptions',9],['Travel',8]];
+$('w1bars').innerHTML=CAT.map((c,i)=>`<div class="a cb" style="left:90px;top:${590+i*165}px;width:900px"><div style="display:flex;justify-content:space-between;font:800 38px IN"><span>${c[0]}</span><span style="color:#FFD84D">${c[1]}%</span></div><div style="margin-top:12px;height:44px;border-radius:12px;background:#2A2F3A"><div class="bar cbf" data-w="${c[1]/28*100}" style="width:0%"></div></div></div>`).join('');
+$('w2l').innerHTML=[['Make a Project','in ChatGPT'],['Add the instructions','from my guide'],['Upload your statement','and ask']].map((r,i)=>row(i+1,r[0],r[1],'',90,560+i*165,900,'s2')).join('');
+const ASK='Where did my salary go this month?';
+const LAY=[[0,'f'],[1.0,'l'],[8.80,'w'],[16.17,'l'],[24.72,'w'],[33.11,'l'],[38.65,'f']];
+function lay(t){let l='f';for(const [a,x] of LAY)if(t>=a)l=x;return l}
+let CAPS=[];window.setCaps=c=>{CAPS=c};
+function caption(t){
+  const L=lay(t),c=$('cap');let cur=null;for(const x of CAPS)if(t>=x[0]&&t<x[1])cur=x;
+  if(!cur){c.innerHTML='';return}
+  const m=cur[2].match(/^(.*?)\{(.+)\}(.*)$/);
+  c.innerHTML=m?`<div class="ce">${(m[1]+m[2]+m[3]).trim()}</div>`:`<div class="cw">${cur[2]}</div>`;
+  const k=p(t,cur[0],.2);c.style.opacity=eo(k);c.style.transform=`translateY(${(1-eo(k))*12}px)`;
+  const H=c.getBoundingClientRect().height;
+  c.style.top=(L==='f'?1440:L==='l'?Math.min(790,870-H):1620)+'px';
+}
+window.frame=t=>{
+  if(PASS==='P'){
+    $('w1').style.display=$('w2').style.display='none';$('cap').innerHTML='';
+    const on=(t>=0.9&&t<8.9)||(t>=16.1&&t<24.8)||(t>=33.0&&t<39.2);$('panel').style.display=on?'block':'none';if(!on)return;
+    const s=t<3.26?1:t<12?2:t<18.7?3:t<30?4:5;['p1','p2','p3','p4','p5'].forEach((id,i)=>$(id).style.display=(i+1===s)?'block':'none');
+    if(s===1){pop($('p1h'),t,1.1);pop($('p1a'),t,1.25);pop($('p1b'),t,1.35,20);const k=eo(p(t,1.7,1.4));
+      $('p1a').textContent='₹'+Math.round(40000*(1-k)).toLocaleString('en-IN');$('p1f').style.width=(100*(1-k))+'%';$('p1d').textContent=k>.5?'DAY 10':'DAY 1 · SALARY'}
+    if(s===2){pop($('p2h'),t,3.3);document.querySelectorAll('.r2').forEach((e,i)=>sx(e,t,4.6+i*.5,500))}
+    if(s===3){pop($('p3h'),t,16.25);document.querySelectorAll('.r3').forEach((e,i)=>sx(e,t,16.6+i*.35,500));pop($('p3t'),t,17.8,20,.35)}
+    if(s===4){pop($('p4h'),t,18.7);[18.76,21.02,22.26].forEach((a,i)=>sx(document.querySelectorAll('.r4')[i],t,a,500))}
+    if(s===5){pop($('p5h'),t,33.2);pop($('p5w'),t,33.4,40,.5);const hd=t>=36.3;
+      $('p5a').textContent=hd?'XXXX XXXX 7890':'5012 3456 7890';$('p5n').textContent=t>=36.9?'██████████':'Rahul Menon';$('p5p').textContent=t>=37.3?'█████ █████':'98470 12345'}
+  } else {
+    $('panel').style.display='none';
+    const w1=t>=8.80&&t<16.17;$('w1').style.display=w1?'block':'none';
+    if(w1){const bars=t>=12.9;pop($('w1h'),t,8.85);
+      $('w1p').textContent=bars?'BY CATEGORY':'BANK STATEMENT';$('w1t').innerHTML=bars?'Where your<br>money goes':'Where did my<br>salary go?';
+      document.querySelectorAll('.tx').forEach((e,i)=>{e.style.display=bars?'none':'flex';pop(e,t,9.2+i*.22,30,.35)});
+      document.querySelectorAll('.cb').forEach((e,i)=>{e.style.display=bars?'block':'none';pop(e,t,12.95+i*.12,20,.3)});
+      document.querySelectorAll('.cbf').forEach((e,i)=>{e.style.width=(+e.dataset.w*eo(p(t,13.1+i*.12,.6)))+'%'});
+      const ex=t>=14.1;document.querySelectorAll('.cb').forEach((e,i)=>{e.style.outline=(ex&&(i===1||i===3))?'4px solid #FFD84D':'none';e.style.outlineOffset='14px';e.style.borderRadius='16px'})}
+    const w2=t>=24.72&&t<33.11;$('w2').style.display=w2?'block':'none';
+    if(w2){pop($('w2h'),t,24.8);[27.85,28.95,29.9].forEach((a,i)=>sx(document.querySelectorAll('.s2')[i],t,a-0.1,500));pop($('w2w'),t,30.4,40,.45);
+      let h=ASK.slice(0,Math.floor(cl((t-30.9)/1.1)*ASK.length));if(t>32.3)h+='<br><span style="color:#FFD84D">✓ Here’s your spending by category…</span>';$('w2t').innerHTML=h}
+    caption(t);
+  }
+};
+</script></body></html>
