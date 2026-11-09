@@ -153,7 +153,7 @@ def overlay(j, mode=None, k=None, m=None, only=None):
 
 # ---------------------------------------------------------------- composite
 def comp(j, test_times=None):
-    import cv2, grade
+    import cv2, grade, hdr
     D = j['_dir']; os.chdir(D); _, dur = seg_map(j); N = int(dur * FPS)
     TR = j['tr']; KS, YO, PB = j.get('ks', 0.72), j['yo'], j.get('pb', 1000)
     def z_at(t):
@@ -168,9 +168,10 @@ def comp(j, test_times=None):
         if not os.path.exists(p): return None
         o = cv2.imread(p, cv2.IMREAD_UNCHANGED)
         if o is None: return None
-        if o.shape[2] < 4: return o.astype(np.float32), np.ones(o.shape[:2] + (1,), np.float32)
+        if o.shape[2] < 4: return (hdr.sdr2hlg(o) if hdr.ON else o.astype(np.float32)), np.ones(o.shape[:2] + (1,), np.float32)
         if o[:, :, 3].max() == 0: return None
-        return o[:, :, :3].astype(np.float32), o[:, :, 3:4].astype(np.float32) / 255
+        c = o[:, :, :3]
+        return (hdr.sdr2hlg(c) if hdr.ON else c.astype(np.float32)), o[:, :, 3:4].astype(np.float32) / 255
     def over(base, r, shift=0):
         if r is None: return base
         c, a = r
@@ -185,6 +186,7 @@ def comp(j, test_times=None):
             o = cv2.imread(f'ovP/{n:05d}.png', -1)
             if o is not None and o.shape[2] == 4 and o[990, 540, 3] > 250: pf = o; break
     PAPER = np.repeat((pf[990, :, :3] if pf is not None else np.full((W, 3), 238, np.uint8)).astype(np.float32)[None], H, 0)
+    if hdr.ON: PAPER = hdr.sdr2hlg(PAPER)
     frames = [int(round(t * FPS)) for t in test_times] if test_times else list(range(N))
     want = set(frames); tiles = []
     dec = subprocess.Popen(['ffmpeg', '-v', 'error', '-i', 'cut60.mp4', '-f', 'rawvideo', '-pix_fmt', 'bgr24', '-'], stdout=subprocess.PIPE)
@@ -267,6 +269,11 @@ def hook(j):
         for i in range(N):
             pg.evaluate(f'frame({i / 60})'); pg.screenshot(path=f'{HD}/ov/{i:05d}.png', omit_background=True)
         br.close()
+    import hdr
+    if hdr.ON:
+        for i in range(N):
+            o = cv2.imread(f'{HD}/ov/{i:05d}.png', -1); o[:, :, :3] = np.clip(hdr.sdr2hlg(o[:, :, :3]) + 0.5, 0, 255).astype(np.uint8)
+            cv2.imwrite(f'{HD}/ov/{i:05d}.png', o)
     sh(['ffmpeg', '-v', 'error', '-y', '-i', HD + '/g.mp4', '-framerate', '60', '-i', HD + '/ov/%05d.png', '-filter_complex',
         f"[0:v]scale='trunc(1080*(1+0.04*t/{dur:.3f})/2)*2':'trunc(1920*(1+0.04*t/{dur:.3f})/2)*2':eval=frame,crop=1080:1920,setsar=1[z];[z][1:v]overlay=format=auto,format=yuv420p[v]",
         '-map', '[v]', '-c:v', 'libx264', '-preset', 'medium', '-crf', '15', '-r', '60', '-an', HD + '/v.mp4'])
@@ -291,10 +298,20 @@ def hook_preview(j):
 def join(j):
     D = j['_dir']; name = j['name']; os.makedirs(f'{ROOT}/output', exist_ok=True)
     out = f'{ROOT}/output/{name}.mp4'; G = 'eq=brightness=0.01:saturation=1.03'
-    sh(['ffmpeg', '-v', 'error', '-y', '-i', f'{D}/hook/hook.mp4', '-i', f'{D}/body.mp4', '-filter_complex',
-        f'[0:v]fps=60,setsar=1[a];[1:v]fps=60,setsar=1[b];[a][0:a][b][1:a]concat=n=2:v=1:a=1[v][au];[v]{G},format=yuv420p[vo];[au]loudnorm=I=-14:TP=-1.5:LRA=9[ao]',
-        '-map', '[vo]', '-map', '[ao]', '-c:v', 'libx264', '-preset', 'medium', '-crf', '17', '-r', '60', '-c:a', 'aac', '-b:a', '256k', '-ar', '48000', '-movflags', '+faststart', out])
-    sh(['ffmpeg', '-v', 'error', '-y', '-i', out, '-c:v', 'libx264', '-preset', 'medium', '-crf', '19', '-maxrate', '6M', '-bufsize', '12M', '-r', '60', '-c:a', 'copy', '-movflags', '+faststart', f'{ROOT}/output/{name}-share.mp4'])
+    import hdr
+    if hdr.ON:  # intermediates are BT.601-matrix RGB carrying HLG/BT.2020 code values -> 10-bit HLG HEVC
+        HV = ['-c:v', 'libx265', '-preset', 'medium', '-pix_fmt', 'yuv420p10le', '-tag:v', 'hvc1', '-color_primaries', 'bt2020', '-color_trc', 'arib-std-b67', '-colorspace', 'bt2020nc', '-color_range', 'tv']
+        XP = 'colorprim=bt2020:transfer=arib-std-b67:colormatrix=bt2020nc:range=limited:hdr10=0'
+        CV = 'scale=in_color_matrix=bt601:in_range=tv,format=gbrp16le,scale=out_color_matrix=bt2020:out_range=tv,format=yuv420p10le'
+        sh(['ffmpeg', '-v', 'error', '-y', '-i', f'{D}/hook/hook.mp4', '-i', f'{D}/body.mp4', '-filter_complex',
+            f'[0:v]fps=60,setsar=1[a];[1:v]fps=60,setsar=1[b];[a][0:a][b][1:a]concat=n=2:v=1:a=1[v][au];[v]{CV}[vo];[au]loudnorm=I=-14:TP=-1.5:LRA=9[ao]',
+            '-map', '[vo]', '-map', '[ao]', *HV, '-crf', '16', '-x265-params', XP + ':log-level=error', '-r', '60', '-c:a', 'aac', '-b:a', '256k', '-ar', '48000', '-movflags', '+faststart', out])
+        sh(['ffmpeg', '-v', 'error', '-y', '-i', out, *HV, '-crf', '20', '-x265-params', XP + ':vbv-maxrate=8000:vbv-bufsize=16000:log-level=error', '-r', '60', '-c:a', 'copy', '-movflags', '+faststart', f'{ROOT}/output/{name}-share.mp4'])
+    else:
+        sh(['ffmpeg', '-v', 'error', '-y', '-i', f'{D}/hook/hook.mp4', '-i', f'{D}/body.mp4', '-filter_complex',
+            f'[0:v]fps=60,setsar=1[a];[1:v]fps=60,setsar=1[b];[a][0:a][b][1:a]concat=n=2:v=1:a=1[v][au];[v]{G},format=yuv420p[vo];[au]loudnorm=I=-14:TP=-1.5:LRA=9[ao]',
+            '-map', '[vo]', '-map', '[ao]', '-c:v', 'libx264', '-preset', 'medium', '-crf', '17', '-r', '60', '-c:a', 'aac', '-b:a', '256k', '-ar', '48000', '-movflags', '+faststart', out])
+        sh(['ffmpeg', '-v', 'error', '-y', '-i', out, '-c:v', 'libx264', '-preset', 'medium', '-crf', '19', '-maxrate', '6M', '-bufsize', '12M', '-r', '60', '-c:a', 'copy', '-movflags', '+faststart', f'{ROOT}/output/{name}-share.mp4'])
     sh(['ffmpeg', '-v', 'error', '-y', '-i', out, '-vf', 'fps=1,scale=180:320,tile=10x5', '-frames:v', '1', f'{ROOT}/output/{name}-sheet.jpg'])
     print('DONE', out)
 
