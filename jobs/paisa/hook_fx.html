@@ -1,0 +1,70 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+@font-face{font-family:IN;src:url(../../templates/fonts/inter-latin-700-normal.woff2);font-weight:700}
+@font-face{font-family:IN;src:url(../../templates/fonts/inter-latin-800-normal.woff2);font-weight:800}
+html,body{margin:0;background:transparent}
+#st{position:relative;width:1080px;height:1920px;overflow:hidden;font-family:IN;-webkit-font-smoothing:antialiased}
+.a{position:absolute}
+/* one story strip under the hook box, inside the IG safe zone (x 70-940) */
+#strip{left:70px;top:495px;width:870px;height:250px;border-radius:30px;background:rgba(13,13,13,.88);box-shadow:0 18px 40px rgba(0,0,0,.35)}
+#cal{left:92px;top:520px;width:128px;border-radius:18px;overflow:hidden;background:#fff}
+#cal .top{background:#FFD84D;color:#0d0d0d;font:800 22px/40px IN;text-align:center;letter-spacing:.12em}
+#cal .day{color:#0d0d0d;font:800 84px/104px IN;text-align:center;letter-spacing:-.04em}
+#bal{left:700px;top:520px;width:220px}
+#bal .l{color:#9aa0ab;font:700 20px IN;letter-spacing:.12em}
+#bal .v{color:#FFD84D;font:800 54px/66px IN;letter-spacing:-.03em}
+#bar{height:12px;border-radius:6px;background:#2A2F3A;margin-top:6px}#barf{height:100%;border-radius:6px;background:#FFD84D}
+.qr{width:76px}
+.qr .board{width:76px;height:76px;border-radius:10px;background:#fff;padding:6px;box-sizing:border-box}
+.qr .code{width:64px;height:64px;display:grid;grid-template-columns:repeat(7,1fr);gap:1px}
+.qr .code i{background:#0d0d0d}.qr .code i.o{background:#fff}
+.qr .lab{margin-top:6px;text-align:center;font:800 13px IN;color:#0d0d0d;background:#FFD84D;border-radius:999px;padding:3px 0}
+.tag{font:800 26px IN;color:#0d0d0d;background:#FFD84D;border-radius:12px;padding:4px 10px;white-space:nowrap}
+.tag small{font:700 15px IN;color:#3a3a3a;margin-left:6px}
+</style></head><body><div id="st">
+<div class="a" id="strip"></div>
+<div class="a" id="cal"><div class="top">NOV</div><div class="day" id="day">01</div></div>
+<div class="a" id="bal"><div class="l" id="bl">BANK BALANCE</div><div class="v" id="bv">₹40,000</div><div id="bar"><div id="barf" style="width:100%"></div></div></div>
+<div id="shops"></div>
+<svg class="a" id="man" width="90" height="160" viewBox="0 0 170 300" style="top:565px;overflow:visible">
+  <g stroke="#FFD84D" stroke-width="22" stroke-linecap="round" fill="none"><line id="l1" x1="85" y1="190" x2="70" y2="285"/><line id="l2" x1="85" y1="190" x2="100" y2="285"/></g>
+  <rect x="45" y="78" width="80" height="122" rx="34" fill="#FFD84D"/>
+  <circle cx="85" cy="44" r="36" fill="#FFD84D"/>
+  <g id="arm"><line x1="112" y1="104" x2="150" y2="132" stroke="#FFD84D" stroke-width="20" stroke-linecap="round"/>
+    <rect x="140" y="102" width="28" height="46" rx="6" fill="#fff" stroke="#FFD84D" stroke-width="4"/></g>
+</svg>
+</div>
+<script>
+const $=id=>document.getElementById(id);const cl=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));const eo=x=>1-Math.pow(1-cl(x),3);
+const Q=[1,1,1,0,1,1,1, 1,0,1,1,1,0,1, 1,1,1,0,1,1,1, 0,1,0,1,0,1,0, 1,1,1,0,1,0,1, 1,0,1,1,0,1,1, 1,1,1,0,1,1,0];
+const qr=()=>'<div class="code">'+Q.map(v=>`<i class="${v?'':'o'}"></i>`).join('')+'</div>';
+// he walks left -> right inside the strip, paying by phone (GPay) at each QR
+const S=[{x:255,lab:'TEA',amt:'₹120'},{x:405,lab:'SHOPPING',amt:'₹12,800'},{x:555,lab:'EMI',amt:'₹26,660'}];
+const BAL=[40000,39880,27080,420];
+$('shops').innerHTML=S.map((s,i)=>`<div class="a qr" id="q${i}" style="left:${s.x+80}px;top:595px;opacity:0"><div class="board">${qr()}</div><div class="lab">${s.lab}</div></div><div class="a tag" id="pd${i}" style="left:${s.x-60}px;top:506px;opacity:0">−${s.amt}<small>GPay</small></div>`).join('');
+const T0=0.2, T1=5.0, STOP=0.55;
+function walk(t){
+  const xs=[120,...S.map(s=>s.x)], total=T1-T0, moveTime=total-STOP*S.length, dist=xs[xs.length-1]-xs[0], v=dist/moveTime;
+  let tt=t-T0; if(tt<0) return {x:xs[0],moving:false,stop:-1};
+  for(let k=0;k<xs.length-1;k++){const seg=(xs[k+1]-xs[k])/v;
+    if(tt<seg) return {x:xs[k]+v*tt,moving:true,stop:-1}; tt-=seg;
+    if(tt<STOP) return {x:xs[k+1],moving:false,stop:k}; tt-=STOP;}
+  return {x:xs[xs.length-1],moving:false,stop:S.length};
+}
+window.frame=t=>{
+  const w=walk(t), show=eo((t-0.02)/0.25);
+  ['strip','cal','bal','man'].forEach(id=>$(id).style.opacity=show);
+  // walker starts behind the calendar card and appears as he leaves it
+  $('man').style.left=w.x+'px';$('man').style.opacity=show*cl((w.x-150)/60);
+  const ph=w.moving?Math.sin(t*14)*24:0;$('l1').setAttribute('x2',85-ph);$('l2').setAttribute('x2',85+ph);
+  $('man').style.transform=`translateY(${w.moving?Math.abs(Math.sin(t*14))*-4:0}px)`;
+  $('arm').setAttribute('transform', w.stop>=0&&w.stop<S.length?'rotate(-28 112 104)':'');
+  let paid=0;
+  S.forEach((s,i)=>{$('q'+i).style.opacity=show;
+    if(w.stop>i||w.stop===S.length||w.stop===i) paid=Math.max(paid,i+1);
+    const p=$('pd'+i); p.style.opacity=w.stop===i?1:0;});
+  const b=BAL[paid]; $('bv').textContent='₹'+b.toLocaleString('en-IN'); $('barf').style.width=(b/400)+'%';
+  const prog=cl((t-T0)/(T1-T0)); $('day').textContent=String(1+Math.round(prog*9)).padStart(2,'0');
+  const low=t>=T1; $('bl').textContent=low?'LOW BALANCE':'BANK BALANCE'; $('bl').style.color=low?'#FFD84D':'#9aa0ab';
+  $('bv').style.transformOrigin='0 50%';$('bv').style.transform=low?`scale(${1+0.08*Math.max(0,Math.sin((t-T1)*12))})`:'';
+};
+</script></body></html>

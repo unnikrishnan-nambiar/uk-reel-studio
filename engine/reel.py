@@ -268,6 +268,13 @@ def hook(j):
         pg.goto(f'file://{ROOT}/templates/hook.html'); pg.evaluate('c=>setup(c)', c)
         for i in range(N):
             pg.evaluate(f'frame({i / 60})'); pg.screenshot(path=f'{HD}/ov/{i:05d}.png', omit_background=True)
+        if c.get('fx'):  # optional per-job animation layer, drawn UNDER the hook box
+            pg.goto(f"file://{D}/{c['fx']}")
+            for i in range(N):
+                pg.evaluate(f'frame({i / 60})'); fx = cv2.imdecode(np.frombuffer(pg.screenshot(omit_background=True), np.uint8), -1).astype(np.float32)
+                ov = cv2.imread(f'{HD}/ov/{i:05d}.png', -1).astype(np.float32); ao = ov[:, :, 3:] / 255; af = fx[:, :, 3:] / 255
+                aout = ao + af * (1 - ao); rgb = (ov[:, :, :3] * ao + fx[:, :, :3] * af * (1 - ao)) / np.maximum(aout, 1e-4)
+                cv2.imwrite(f'{HD}/ov/{i:05d}.png', np.dstack([rgb, aout * 255]).clip(0, 255).astype(np.uint8))
         br.close()
     import hdr
     if hdr.ON:
