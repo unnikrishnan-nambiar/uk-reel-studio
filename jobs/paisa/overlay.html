@@ -22,10 +22,13 @@ html,body{margin:0;background:transparent}
 #cap{position:absolute;left:0;right:0;text-align:center}
 .cw{display:inline-block;background:#0d0d0d;color:#FFF06A;font:800 56px/1.1 IN;padding:10px 26px 14px;border-radius:20px}
 .ce{display:inline-block;background:#FFD84D;color:#0d0d0d;font:800 76px/1.04 IN;padding:10px 30px 16px;border-radius:24px;text-transform:uppercase;letter-spacing:-.02em}
+.note{position:absolute;width:150px;height:76px;border-radius:10px;background:#FFD84D;box-shadow:inset 0 0 0 4px #0d0d0d,inset 0 0 0 9px #FFD84D,inset 0 0 0 11px #0d0d0d,0 12px 24px rgba(0,0,0,.45);color:#0d0d0d;font:800 44px/76px IN;text-align:center}
+.coin{position:absolute;width:74px;height:74px;border-radius:50%;background:#FFD84D;box-shadow:inset 0 0 0 5px #0d0d0d,inset 0 0 0 9px #FFD84D,inset 0 0 0 11px #0d0d0d,0 10px 20px rgba(0,0,0,.45);color:#0d0d0d;font:800 38px/74px IN;text-align:center}
 </style></head><body><div id="st">
 
 <!-- ===== PANEL (pass P) ===== -->
 <div id="panel" class="paper" style="height:1000px;display:none">
+  <div id="pm" class="a" style="inset:0;pointer-events:none"></div>
   <div id="p1" class="a" style="inset:0">
     <div class="a" id="p1h" style="left:0;right:0;top:200px;text-align:center"><span class="pill" id="p1d">DAY 1 · SALARY</span></div>
     <div class="a" id="p1a" style="left:0;right:0;top:300px;text-align:center;font:800 170px IN;letter-spacing:-.05em">₹40,000</div>
@@ -72,6 +75,7 @@ html,body{margin:0;background:transparent}
   </div>
 </div>
 <div class="a" id="rc" style="left:0;right:0;top:215px;text-align:center;display:none"><span class="pill" id="rct" style="font-size:32px;box-shadow:0 10px 30px rgba(0,0,0,.5)"></span></div>
+<div id="tm" class="a" style="inset:0"></div>
 <div id="cap"></div>
 </div>
 <script>
@@ -104,11 +108,37 @@ function caption(t){
   const H=c.getBoundingClientRect().height;
   c.style.top=(L==='f'?1440:L==='l'?Math.min(790,870-H):1620)+'px';
 }
+
+// ---- money animations (deterministic) ----
+const R=i=>{const x=Math.sin(i*127.1+311.7)*43758.5453;return x-Math.floor(x)};
+function mk(host,cls,n){const h=$(host);let out=[];for(let i=0;i<n;i++){const e=document.createElement('div');e.className=cls;e.textContent='₹';e.style.opacity=0;h.appendChild(e);out.push(e)}return out}
+const PN=mk("pm","note",12), PC=mk("pm","coin",12), TN=mk('tm','note',14);
+function hideAll(a){a.forEach(e=>e.style.opacity=0)}
+function fly(t){ // P1: notes fly up out of the draining balance bar
+  PN.forEach((e,i)=>{const a=1.7+i*.12,u=(t-a)/1.1;if(u<0||u>1){e.style.opacity=0;return}
+    const x=160+R(i)*760,y=540-u*(380+R(i+9)*120),r=(R(i+3)-.5)*70*u;e.style.left=x+'px';e.style.top=y+'px';
+    e.style.transform=`rotate(${r}deg) scale(${.8+.3*R(i+5)})`;e.style.opacity=Math.min(1,u*5)*(1-Math.pow(u,3))})}
+function leak(t,a0){ // P3: coins drip out of the leaking subscriptions
+  PC.forEach((e,i)=>{const a=a0+i*.17,u=(t-a)/.9;if(u<0||u>1){e.style.opacity=0;return}
+    const x=930+(R(i)-.5)*60,y=300+(i%3)*135+u*u*520;e.style.left=x+'px';e.style.top=y+'px';
+    e.style.transform=`rotate(${u*240}deg) scale(.8)`;e.style.opacity=(1-u)*Math.min(1,u*6)})}
+function save(t,a0){ // P4: coins drop and stack at the bottom right (saving)
+  PC.forEach((e,i)=>{const a=a0+i*.38,u=cl((t-a)/.45);if(t<a){e.style.opacity=0;return}
+    const tx=968+(i%2)*6,ty=935-i*16,y=120+(ty-120)*eo(u)+(u<1?0:0);e.style.left=tx+'px';e.style.top=y+'px';
+    e.style.transform=`scale(.8) rotateX(${u<1?0:62}deg)`;e.style.opacity=1})}
+function rain(t,a0,b0){ // T: notes rain gently at the CTA
+  TN.forEach((e,i)=>{const per=2.4,a=a0+(i%7)*.33+Math.floor(i/7)*1.2;const u=((t-a)/per);if(t<a||t>b0){e.style.opacity=0;return}
+    const v=u-Math.floor(u),side=i%2?1:0,x=side?820+R(i)*160:-40+R(i)*160,y=-120+v*2100,r=Math.sin((t+i)*2)*25;
+    e.style.left=x+'px';e.style.top=y+'px';e.style.transform=`rotate(${r}deg) scale(${.75+.25*R(i+2)})`;e.style.opacity=Math.min(1,(t-a0)*3)*.95})}
 window.frame=t=>{
   if(PASS==='P'){
     $('w1').style.display=$('w2').style.display='none';$('cap').innerHTML='';
     const on=(t>=0.9&&t<8.9)||(t>=16.1&&t<24.8)||(t>=33.0&&t<39.2);$('panel').style.display=on?'block':'none';if(!on)return;
     const s=t<3.26?1:t<12?2:t<18.7?3:t<30?4:5;['p1','p2','p3','p4','p5'].forEach((id,i)=>$(id).style.display=(i+1===s)?'block':'none');
+    hideAll(PN);hideAll(PC);
+    if(s===1)fly(t);
+    if(s===3)leak(t,16.9);
+    if(s===4)save(t,18.9);
     if(s===1){pop($('p1h'),t,1.1);pop($('p1a'),t,1.25);pop($('p1b'),t,1.35,20);const k=eo(p(t,1.7,1.4));
       $('p1a').textContent='₹'+Math.round(40000*(1-k)).toLocaleString('en-IN');$('p1f').style.width=(100*(1-k))+'%';$('p1d').textContent=k>.5?'DAY 10':'DAY 1 · SALARY'}
     if(s===2){pop($('p2h'),t,3.3);document.querySelectorAll('.r2').forEach((e,i)=>sx(e,t,4.6+i*.5,500))}
@@ -130,6 +160,7 @@ window.frame=t=>{
       let h=ASK.slice(0,Math.floor(cl((t-30.9)/1.1)*ASK.length));if(t>32.3)h+='<br><span style="color:#FFD84D">✓ Here’s your spending by category…</span>';$('w2t').innerHTML=h}
     const RC=[[10.70,12.90,'YOUR BREAKDOWN · DETAILS BLURRED'],[25.20,28.90,'STEP 1 · MAKE A PROJECT'],[28.90,31.40,'STEP 2 · UPLOAD + PROMPT'],[31.40,33.11,'STEP 3 · CHATGPT DOES THE REST']];
     let rc=null;for(const r of RC)if(t>=r[0]&&t<r[1])rc=r;$('rc').style.display=rc?'block':'none';if(rc){$('rct').textContent=rc[2];pop($('rc'),t,rc[0],20,.3)}
+    hideAll(TN);if(t>=38.75)rain(t,38.75,43.4);
     caption(t);
   }
 };
