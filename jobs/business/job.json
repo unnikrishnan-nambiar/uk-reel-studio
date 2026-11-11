@@ -1,0 +1,354 @@
+{
+ "name": "business",
+ "theme": "dark",
+ "_note": "hook/body_segs/caps = SOURCE times; tr/panel_ranges = BODY times. Body offsets: s1 5.14 s2 5.31 s3 5.35 s4 5.51 s5 5.85 s6 6.07 s7 6.16 s8 6.43",
+ "hook": {
+  "a": 0.55,
+  "b": 5.14,
+  "l1": "",
+  "l2": "",
+  "sub": "",
+  "style": "box",
+  "box_text": "Customers can't find your business. Only 1 reason why",
+  "caps": [
+   [
+    0.06,
+    "Customers"
+   ],
+   [
+    0.85,
+    "can't find"
+   ],
+   [
+    1.25,
+    "your business"
+   ],
+   [
+    2.15,
+    "Only 1 reason"
+   ],
+   [
+    3.43,
+    "you're not on ChatGPT"
+   ]
+  ],
+  "fx": "hook_fx.html"
+ },
+ "body_segs": [
+  [
+   5.14,
+   10.6
+  ],
+  [
+   10.77,
+   16.28
+  ],
+  [
+   16.32,
+   19.36
+  ],
+  [
+   19.52,
+   23.9
+  ],
+  [
+   24.24,
+   33.25
+  ],
+  [
+   33.47,
+   41.48
+  ],
+  [
+   41.57,
+   48.87
+  ],
+  [
+   49.14,
+   52.89
+  ]
+ ],
+ "tr": [
+  [
+   0.6,
+   1.05,
+   0,
+   1
+  ],
+  [
+   5.46,
+   5.47,
+   1,
+   0
+  ],
+  [
+   14.48,
+   14.93,
+   0,
+   1
+  ],
+  [
+   18.4,
+   18.41,
+   1,
+   0
+  ],
+  [
+   21.58,
+   21.59,
+   0,
+   1
+  ],
+  [
+   27.4,
+   27.85,
+   1,
+   0
+  ],
+  [
+   35.88,
+   36.33,
+   0,
+   1
+  ],
+  [
+   40.28,
+   40.73,
+   1,
+   0
+  ]
+ ],
+ "ks": 0.72,
+ "yo": 610,
+ "pb": 1000,
+ "grade": 0.3,
+ "panel_ranges": [
+  [
+   0.5,
+   5.55
+  ],
+  [
+   14.4,
+   18.5
+  ],
+  [
+   21.5,
+   27.95
+  ],
+  [
+   35.8,
+   40.85
+  ]
+ ],
+ "mask_rows": [
+  0,
+  1400
+ ],
+ "cards": [],
+ "caps": [
+  [
+   5.2,
+   "Earlier"
+  ],
+  [
+   5.92,
+   "for anything"
+  ],
+  [
+   6.86,
+   "people asked {GOOGLE}"
+  ],
+  [
+   8.0,
+   "but now"
+  ],
+  [
+   8.9,
+   "straight to"
+  ],
+  [
+   9.64,
+   "{CHATGPT}"
+  ],
+  [
+   10.92,
+   "For example"
+  ],
+  [
+   11.78,
+   "Malappuram's"
+  ],
+  [
+   12.32,
+   "best {MANDI} shop?"
+  ],
+  [
+   13.3,
+   "they ask"
+  ],
+  [
+   14.18,
+   "{CHATGPT}"
+  ],
+  [
+   16.44,
+   "so"
+  ],
+  [
+   16.6,
+   "{OPENAI}"
+  ],
+  [
+   17.32,
+   "brought"
+  ],
+  [
+   17.88,
+   "{BUSINESSES} in ChatGPT"
+  ],
+  [
+   19.62,
+   "just like"
+  ],
+  [
+   20.0,
+   "{GOOGLE BUSINESS}"
+  ],
+  [
+   21.02,
+   "your business"
+  ],
+  [
+   22.06,
+   "on ChatGPT"
+  ],
+  [
+   22.84,
+   "claim it {FREE}"
+  ],
+  [
+   24.36,
+   "open the {LINK}"
+  ],
+  [
+   25.3,
+   "verify by {PHONE}"
+  ],
+  [
+   25.86,
+   "or {EMAIL}"
+  ],
+  [
+   27.14,
+   "you get a"
+  ],
+  [
+   27.58,
+   "{DASHBOARD}"
+  ],
+  [
+   28.46,
+   "how many"
+  ],
+  [
+   29.31,
+   "{SAW} you"
+  ],
+  [
+   29.93,
+   "how many"
+  ],
+  [
+   30.35,
+   "clicked your {WEBSITE}"
+  ],
+  [
+   31.37,
+   "verify {ID}"
+  ],
+  [
+   32.29,
+   "get the {BLUE TICK}"
+  ],
+  [
+   33.55,
+   "Best part"
+  ],
+  [
+   34.49,
+   "your own"
+  ],
+  [
+   35.15,
+   "{SALES AGENT}"
+  ],
+  [
+   35.89,
+   "inside ChatGPT"
+  ],
+  [
+   37.36,
+   "it talks"
+  ],
+  [
+   37.74,
+   "for you"
+  ],
+  [
+   39.04,
+   "even at {2 AM}"
+  ],
+  [
+   40.06,
+   "or {3 AM}"
+  ],
+  [
+   41.86,
+   "Want the link?"
+  ],
+  [
+   42.7,
+   "Comment {BUSINESS}"
+  ],
+  [
+   43.8,
+   "or any"
+  ],
+  [
+   44.26,
+   "business word"
+  ],
+  [
+   45.18,
+   "I'll send the {FULL SETUP}"
+  ],
+  [
+   46.4,
+   "Send this to"
+  ],
+  [
+   47.34,
+   "a {FRIEND}"
+  ],
+  [
+   47.78,
+   "with a business"
+  ],
+  [
+   49.25,
+   "Register"
+  ],
+  [
+   49.95,
+   "join the {WAITLIST}"
+  ],
+  [
+   51.37,
+   "when it comes"
+  ],
+  [
+   52.11,
+   "you'll get it"
+  ]
+ ]
+}

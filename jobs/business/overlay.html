@@ -1,0 +1,173 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+@font-face{font-family:IN;src:url(../../templates/fonts/inter-latin-600-normal.woff2);font-weight:600}
+@font-face{font-family:IN;src:url(../../templates/fonts/inter-latin-700-normal.woff2);font-weight:700}
+@font-face{font-family:IN;src:url(../../templates/fonts/inter-latin-800-normal.woff2);font-weight:800}
+html,body{margin:0;background:transparent}
+#st{position:relative;width:1080px;height:1920px;overflow:hidden;font-family:IN;color:#F4F1EA;-webkit-font-smoothing:antialiased}
+.a{position:absolute}
+.paper{position:absolute;left:0;top:0;width:1080px;overflow:hidden;background:radial-gradient(90% 70% at 50% 40%,#1b1f29 0%,#12141a 65%,#0b0c10 100%)}
+.full{position:absolute;inset:0;background:radial-gradient(90% 60% at 50% 35%,#1b1f29 0%,#111318 60%,#0a0b0e 100%)}
+.pill{display:inline-block;background:#FFD84D;color:#0d0d0d;font:800 28px IN;letter-spacing:.14em;padding:12px 26px;border-radius:999px}
+.ttl{font:800 60px/1.05 IN;letter-spacing:-.035em;color:#F4F1EA}
+.card{border-radius:30px;box-sizing:border-box}
+.wcard{background:#fff;color:#0d0d0d}
+.dcard{background:#161A22;box-shadow:0 0 0 2px #2A2F3A,0 24px 50px rgba(0,0,0,.45)}
+.oai{filter:invert(1)}
+.search{display:flex;align-items:center;gap:16px;border-radius:999px;background:#f1f3f4;padding:0 28px;height:84px;font:700 34px IN;color:#202124}
+.search .mg{width:28px;height:28px;border-radius:50%;box-shadow:inset 0 0 0 5px #5f6368;position:relative;flex:none}
+.cur{display:inline-block;width:3px;height:36px;background:#202124;vertical-align:middle;margin-left:2px}
+.bub{display:inline-block;border-radius:30px;padding:20px 28px;font:700 38px/1.3 IN;max-width:720px}
+.bq{background:#2f3542;color:#F4F1EA}
+.ba{background:#F4F1EA;color:#0d0d0d}
+.tag{font:700 22px IN;letter-spacing:.16em;color:#6f7682}
+.stat{display:flex;align-items:center;justify-content:space-between;background:#161A22;border-radius:26px;padding:22px 32px;box-shadow:0 0 0 2px #2A2F3A;box-sizing:border-box}
+.stat .k{font:800 38px IN}.stat .v{font:800 64px IN;color:#FFD84D;letter-spacing:-.03em}
+.tick{display:inline-block;width:64px;height:64px;vertical-align:middle}
+#cap{position:absolute;left:0;right:0;text-align:center}
+.cw{display:inline-block;background:#0d0d0d;color:#FFF06A;font:800 56px/1.1 IN;padding:10px 26px 14px;border-radius:20px}
+.ce{display:inline-block;background:#FFD84D;color:#0d0d0d;font:800 76px/1.04 IN;padding:10px 30px 16px;border-radius:24px;text-transform:uppercase;letter-spacing:-.02em}
+</style></head><body><div id="st">
+
+<!-- ===== PANEL (pass P) ===== -->
+<div id="panel" class="paper" style="height:1000px;display:none">
+  <!-- P1: then Google, now ChatGPT -->
+  <div id="p1" class="a" style="inset:0">
+    <div class="a" id="p1then" style="left:90px;top:200px"><span class="pill">THEN</span></div>
+    <div class="a card wcard" id="p1g" style="left:90px;top:290px;width:900px;height:400px;padding:44px 50px">
+      <img src="logo/google.png" style="display:block;height:96px;margin:0 auto 44px">
+      <div class="search"><span class="mg"></span><span id="p1gq"></span><span class="cur" id="p1gc"></span></div>
+    </div>
+    <div class="a" id="p1now" style="left:590px;top:200px"><span class="pill">NOW</span></div>
+    <div class="a card dcard" id="p1c" style="left:590px;top:290px;width:400px;height:400px;padding:36px 32px">
+      <div style="display:flex;align-items:center;gap:16px;font:800 40px IN"><img class="oai" src="logo/openai.svg" style="width:58px">ChatGPT</div>
+      <div style="margin-top:40px;text-align:right"><span class="bub bq" id="p1cq" style="font-size:30px;text-align:left"></span></div>
+      <div style="margin-top:20px" id="p1ca"><span class="bub ba" style="font-size:26px">Here are the top 5…</span></div>
+    </div>
+  </div>
+  <!-- P2: like Google Business -> Businesses in ChatGPT, claim free -->
+  <div id="p2" class="a" style="inset:0">
+    <div class="a card wcard" id="p2g" style="left:90px;top:200px;width:410px;height:300px;padding:40px 30px;text-align:center">
+      <img src="logo/google.png" style="height:70px;display:block;margin:20px auto 30px">
+      <div style="font:800 40px/1.1 IN">Business Profile</div>
+    </div>
+    <div class="a" id="p2eq" style="left:500px;top:300px;width:80px;text-align:center;font:800 80px IN;color:#FFD84D">=</div>
+    <div class="a card dcard" id="p2c" style="left:580px;top:200px;width:410px;height:300px;padding:40px 30px;text-align:center">
+      <img class="oai" src="logo/openai.svg" style="width:84px;display:block;margin:12px auto 26px">
+      <div style="font:800 40px/1.1 IN">Businesses in ChatGPT</div>
+    </div>
+    <div class="a" id="p2b" style="left:90px;top:560px;width:900px;height:130px;border-radius:999px;background:#FFD84D;color:#0d0d0d;font:800 50px/130px IN;text-align:center;letter-spacing:-.01em"><span id="p2bt">Claim your business</span><span style="display:inline-block;margin-left:24px;background:#0d0d0d;color:#FFD84D;font:800 34px/58px IN;padding:0 22px;border-radius:999px;vertical-align:middle;letter-spacing:.12em">FREE</span></div>
+    <svg class="a" id="p2h" width="90" height="110" viewBox="0 0 90 110" style="left:700px;top:640px"><path d="M12 6 L12 86 L32 68 L46 100 L60 94 L46 62 L74 62 Z" fill="#fff" stroke="#0d0d0d" stroke-width="6" stroke-linejoin="round"/></svg>
+  </div>
+  <!-- P3: dashboard then blue tick -->
+  <div id="p3" class="a" style="inset:0">
+    <div class="a" id="p3h" style="left:90px;top:190px"><span class="pill">YOUR DASHBOARD</span><span class="tag" style="margin-left:22px">LAST 28 DAYS · SAMPLE</span></div>
+    <div class="a stat" id="p3s1" style="left:90px;top:300px;width:900px"><span class="k">Seen in ChatGPT</span><span class="v" id="p3v1">0</span></div>
+    <div class="a stat" id="p3s2" style="left:90px;top:450px;width:900px"><span class="k">Website clicks</span><span class="v" id="p3v2">0</span></div>
+    <div class="a" id="p3bars" style="left:90px;top:610px;width:900px;height:120px;display:flex;align-items:flex-end;gap:14px"></div>
+    <div class="a card wcard" id="p3id" style="left:140px;top:300px;width:800px;height:400px;padding:50px;text-align:center">
+      <div style="width:150px;height:150px;border-radius:50%;background:#0d0d0d;color:#FFD84D;font:800 64px/150px IN;margin:0 auto">YB</div>
+      <div style="margin-top:30px;font:800 54px IN;letter-spacing:-.02em">Your Business <svg class="tick" id="p3tk" viewBox="0 0 24 24"><path d="M12 1.5l2.6 1.9 3.2-.2 1 3.1 2.7 1.8-1 3 1 3-2.7 1.8-1 3.1-3.2-.2L12 22.5l-2.6-1.9-3.2.2-1-3.1-2.7-1.8 1-3-1-3 2.7-1.8 1-3.1 3.2.2z" fill="#1d9bf0"/><path d="M7.5 12.2l3 3 6-6.2" stroke="#fff" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div style="margin-top:10px;font:700 32px IN;color:#555" id="p3idt">ID verified</div>
+    </div>
+  </div>
+  <!-- P4: comment BUSINESS -> DM -->
+  <div id="p4" class="a" style="inset:0">
+    <div class="a card dcard" id="p4c" style="left:90px;top:220px;width:900px;height:120px;border-radius:999px;display:flex;align-items:center;padding:0 40px;gap:22px">
+      <div style="width:64px;height:64px;border-radius:50%;background:#FFD84D"></div>
+      <div style="font:800 46px IN" id="p4t"></div><span class="cur" id="p4cur" style="background:#F4F1EA;height:46px"></span>
+      <div style="margin-left:auto;font:800 36px IN;color:#FFD84D" id="p4s">Post</div>
+    </div>
+    <div class="a" id="p4dm" style="left:90px;top:400px;width:900px">
+      <div class="tag" style="margin-bottom:16px">YOUR DMs</div>
+      <div class="card dcard" style="padding:28px 32px;display:flex;align-items:center;gap:24px">
+        <div style="width:88px;height:88px;border-radius:50%;background:#2f3542;flex:none"></div>
+        <div><div style="font:800 38px IN">Full setup + link</div><div style="font:700 30px IN;color:#9aa0ab;margin-top:6px">Businesses in ChatGPT, step by step</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== TOP (pass T): full cards ===== -->
+<div id="w1" class="full" style="display:none">
+  <div class="a" id="w1l" style="left:0;right:0;top:380px;text-align:center"><img class="oai" src="logo/openai.svg" style="width:230px"></div>
+  <div class="a" id="w1p" style="left:0;right:0;top:700px;text-align:center"><span class="pill">NEW · BY OPENAI</span></div>
+  <div class="a ttl" id="w1t" style="left:0;right:0;top:810px;text-align:center;font-size:104px;line-height:1"><span id="w1a">Businesses</span><br><span id="w1b">in ChatGPT</span></div>
+</div>
+<div id="w2" class="full" style="display:none">
+  <div class="a" id="w2h" style="left:90px;top:250px;display:flex;align-items:center;gap:24px;width:900px">
+    <span class="pill">YOUR SALES AGENT</span>
+    <div style="margin-left:auto;text-align:right"><div style="font:800 64px IN;letter-spacing:-.03em" id="w2clk">2:00 AM</div><div class="tag">NIGHT</div></div>
+  </div>
+  <div class="a card dcard" id="w2win" style="left:90px;top:420px;width:900px;height:780px;padding:34px 36px">
+    <div style="display:flex;align-items:center;gap:16px;font:800 36px IN;padding-bottom:24px;border-bottom:2px solid #2A2F3A"><img class="oai" src="logo/openai.svg" style="width:48px">ChatGPT<span class="tag" style="margin-left:auto">SAMPLE CHAT</span></div>
+    <div id="w2m" style="margin-top:30px"></div>
+  </div>
+</div>
+<div class="a" id="rc" style="left:0;right:0;top:215px;text-align:center;display:none"><span class="pill" id="rct" style="font-size:32px;box-shadow:0 10px 30px rgba(0,0,0,.5)"></span></div>
+<div id="cap"></div>
+</div>
+<script>
+const Q=new URLSearchParams(location.search),PASS=Q.get('pass')||'T';
+const $=id=>document.getElementById(id);const cl=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
+const eo=x=>1-Math.pow(1-cl(x),3);const back=x=>{x=cl(x);const c=1.6;return 1+(c+1)*Math.pow(x-1,3)+c*Math.pow(x-1,2)};
+const p=(t,a,d=.45)=>cl((t-a)/d);
+function pop(el,t,a,dy=40,d=.45){const k=p(t,a,d);el.style.opacity=eo(k);el.style.transform=`translateY(${(1-eo(k))*dy}px)`}
+function zoom(el,t,a,d=.5){const k=p(t,a,d);el.style.opacity=eo(k);el.style.transform=`scale(${.4+.6*back(k)})`}
+const type=(s,t,a,d)=>s.slice(0,Math.floor(cl((t-a)/d)*s.length));
+// P3 bars (sample trend)
+$('p3bars').innerHTML=[18,26,22,34,30,44,40,52,48,62,58,74,70,86].map(h=>`<div class="pb" data-h="${h}" style="flex:1;border-radius:10px 10px 4px 4px;background:#FFD84D;height:0"></div>`).join('');
+const LAY=[[0,'f'],[0.6,'l'],[5.47,'w'],[14.03,'f'],[14.48,'l'],[18.41,'w'],[21.59,'l'],[27.40,'f'],[28.40,'w'],[35.43,'f'],[35.88,'l'],[40.28,'f']];
+function lay(t){let l='f';for(const [a,x] of LAY)if(t>=a)l=x;return l}
+let CAPS=[];window.setCaps=c=>{CAPS=c};
+function caption(t){
+  const L=lay(t),c=$('cap');let cur=null;for(const x of CAPS)if(t>=x[0]&&t<x[1])cur=x;
+  if(!cur){c.innerHTML='';return}
+  const m=cur[2].match(/^(.*?)\{(.+)\}(.*)$/);
+  c.innerHTML=m?`<div class="ce">${(m[1]+m[2]+m[3]).trim()}</div>`:`<div class="cw">${cur[2]}</div>`;
+  const k=p(t,cur[0],.2);c.style.opacity=eo(k);c.style.transform=`translateY(${(1-eo(k))*12}px)`;
+  const H=c.getBoundingClientRect().height;
+  c.style.top=(L==='f'?1440:L==='l'?Math.min(790,870-H):1470)+'px';
+}
+const CHAT=[[29.5,'q','Is the shop open now? Do you deliver nearby?'],[30.9,'a','Yes, we’re open. Share your area and I’ll check delivery for you.'],[34.35,'q','Can I order for 4 people?'],[34.85,'a','Sure! Here’s the menu and the order link.']];
+window.frame=t=>{
+  if(PASS==='P'){
+    $('w1').style.display=$('w2').style.display='none';$('cap').innerHTML='';$('rc').style.display='none';
+    const on=(t>=0.5&&t<5.55)||(t>=14.4&&t<18.5)||(t>=21.5&&t<27.95)||(t>=35.8&&t<40.85);$('panel').style.display=on?'block':'none';if(!on)return;
+    const s=t<10?1:t<20?2:t<30?3:4;['p1','p2','p3','p4'].forEach((id,i)=>$(id).style.display=(i+1===s)?'block':'none');
+    if(s===1){ // Google big -> shrinks left (THEN); ChatGPT card appears right (NOW)
+      pop($('p1then'),t,0.7,20);pop($('p1g'),t,0.75);
+      const q='best mandi near me';$('p1gq').textContent=type(q,t,1.0,1.0);$('p1gc').style.opacity=(Math.floor(t*3)%2&&t<2.9)?1:0;
+      const k=eo(p(t,2.86,.6)),g=$('p1g');g.style.width=(900-500*k)+'px';g.style.filter=`grayscale(${k}) brightness(${1-.35*k})`;
+      g.style.transformOrigin='0 0';g.style.padding=(44-8*k)+'px '+(50-20*k)+'px';
+      g.querySelector('img').style.height=(96-36*k)+'px';g.querySelector('img').style.marginBottom=(44-14*k)+'px';
+      g.querySelector('.search').style.fontSize=(34-12*k)+'px';
+      const c=$('p1c');c.style.opacity=k;c.style.transform=`translateX(${(1-k)*400}px)`;$('p1now').style.opacity=k;
+      $('p1cq').textContent=type('best mandi near me?',t,3.3,.8);$('p1ca').style.opacity=eo(p(t,4.3,.3));
+    }
+    if(s===2){zoom($('p2g'),t,14.6);pop($('p2eq'),t,15.0,0,.3);zoom($('p2c'),t,15.15);pop($('p2b'),t,17.2,30,.35);
+      const h=$('p2h'),k=eo(p(t,17.55,.35));h.style.opacity=p(t,17.45,.2);h.style.transform=`translate(${(1-k)*160}px,${(1-k)*140}px) scale(${t>17.95&&t<18.1?.85:1})`;
+      $('p2b').style.transform+=` scale(${t>17.95&&t<18.1?.97:1})`;$('p2bt').textContent=t>=18.05?'Claimed ✓':'Claim your business'}
+    if(s===3){const idOn=t>=25.45;pop($('p3h'),t,21.7,20);
+      ['p3s1','p3s2','p3bars'].forEach((id,i)=>{const e=$(id);e.style.display=idOn?'none':(id==='p3bars'?'flex':'flex');pop(e,t,[21.85,22.0,22.15][i],30,.35)});
+      $('p3v1').textContent=Math.round(1248*eo(p(t,23.3,1.4))).toLocaleString('en-IN');$('p3v2').textContent=Math.round(312*eo(p(t,24.4,1.0))).toLocaleString('en-IN');
+      document.querySelectorAll('.pb').forEach((e,i)=>e.style.height=(+e.dataset.h*eo(p(t,22.3+i*.08,.5)))+'%');
+      $('p3h').querySelector('.pill').textContent=idOn?'VERIFY YOUR ID':'YOUR DASHBOARD';$('p3h').querySelector('.tag').style.opacity=idOn?0:1;
+      const e=$('p3id');e.style.display=idOn?'block':'none';if(idOn){zoom(e,t,25.5);const k=p(t,26.4,.4);$('p3tk').style.transform=`scale(${k?back(k)*1:0})`;$('p3tk').style.transformOrigin='50% 50%';$('p3idt').textContent=k>0?'ID verified · blue tick':'ID check…'}}
+    if(s===4){pop($('p4c'),t,36.0);$('p4t').textContent=type('BUSINESS',t,36.45,.6);$('p4cur').style.opacity=(Math.floor(t*3)%2&&t<37.3)?1:0;
+      $('p4s').style.opacity=t>37.2?1:.4;pop($('p4dm'),t,38.9,40,.4)}
+  } else {
+    $('panel').style.display='none';
+    const w1=t>=10.99&&t<14.03;$('w1').style.display=w1?'block':'none';
+    if(w1){const k=p(t,11.05,.6);$('w1l').style.opacity=eo(k);$('w1l').style.transform=`rotate(${(1-eo(k))*-120}deg) scale(${.5+.5*back(k)})`;
+      pop($('w1p'),t,11.4,20,.35);pop($('w1a'),t,11.6,40,.4);pop($('w1b'),t,12.0,40,.4);$('w1a').style.display=$('w1b').style.display='inline-block'}
+    const w2=t>=28.40&&t<35.43;$('w2').style.display=w2?'block':'none';
+    if(w2){pop($('w2h'),t,28.45,20,.35);pop($('w2win'),t,28.6,50,.45);
+      $('w2clk').textContent=t>=34.2?'3:00 AM':'2:00 AM';$('w2clk').style.color=(t>=32.95&&t<33.6)||(t>=34.2&&t<34.9)?'#FFD84D':'#F4F1EA';
+      $('w2m').innerHTML=CHAT.filter(m=>t>=m[0]).map(m=>`<div style="margin-bottom:26px;${m[1]==='q'?'text-align:right':''}">${m[1]==='a'?'<div class="tag" style="margin-bottom:10px;color:#FFD84D">BUSINESS AGENT</div>':''}<span class="bub ${m[1]==='q'?'bq':'ba'}" style="text-align:left">${m[2]}</span></div>`).join('');
+      [...$('w2m').children].forEach((e,i)=>pop(e,t,CHAT[i][0],24,.3))}
+    const RC=[[5.47,10.99,'REAL CHATGPT ANSWER'],[18.41,20.20,'STEP 1 · FIND YOUR BUSINESS'],[20.20,21.59,'STEP 2 · VERIFY IT']];
+    let rc=null;for(const r of RC)if(t>=r[0]&&t<r[1])rc=r;$('rc').style.display=rc?'block':'none';if(rc){$('rct').textContent=rc[2];pop($('rc'),t,rc[0],20,.3)}
+    caption(t);
+  }
+};
+</script></body></html>
