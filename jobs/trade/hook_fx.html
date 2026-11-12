@@ -1,0 +1,31 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+@font-face{font-family:IN;src:url(../../templates/fonts/inter-latin-700-normal.woff2);font-weight:700}
+@font-face{font-family:IN;src:url(../../templates/fonts/inter-latin-800-normal.woff2);font-weight:800}
+html,body{margin:0;background:transparent}
+#st{position:relative;width:1080px;height:1920px;overflow:hidden;font-family:IN;-webkit-font-smoothing:antialiased;color:#F4F1EA}
+.a{position:absolute}
+/* one strip under the hook box, over the hair, inside the IG safe zone */
+#strip{left:70px;top:460px;width:870px;height:220px;border-radius:30px;background:rgba(13,13,13,.9);box-shadow:0 18px 40px rgba(0,0,0,.35)}
+#lab{left:100px;top:478px;font:700 20px IN;letter-spacing:.16em;color:#9aa0ab}
+#res{left:690px;top:520px;width:220px;height:110px;border-radius:22px;background:#2A2F3A;text-align:center;font:800 30px/110px IN}
+</style></head><body><div id="st">
+<div class="a" id="strip"></div>
+<div class="a" id="lab">YOUR NEXT TRADE</div>
+<svg class="a" id="ch" width="560" height="150" style="left:100px;top:510px"></svg>
+<div class="a" id="res">RESULT ?</div>
+</div>
+<script>
+const $=id=>document.getElementById(id);const cl=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));const eo=x=>1-Math.pow(1-cl(x),3);
+let r=5;const R=()=>{r=(r*9301+49297)%233280;return r/233280};let v=90;const C=[];
+for(let i=0;i<22;i++){const o=v;v+=(R()-.42)*16;C.push([o,v])}
+window.frame=t=>{
+  const s=eo((t-.02)/.25);['strip','lab','ch','res'].forEach(id=>$(id).style.opacity=s);
+  const n=Math.floor(cl((t-.2)/1.6)*C.length);let h='';
+  C.slice(0,n).forEach(([o,c],i)=>{const x=6+i*25,up=c<=o;h+=`<rect x="${x}" y="${Math.min(o,c)}" width="14" height="${Math.max(3,Math.abs(c-o))}" rx="2" fill="${up?'#FFD84D':'#9aa0ab'}"/>`});
+  $('ch').innerHTML=h;
+  const done=t>=1.9;const q=cl((t-1.9)/.25);
+  $('res').style.background=done?'#FFD84D':'#2A2F3A';$('res').style.color=done?'#0d0d0d':'#F4F1EA';
+  $('res').textContent=done?'10,000 RUNS':'RESULT ?';$('res').style.fontSize=done?'28px':'30px';
+  $('res').style.transform=`scale(${done?1+.15*(1-q):1})`;
+};
+</script></body></html>

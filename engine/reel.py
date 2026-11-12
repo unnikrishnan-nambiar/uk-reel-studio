@@ -121,7 +121,7 @@ def card_at(j, t):
 def overlay(j, mode=None, k=None, m=None, only=None):
     D = j['_dir']; _, dur = seg_map(j); NF = int(dur * FPS)
     if mode is None:
-        for md in ('P', 'T', 'C'):
+        for md in ('P', 'T', 'B', 'C'):
             for _ in range(2):  # second round fills frames a crashed worker skipped
                 ps = [subprocess.Popen([sys.executable, __file__, 'overlay', D, md, str(i), str(WORKERS)]) for i in range(WORKERS)]
                 for p in ps: p.wait()
@@ -200,7 +200,17 @@ def comp(j, test_times=None):
             t = n / FPS
             src = grade.grade(np.frombuffer(b, np.uint8).reshape(H, W, 3), j.get('grade', 0.3)).astype(np.float32)
             z = z_at(t)
-            if z <= 0.001: img = src
+            if z <= 0.001:
+                img = src
+                rb = rgba(f'ovB/{n:05d}.png')  # optional 'behind the person' layer (full face only)
+                if rb is not None:
+                    img = over(src, rb); mi = int(round(t * 30)); mp = None
+                    for d in (0, 1, -1, 2, -2, 3, -3):
+                        if os.path.exists(f'pm2/{mi + d:04d}.png'): mp = f'pm2/{mi + d:04d}.png'; break
+                    if mp:
+                        m = cv2.imread(mp, 0).astype(np.float32) / 255
+                        m = cv2.GaussianBlur(np.clip((m - 0.08) / 0.8, 0, 1), (0, 0), 0.7)[:, :, None]
+                        img = img * (1 - m) + src * m
             else:
                 k = 1 - (1 - KS) * z; yo = YO * z
                 sw, shh = int(round(W * k)), int(round(H * k)); x0 = (W - sw) / 2
