@@ -132,8 +132,8 @@ function tmScene(s){
   if(!el.innerHTML){let g='';for(let i=-10;i<=10;i++)g+=`<line x1="540" y1="1100" x2="${540+i*170}" y2="1920" stroke="#2fd0f2" stroke-width="2.5" opacity=".55"/>`;
     for(let i=0;i<9;i++){const y=1120+Math.pow(i/8,1.7)*800;g+=`<line x1="0" x2="1080" y1="${y}" y2="${y}" stroke="#ff4b72" stroke-width="2" opacity=".45"/>`}
     let st='';let r=9;const R=()=>{r=(r*9301+49297)%233280;return r/233280};for(let i=0;i<70;i++)st+=`<circle cx="${R()*1080}" cy="${R()*1050}" r="${1+R()*2.2}" fill="#fff" opacity="${.3+R()*.6}"/>`;
-    el.innerHTML=`<div class="a" style="inset:0;background:radial-gradient(70% 45% at 50% 30%,#3a1d8a 0%,#1a0b46 45%,#0a0420 100%)"></div><svg class="a" width="1080" height="1920" style="left:0;top:0">${st}<circle cx="540" cy="700" r="360" fill="none" stroke="#8f5cff" stroke-width="2" opacity=".35"/><circle cx="540" cy="700" r="520" fill="none" stroke="#2fd0f2" stroke-width="2" opacity=".2"/>${g}</svg><div class="a" style="left:60px;top:230px"><span class="pill">★ MAIN SKILL</span></div>`}
-  el.style.opacity=eo(p(s,25.86,.3))*cl((36.4-s)/.15);
+    el.innerHTML=`<div class="a" style="inset:0;background:radial-gradient(70% 45% at 50% 30%,#3a1d8a 0%,#1a0b46 45%,#0a0420 100%)"></div><svg class="a" width="1080" height="1920" style="left:0;top:0">${st}<circle cx="540" cy="700" r="360" fill="none" stroke="#8f5cff" stroke-width="2" opacity=".35"/><circle cx="540" cy="700" r="520" fill="none" stroke="#2fd0f2" stroke-width="2" opacity=".2"/>${g}</svg><div class="a" id="msk" style="left:60px;top:1250px"><span class="pill">★ MAIN SKILL</span></div>`}
+  el.style.opacity=eo(p(s,25.86,.3))*cl((36.4-s)/.15);const mk=$('msk');if(mk)mk.style.display=s<28.1?'block':'none';
 }
 window.setCaps=()=>{};
 window.frame=t=>{
@@ -142,8 +142,7 @@ window.frame=t=>{
     if(!c||!c[2]){tp.innerHTML='';tp.dataset.k='';return}
     let txt=c[2];if(txt==='#COUNT'){const v=Math.round(10000*Math.pow(eo(p(s,28.6,2.6)),1.15));txt=v.toLocaleString('en-US')+'×'}
     if(txt.includes('|')){ // two-line title
-      const [l1,l2]=txt.split('|');tp.innerHTML=`<div id="l1" class="word" style="position:relative"></div><div id="l2" class="word" style="position:relative;margin-top:10px"></div>`;
-      setWord($('l1'),l1,'cy',230,980);setWord($('l2'),l2,'pu',190,980);animWord($('l1'),s,c[0],c[1]);animWord($('l2'),s,c[0]+.25,c[1]);tp.style.top='330px';tp.style.opacity=1;return}
+      txt=txt.replace('|',' ')}
     setWord(tp,txt,c[3],txt.endsWith('×')?220:250,990);tp.style.top='190px';
     if(txt.endsWith('×')){[...tp.children].forEach(sp=>{sp.style.opacity=1;sp.style.transform=''});tp.style.opacity=eo(p(s,28.1,.3))}else animWord(tp,s,c[0],c[1]);return}
   // T
