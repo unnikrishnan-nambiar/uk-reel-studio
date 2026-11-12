@@ -2,30 +2,373 @@
  "name": "trade",
  "theme": "dark",
  "_note": "Reference-style edit (big word behind the head = pass B, needs masks). hook/body_segs/caps = SOURCE times; tr/panel_ranges/LAY = BODY times. Offsets s1 4.74 s2 5.23 s3 5.64 s4 6.13 s5 6.52 s6 7.18 s7 7.54 s8 7.89 s9 8.12 s10 8.52 s11 8.87 s12 9.30 s13 9.77 s14 10.51 s15 10.75",
- "hook": {"a": 0.58, "b": 4.34, "l1": "", "l2": "", "sub": "", "style": "box",
-   "box_text": "See results before you trade. Only 1 Claude skill",
-   "fx": "hook_fx.html",
-   "caps": [[0.06, "Before you trade"], [1.32, "see the {RESULTS}"], [2.48, "fully {FREE}"]]},
- "body_segs": [[4.74,6.37],[6.86,15.63],[16.04,21.96],[22.45,25.47],[25.86,27.44],[28.10,34.44],[34.80,36.40],[36.75,39.24],[39.47,40.98],[41.38,45.29],[45.64,48.02],[48.45,52.61],[53.08,56.62],[57.36,58.49],[58.73,61.15]],
- "tr": [[20.15,20.6,0,1],[28.45,28.9,1,0],[39.0,39.01,0,1],[43.2,43.65,1,0]],
- "ks": 0.72, "yo": 700, "pb": 1000, "grade": 0.3,
- "panel_ranges": [[0.0,32.95],[38.95,50.45]],
- "mask_rows": [0, 1400],
+ "hook": {
+  "a": 0.58,
+  "b": 4.34,
+  "l1": "",
+  "l2": "",
+  "sub": "",
+  "style": "box",
+  "box_text": "See results before you trade. Only 1 Claude skill",
+  "fx": "hook_fx.html",
+  "caps": [
+   [
+    0.06,
+    "Before you trade"
+   ],
+   [
+    1.32,
+    "see the results"
+   ],
+   [
+    2.48,
+    "fully free"
+   ]
+  ]
+ },
+ "body_segs": [
+  [
+   4.74,
+   6.37
+  ],
+  [
+   6.86,
+   15.63
+  ],
+  [
+   16.04,
+   21.96
+  ],
+  [
+   22.45,
+   25.47
+  ],
+  [
+   25.86,
+   27.44
+  ],
+  [
+   28.1,
+   34.44
+  ],
+  [
+   34.8,
+   36.4
+  ],
+  [
+   36.75,
+   39.24
+  ],
+  [
+   39.47,
+   40.98
+  ],
+  [
+   41.38,
+   45.29
+  ],
+  [
+   45.64,
+   48.02
+  ],
+  [
+   48.45,
+   52.61
+  ],
+  [
+   53.08,
+   56.62
+  ],
+  [
+   57.36,
+   58.49
+  ],
+  [
+   58.73,
+   61.15
+  ]
+ ],
+ "tr": [
+  [
+   20.15,
+   20.6,
+   0,
+   1
+  ],
+  [
+   28.45,
+   28.9,
+   1,
+   0
+  ],
+  [
+   39.0,
+   39.01,
+   0,
+   1
+  ],
+  [
+   43.2,
+   43.65,
+   1,
+   0
+  ]
+ ],
+ "ks": 0.72,
+ "yo": 700,
+ "pb": 1000,
+ "grade": 0.3,
+ "panel_ranges": [
+  [
+   0.0,
+   32.95
+  ],
+  [
+   38.95,
+   50.45
+  ]
+ ],
+ "mask_rows": [
+  0,
+  1400
+ ],
  "cards": [],
  "caps": [
-  [4.76,"I'll show a"],[5.22,"{REAL ONE}"],[5.9,"at the end"],
-  [6.9,"Everyone wants"],[7.38,"to {TRADE}"],[8.32,"but there's"],[8.76,"so much to {LEARN}"],[9.8,"and so many"],[10.18,"{RISKS}"],
-  [10.82,"so what if"],[11.34,"{CLAUDE} did it?"],[12.4,"Claude has"],[12.86,"a {SKILL}"],[13.58,"actually"],[14.02,"{11 SKILLS}"],[14.94,"in one"],
-  [16.17,"each skill"],[16.97,"one {ROLE}"],[17.51,"like a"],[17.77,"{TRADING TEAM}"],
-  [19.17,"the 1st one"],[19.93,"{THOUSANDS}"],[20.53,"of stock charts"],[21.11,"{SCANS} them"],
-  [22.47,"the 2nd one"],[23.29,"when to {ENTER}"],[24.17,"when to {EXIT}"],
-  [25.89,"the 3rd one"],[26.79,"{TIME MACHINE}"],
-  [28.12,"every trade"],[29.64,"{10,000} times"],[30.84,"{REPLAYED}"],[31.78,"how often"],[32.42,"you {WIN}"],[33.16,"how often"],[33.78,"you {LOSE}"],[35.02,"clear cut"],
-  [36.98,"{BEST PART}"],[37.74,"a trader must"],[38.6,"stay {ALERT}"],[39.46,"{CLAUDE}"],[40.22,"does it for you"],
-  [41.42,"for example"],[42.36,"this week"],[43.1,"Nvidia's CEO"],[44.24,"made {HEADLINES}"],[45.66,"and so"],[46.38,"{NVIDIA} stock"],[47.18,"fell {8%}"],
-  [48.61,"no more"],[49.25,"watching {NEWS}"],[50.45,"{EVERY DAY}"],[51.25,"Claude does it"],
-  [53.23,"want the"],[53.35,"{11-SKILL} setup?"],[55.63,"comment {TRADE}"],
-  [57.45,"it lands in your {DM}"],
-  [59.13,"{FOLLOW}"],[60.07,"and {SAVE} it"]
+  [
+   4.76,
+   "I'll show a"
+  ],
+  [
+   5.22,
+   "{REAL ONE}"
+  ],
+  [
+   5.9,
+   "at the end"
+  ],
+  [
+   6.9,
+   "Everyone wants"
+  ],
+  [
+   7.38,
+   "to {TRADE}"
+  ],
+  [
+   8.32,
+   "but there's"
+  ],
+  [
+   8.76,
+   "so much to {LEARN}"
+  ],
+  [
+   9.8,
+   "and so many"
+  ],
+  [
+   10.18,
+   "{RISKS}"
+  ],
+  [
+   10.82,
+   "so what if"
+  ],
+  [
+   11.34,
+   "{CLAUDE} did it?"
+  ],
+  [
+   12.4,
+   "Claude has"
+  ],
+  [
+   12.86,
+   "a {SKILL}"
+  ],
+  [
+   13.58,
+   "actually"
+  ],
+  [
+   14.02,
+   "{11 SKILLS}"
+  ],
+  [
+   14.94,
+   "in one"
+  ],
+  [
+   16.17,
+   "each skill"
+  ],
+  [
+   16.97,
+   "one {ROLE}"
+  ],
+  [
+   17.51,
+   "like a"
+  ],
+  [
+   17.77,
+   "{TRADING TEAM}"
+  ],
+  [
+   19.17,
+   "the 1st one"
+  ],
+  [
+   19.93,
+   "{THOUSANDS}"
+  ],
+  [
+   20.53,
+   "of stock charts"
+  ],
+  [
+   21.11,
+   "{SCANS} them"
+  ],
+  [
+   22.47,
+   "the 2nd one"
+  ],
+  [
+   23.29,
+   "when to {ENTER}"
+  ],
+  [
+   24.17,
+   "when to {EXIT}"
+  ],
+  [
+   25.89,
+   "the 3rd one"
+  ],
+  [
+   26.79,
+   "{TIME MACHINE}"
+  ],
+  [
+   28.12,
+   "every trade"
+  ],
+  [
+   29.64,
+   "{10,000} times"
+  ],
+  [
+   30.84,
+   "{REPLAYED}"
+  ],
+  [
+   31.78,
+   "how often"
+  ],
+  [
+   32.42,
+   "you {WIN}"
+  ],
+  [
+   33.16,
+   "how often"
+  ],
+  [
+   33.78,
+   "you {LOSE}"
+  ],
+  [
+   35.02,
+   "clear cut"
+  ],
+  [
+   36.98,
+   "{BEST PART}"
+  ],
+  [
+   37.74,
+   "a trader must"
+  ],
+  [
+   38.6,
+   "stay {ALERT}"
+  ],
+  [
+   39.46,
+   "{CLAUDE}"
+  ],
+  [
+   40.22,
+   "does it for you"
+  ],
+  [
+   41.42,
+   "for example"
+  ],
+  [
+   42.36,
+   "this week"
+  ],
+  [
+   43.1,
+   "Nvidia's CEO"
+  ],
+  [
+   44.24,
+   "made {HEADLINES}"
+  ],
+  [
+   45.66,
+   "and so"
+  ],
+  [
+   46.38,
+   "{NVIDIA} stock"
+  ],
+  [
+   47.18,
+   "fell {8%}"
+  ],
+  [
+   48.61,
+   "no more"
+  ],
+  [
+   49.25,
+   "watching {NEWS}"
+  ],
+  [
+   50.45,
+   "{EVERY DAY}"
+  ],
+  [
+   51.25,
+   "Claude does it"
+  ],
+  [
+   53.23,
+   "want the"
+  ],
+  [
+   53.35,
+   "{11-SKILL} setup?"
+  ],
+  [
+   55.63,
+   "comment {TRADE}"
+  ],
+  [
+   57.45,
+   "it lands in your {DM}"
+  ],
+  [
+   59.13,
+   "{FOLLOW}"
+  ],
+  [
+   60.07,
+   "and {SAVE} it"
+  ]
  ]
 }
