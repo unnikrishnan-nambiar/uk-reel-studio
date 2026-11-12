@@ -27,3 +27,4 @@ jobs/*/caps_body.json
 jobs/*/words.json
 jobs/*/silences.json
 jobs/*/rec/
+jobs/*/ovB/
