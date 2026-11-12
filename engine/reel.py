@@ -94,7 +94,8 @@ def masks(j, k=None, m=None):
     o = ort.SessionOptions(); o.intra_op_num_threads = 2
     S = ort.InferenceSession(os.path.join(ROOT, 'models', 'isnet-general-use.onnx'), o, providers=['CPUExecutionProvider'])
     R = j['panel_ranges']; _, dur = seg_map(j)
-    need = [n for n in range(int(dur * 30) + 1) if any(a <= n / 30 <= b for a, b in R)]
+    st = j.get('mask_step', 1)
+    need = [n for n in range(int(dur * 30) + 1) if n % st == 0 and any(a <= n / 30 <= b for a, b in R)]
     ns = set(n for i, n in enumerate(need) if i % m == k)
     dec = subprocess.Popen(['ffmpeg', '-v', 'error', '-i', f'{D}/cut60.mp4', '-vf', 'fps=30', '-f', 'rawvideo', '-pix_fmt', 'bgr24', '-'], stdout=subprocess.PIPE)
     Y0, Y1 = j.get('mask_rows', [0, 1400]); i = 0
@@ -201,16 +202,22 @@ def comp(j, test_times=None):
             src = grade.grade(np.frombuffer(b, np.uint8).reshape(H, W, 3), j.get('grade', 0.3)).astype(np.float32)
             z = z_at(t)
             if z <= 0.001:
-                img = src
+                img = src; m = None; BB = j.get('bg_blur', 0)
                 rb = rgba(f'ovB/{n:05d}.png')  # optional 'behind the person' layer (full face only)
-                if rb is not None:
-                    img = over(src, rb); mi = int(round(t * 30)); mp = None
+                if rb is not None or BB:
+                    mi = int(round(t * 30)); mp = None
                     for d in (0, 1, -1, 2, -2, 3, -3):
                         if os.path.exists(f'pm2/{mi + d:04d}.png'): mp = f'pm2/{mi + d:04d}.png'; break
                     if mp:
                         m = cv2.imread(mp, 0).astype(np.float32) / 255
-                        m = cv2.GaussianBlur(np.clip((m - 0.08) / 0.8, 0, 1), (0, 0), 0.7)[:, :, None]
-                        img = img * (1 - m) + src * m
+                        m = cv2.GaussianBlur(np.clip((m - 0.08) / 0.8, 0, 1), (0, 0), 0.9)[:, :, None]
+                if BB and m is not None:  # cinematic: soft, slightly darker background behind the person
+                    sm = cv2.resize(src, (W // 4, H // 4), interpolation=cv2.INTER_AREA)
+                    bg = cv2.resize(cv2.GaussianBlur(sm, (0, 0), BB / 4), (W, H), interpolation=cv2.INTER_LINEAR) * j.get('bg_dim', 0.9)
+                    img = src * m + bg * (1 - m)
+                if rb is not None:
+                    img = over(img, rb)
+                    if m is not None: img = img * (1 - m) + src * m
             else:
                 k = 1 - (1 - KS) * z; yo = YO * z
                 sw, shh = int(round(W * k)), int(round(H * k)); x0 = (W - sw) / 2

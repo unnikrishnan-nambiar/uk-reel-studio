@@ -1,0 +1,115 @@
+{
+ "name": "trade2",
+ "theme": "dark",
+ "_note": "Reference-style edit, no template: hook is part of the body (custom join). Overlay cues are written in SOURCE times and mapped in JS. Passes: B (behind the person, full-frame masks) and T (front).",
+ "hook": {
+  "a": 0.58,
+  "b": 4.34,
+  "l1": "",
+  "l2": "",
+  "sub": "",
+  "style": "box",
+  "box_text": "See results before you trade. Only 1 Claude skill",
+  "fx": "hook_fx.html",
+  "caps": [
+   [
+    0.06,
+    "Before you trade"
+   ],
+   [
+    1.32,
+    "see the results"
+   ],
+   [
+    2.48,
+    "fully free"
+   ]
+  ]
+ },
+ "body_segs": [
+  [
+   0.58,
+   4.34
+  ],
+  [
+   4.74,
+   6.37
+  ],
+  [
+   6.86,
+   15.63
+  ],
+  [
+   16.04,
+   21.96
+  ],
+  [
+   22.45,
+   25.47
+  ],
+  [
+   25.86,
+   27.44
+  ],
+  [
+   28.1,
+   34.44
+  ],
+  [
+   34.8,
+   36.4
+  ],
+  [
+   36.75,
+   39.24
+  ],
+  [
+   39.47,
+   40.98
+  ],
+  [
+   41.38,
+   45.29
+  ],
+  [
+   45.64,
+   48.02
+  ],
+  [
+   48.45,
+   52.61
+  ],
+  [
+   53.08,
+   56.62
+  ],
+  [
+   57.36,
+   58.49
+  ],
+  [
+   58.73,
+   61.15
+  ]
+ ],
+ "tr": [],
+ "ks": 0.72,
+ "yo": 700,
+ "pb": 1000,
+ "grade": 0.3,
+ "panel_ranges": [
+  [
+   0,
+   60
+  ]
+ ],
+ "mask_rows": [
+  0,
+  1920
+ ],
+ "cards": [],
+ "caps": [],
+ "mask_step": 2,
+ "bg_blur": 14,
+ "bg_dim": 0.88
+}
