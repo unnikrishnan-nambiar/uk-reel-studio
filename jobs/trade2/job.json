@@ -110,6 +110,5 @@
  "cards": [],
  "caps": [],
  "mask_step": 2,
- "bg_blur": 14,
- "bg_dim": 0.88
+ "bg_blur": 0
 }
