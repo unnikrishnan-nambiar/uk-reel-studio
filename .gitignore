@@ -46,3 +46,5 @@ jobs/hof2/raw/
 jobs/hof2/stills/*.png
 jobs/hof2/mask.png
 jobs/hof2/sheet.jpg
+jobs/*/_ov.html
+jobs/*/list.txt
