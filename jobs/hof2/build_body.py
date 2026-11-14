@@ -22,8 +22,8 @@ for i, (src, a, b, scene, hls) in enumerate(SEGS):
     d = b - a; out = f'seg{i:02d}.mov'
     if scene == 'intro':
         cmd = ['ffmpeg', '-v', 'error', '-y', '-ss', '2.0', '-t', f'{d}', '-i', I71, '-ss', '0', '-t', f'{d}', '-i', H, '-i', 'mask.png',
-               '-filter_complex', f'[0:v]scale=1080:1920:flags=lanczos,fps={FPS}[bg];[1:v]scale=520:924:flags=lanczos,fps={FPS},format=rgba[h];'
-               f'[2:v]format=gray,scale=520:924[m];[h][m]alphamerge[hm];[bg][hm]overlay=40:330:shortest=1,format=yuv420p,setsar=1[v];'
+               '-filter_complex', f'[0:v]scale=1080:1920:flags=lanczos,fps={FPS}[bg];[1:v]scale=580:1031:flags=lanczos,fps={FPS},format=rgba[h];'
+               f'[2:v]format=gray,scale=580:1031[m];[h][m]alphamerge[hm];[bg][hm]overlay=26:312:shortest=1,format=yuv420p,setsar=1[v];'
                '[1:a]aresample=48000,loudnorm=I=-16:TP=-1.5[a]', '-map', '[v]', '-map', '[a]', '-ac', '2',
                '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '14', '-c:a', 'pcm_s16le', out]
     else:
