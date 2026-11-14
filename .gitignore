@@ -37,3 +37,8 @@ jobs/*/*.mov
 jobs/*/sfx.wav
 jobs/hype-ref/
 jobs/hof/stills/private_words.txt
+jobs/hof/list.txt
+jobs/*/test.jpg
+jobs/*/final-sheet.jpg
+jobs/*/*.mp4
+jobs/*/render.log
