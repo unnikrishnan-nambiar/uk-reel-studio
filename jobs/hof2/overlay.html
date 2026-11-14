@@ -21,9 +21,9 @@ html,body{margin:0;background:transparent}
 #or{font:800 40px/1 IN;color:var(--y)}
 #cfact.off{opacity:.4;text-decoration:line-through;text-decoration-thickness:5px}
 /* screen card */
-#card{left:40px;top:1284px;width:1000px;height:440px;border-radius:30px;background:var(--y);padding:12px;box-sizing:border-box;box-shadow:0 20px 50px rgba(0,0,0,.35)}
-#win{position:relative;width:976px;height:416px;border-radius:20px;overflow:hidden;background:#fff}
-#win img{position:absolute;left:0;top:0;width:976px;transform-origin:0 0}
+#card{left:24px;top:1170px;width:1032px;height:580px;border-radius:30px;background:var(--y);padding:12px;box-sizing:border-box;box-shadow:0 20px 50px rgba(0,0,0,.35)}
+#win{position:relative;width:1008px;height:556px;border-radius:20px;overflow:hidden;background:#fff}
+#win img{position:absolute;left:0;top:0;width:1008px;transform-origin:0 0}
 .hl{position:absolute;background:rgba(255,216,77,.6);mix-blend-mode:multiply;border-radius:6px;transform-origin:left center}
 /* answer + cta */
 #ans{left:50%;top:1300px;transform:translateX(-50%);text-align:center}
@@ -59,7 +59,7 @@ window.frame=t=>{
   // screen card
   const key=IMG[sc]; show('card',!!key);
   if(key){const m=ST[key]; if(last!==key){$('img').src='stills/'+key+'.png';last=key}
-    const s=976/m.w, ih=m.h*s, pan=Math.max(0,ih-416), dur=g.t1-g.t0;
+    const s=1008/m.w, ih=m.h*s, wh=Math.min(556,ih), pan=Math.max(0,ih-556), dur=g.t1-g.t0; $('win').style.height=wh+'px'; $('card').style.height=(wh+24)+'px';
     const first=TL.segs.find(x=>IMG[x.scene]===key); const tt=t-first.t0, D=TL.segs.filter(x=>IMG[x.scene]===key).reduce((a,x)=>a+x.t1-x.t0,0);
     const py=pan*cl((tt-0.8)/Math.max(1,D-1.6)); $('img').style.transform=`translateY(${-py}px)`;
     const k=eo(lt/0.35); const fresh=g===first; $('card').style.transform=fresh?`translateY(${(1-k)*80}px)`:'none'; $('card').style.opacity=fresh?cl(lt/0.2):1;
