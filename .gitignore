@@ -28,3 +28,12 @@ jobs/*/words.json
 jobs/*/silences.json
 jobs/*/rec/
 jobs/*/ovB/
+jobs/hof/raw/
+jobs/hof/scr/
+jobs/hof/stills/*.png
+jobs/hof/stills/check.jpg
+jobs/hof/_ov.html
+jobs/*/*.mov
+jobs/*/sfx.wav
+jobs/hype-ref/
+jobs/hof/stills/private_words.txt

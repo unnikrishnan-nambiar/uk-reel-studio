@@ -1,0 +1,347 @@
+{
+ "dur": 91.05,
+ "segs": [
+  {
+   "i": 0,
+   "src": "hadi",
+   "a": 0.0,
+   "b": 2.3,
+   "t0": 0.0,
+   "t1": 2.3,
+   "layout": "full",
+   "scene": "claim",
+   "caps": []
+  },
+  {
+   "i": 1,
+   "src": "i44",
+   "a": 7.3,
+   "b": 10.95,
+   "t0": 2.3,
+   "t1": 5.95,
+   "layout": "full",
+   "scene": "ask",
+   "caps": [
+    [
+     3.6,
+     "Does this really work?"
+    ],
+    [
+     4.6,
+     "Let's {TEST} it"
+    ]
+   ]
+  },
+  {
+   "i": 2,
+   "src": "i45",
+   "a": 0.4,
+   "b": 2.3,
+   "t0": 5.95,
+   "t1": 7.85,
+   "layout": "full",
+   "scene": "go",
+   "caps": []
+  },
+  {
+   "i": 3,
+   "src": "c4",
+   "a": 0.6,
+   "b": 2.8,
+   "t0": 7.85,
+   "t1": 10.05,
+   "layout": "split",
+   "scene": "guide",
+   "caps": [
+    [
+     7.95,
+     "First, {HIS GUIDE}"
+    ]
+   ]
+  },
+  {
+   "i": 4,
+   "src": "c4",
+   "a": 23.3,
+   "b": 26.6,
+   "t0": 10.05,
+   "t1": 13.35,
+   "layout": "split",
+   "scene": "prompt",
+   "caps": [
+    [
+     10.15,
+     "Same steps,"
+    ],
+    [
+     11.35,
+     "the {FIRST PROMPT}"
+    ]
+   ]
+  },
+  {
+   "i": 5,
+   "src": "c4",
+   "a": 96.5,
+   "b": 102.8,
+   "t0": 13.35,
+   "t1": 19.65,
+   "layout": "split",
+   "scene": "search",
+   "caps": [
+    [
+     13.45,
+     "It checks every"
+    ],
+    [
+     14.75,
+     "{DATA BROKER} site"
+    ],
+    [
+     16.85,
+     "for my name and details"
+    ]
+   ]
+  },
+  {
+   "i": 6,
+   "src": "c4",
+   "a": 121.0,
+   "b": 129.3,
+   "t0": 19.65,
+   "t1": 27.95,
+   "layout": "split",
+   "scene": "r1",
+   "caps": [
+    [
+     19.75,
+     "Result:"
+    ],
+    [
+     20.65,
+     "couldn't find {ANY SITE}"
+    ],
+    [
+     22.85,
+     "with my details"
+    ],
+    [
+     24.75,
+     "\"doesn't mean you're"
+    ],
+    [
+     26.25,
+     "not listed\""
+    ]
+   ]
+  },
+  {
+   "i": 7,
+   "src": "c4",
+   "a": 130.1,
+   "b": 136.2,
+   "t0": 27.95,
+   "t1": 34.05,
+   "layout": "split",
+   "scene": "r1b",
+   "caps": [
+    [
+     28.05,
+     "These sites mostly"
+    ],
+    [
+     30.25,
+     "cover the {US}"
+    ]
+   ]
+  },
+  {
+   "i": 8,
+   "src": "c5",
+   "a": 9.6,
+   "b": 20.5,
+   "t0": 34.05,
+   "t1": 44.95,
+   "layout": "split",
+   "scene": "f1",
+   "caps": [
+    [
+     34.15,
+     "Let's try a"
+    ],
+    [
+     35.05,
+     "{FRIEND'S} details"
+    ],
+    [
+     38.85,
+     "Claude checks"
+    ],
+    [
+     39.85,
+     "{PERMISSION} first"
+    ]
+   ]
+  },
+  {
+   "i": 9,
+   "src": "c5",
+   "a": 57.8,
+   "b": 66.0,
+   "t0": 44.95,
+   "t1": 53.15,
+   "layout": "split",
+   "scene": "f2",
+   "caps": [
+    [
+     45.05,
+     "Name {HIDDEN}"
+    ],
+    [
+     46.75,
+     "it's not my data"
+    ],
+    [
+     50.65,
+     "Same result:"
+    ],
+    [
+     51.65,
+     "{NOTHING FOUND}"
+    ]
+   ]
+  },
+  {
+   "i": 10,
+   "src": "c5",
+   "a": 93.3,
+   "b": 102.2,
+   "t0": 53.15,
+   "t1": 62.05,
+   "layout": "split",
+   "scene": "r2",
+   "caps": [
+    [
+     53.25,
+     "Truecaller may"
+    ],
+    [
+     54.45,
+     "have your number"
+    ],
+    [
+     56.25,
+     "It's built for the {US}"
+    ],
+    [
+     58.85,
+     "not for {INDIA}"
+    ],
+    [
+     60.45,
+     "In India, do this"
+    ]
+   ]
+  },
+  {
+   "i": 11,
+   "src": "c5",
+   "a": 106.3,
+   "b": 118.7,
+   "t0": 62.05,
+   "t1": 74.45,
+   "layout": "full",
+   "scene": "india",
+   "caps": [
+    [
+     62.15,
+     "Turn on {FULL DND}"
+    ],
+    [
+     63.75,
+     "call {1909}"
+    ],
+    [
+     66.65,
+     "Blocks promo"
+    ],
+    [
+     68.15,
+     "calls and SMS"
+    ],
+    [
+     72.35,
+     "{UNLIST} on Truecaller"
+    ]
+   ]
+  },
+  {
+   "i": 12,
+   "src": "c5",
+   "a": 123.6,
+   "b": 128.8,
+   "t0": 74.45,
+   "t1": 79.65,
+   "layout": "full",
+   "scene": "india2",
+   "caps": [
+    [
+     74.55,
+     "{REPORT} scam calls"
+    ],
+    [
+     77.35,
+     "Lost money? {1930}"
+    ]
+   ]
+  },
+  {
+   "i": 13,
+   "src": "c5",
+   "a": 129.7,
+   "b": 136.9,
+   "t0": 79.65,
+   "t1": 86.85,
+   "layout": "full",
+   "scene": "verdict",
+   "caps": [
+    [
+     79.75,
+     "So basically"
+    ],
+    [
+     80.95,
+     "it {DIDN'T WORK}"
+    ],
+    [
+     82.85,
+     "Worked for you?"
+    ],
+    [
+     84.25,
+     "Tell me"
+    ]
+   ]
+  },
+  {
+   "i": 14,
+   "src": "c5",
+   "a": 149.3,
+   "b": 153.5,
+   "t0": 86.85,
+   "t1": 91.05,
+   "layout": "full",
+   "scene": "end",
+   "caps": [
+    [
+     86.95,
+     "{FOLLOW} for"
+    ],
+    [
+     88.35,
+     "more real tests"
+    ]
+   ]
+  }
+ ]
+}

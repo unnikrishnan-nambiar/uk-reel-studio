@@ -1,0 +1,139 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+/* HYPE or FACT? — reusable reel template (uk_speaks.ai). All timing comes from timeline.json (TL). */
+@font-face{font-family:IN;src:url(../../templates/fonts/inter-latin-600-normal.woff2);font-weight:600}
+@font-face{font-family:IN;src:url(../../templates/fonts/inter-latin-700-normal.woff2);font-weight:700}
+@font-face{font-family:IN;src:url(../../templates/fonts/inter-latin-800-normal.woff2);font-weight:800}
+:root{--y:#FFD84D;--ink:#0d0d0d;--yt:#FFF06A}
+html,body{margin:0;background:transparent}
+#st{position:relative;width:1080px;height:1920px;overflow:hidden;font-family:IN;-webkit-font-smoothing:antialiased}
+.a{position:absolute}
+/* heading (always on) */
+#hd{left:50%;top:120px;transform:translateX(-50%);display:flex;align-items:center;gap:18px;padding:16px 26px;border-radius:28px;background:rgba(13,13,13,.92);box-shadow:0 14px 40px rgba(0,0,0,.35)}
+.bx{font:800 60px/1 IN;letter-spacing:-.02em;padding:12px 22px 14px;border-radius:16px;position:relative}
+#hh{background:var(--y);color:var(--ink)} #hf{background:#fff;color:var(--ink)}
+#hor{font:800 44px/1 IN;color:#fff} #hq{font:800 60px/1 IN;color:#fff;margin-left:-8px}
+#hf .strike{position:absolute;left:10px;right:10px;top:50%;height:8px;background:#E5484D;border-radius:4px;transform-origin:left center}
+#hh .tick{position:absolute;right:-22px;top:-22px;width:52px;height:52px;border-radius:50%;background:#1fbf5f;color:#fff;font:800 34px/52px IN;text-align:center;box-shadow:0 4px 12px rgba(0,0,0,.3)}
+/* chips */
+.chip{font:800 30px/1 IN;letter-spacing:.06em;padding:12px 20px;border-radius:14px;background:var(--y);color:var(--ink);white-space:nowrap}
+.chip.dk{background:var(--ink);color:#fff}
+#credit{left:50%;top:276px;transform:translateX(-50%)}
+#lbl{left:40px;top:262px}
+/* claim card */
+#claim{left:60px;width:960px;top:1400px}
+#claim .q{margin-top:14px;background:#fff;color:var(--ink);font:800 64px/1.08 IN;letter-spacing:-.02em;padding:22px 28px 26px;border-radius:22px;box-shadow:0 18px 40px rgba(0,0,0,.35)}
+/* screen card */
+#card{left:40px;top:340px;width:1000px;height:520px;border-radius:28px;background:#fff;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+#card img{position:absolute;left:0;top:0;width:1000px}
+#card .hl{position:absolute;background:rgba(255,216,77,.55);mix-blend-mode:multiply;border-radius:6px;transform-origin:left center}
+#qt{left:40px;top:690px;width:1000px;box-sizing:border-box;padding:20px 28px 24px;border-radius:24px;background:var(--y);color:var(--ink);box-shadow:0 16px 40px rgba(0,0,0,.4)}
+#qt .ql{font:800 24px/1 IN;letter-spacing:.12em;opacity:.75}
+#qt .qq{font:800 40px/1.18 IN;letter-spacing:-.01em;margin-top:10px}
+/* captions: one box per chunk */
+#cap{left:0;width:1080px;text-align:center}
+#cap span{display:inline-block;font:800 62px/1.1 IN;letter-spacing:-.015em;padding:12px 26px 16px;border-radius:18px;max-width:960px}
+#cap .pl{background:var(--ink);color:var(--yt)} #cap .ky{background:var(--y);color:var(--ink)}
+/* centre stamp ("LET'S TEST") */
+#go{left:50%;top:420px;transform:translateX(-50%)}
+#go span{display:block;font:800 92px/1 IN;background:var(--y);color:var(--ink);padding:22px 36px 26px;border-radius:24px;box-shadow:0 20px 50px rgba(0,0,0,.4)}
+/* india cards */
+#ind{left:40px;top:300px;width:1000px;height:330px}
+.ic{position:absolute;left:0;top:0;width:1000px;height:300px;border-radius:28px;background:#fff;box-shadow:0 20px 50px rgba(0,0,0,.4);display:flex;align-items:center;gap:30px;padding:0 36px;box-sizing:border-box}
+.ic .n{flex:none;width:170px;height:170px;border-radius:26px;background:var(--y);color:var(--ink);font:800 64px/170px IN;text-align:center;letter-spacing:-.03em}
+.ic .t{font:800 52px/1.08 IN;color:var(--ink);letter-spacing:-.02em}
+.ic .s{font:600 30px/1.25 IN;color:#3a3a3a;margin-top:10px}
+#dots{left:50%;top:640px;transform:translateX(-50%);display:flex;gap:12px}
+#dots i{width:16px;height:16px;border-radius:50%;background:rgba(255,255,255,.55);display:block}
+#dots i.on{background:var(--y)}
+#ichip{left:40px;top:262px}
+/* verdict stamp */
+#vd{left:50%;top:330px;transform:translateX(-50%);text-align:center}
+#vd .k{display:inline-block}
+#vd .big{display:block;margin-top:16px;font:800 190px/1 IN;letter-spacing:-.04em;background:var(--y);color:var(--ink);padding:18px 54px 30px;border-radius:34px;border:8px solid var(--ink);box-shadow:0 26px 60px rgba(0,0,0,.45)}
+#vd .sub{display:inline-block;margin-top:18px;font:800 40px/1 IN;color:#fff;background:var(--ink);padding:12px 20px;border-radius:14px}
+.hide{display:none!important}
+</style></head><body><div id="st">
+<div class="a" id="card"><img id="cimg"><div id="hls"></div></div>
+<div class="a chip dk" id="lbl"></div>
+<div class="a" id="qt"><div class="ql"></div><div class="qq"></div></div>
+<div class="a" id="claim"><span class="chip">THE CLAIM</span><div class="q">“Claude deleted me from the internet”</div></div>
+<div class="a chip dk" id="credit">Reel: @hadibuilds.ai</div>
+<div class="a" id="go"><span>LET'S TEST IT</span></div>
+<div class="a chip dk" id="ichip">WHAT WORKS IN INDIA</div>
+<div class="a" id="ind"></div>
+<div class="a" id="dots"><i></i><i></i><i></i><i></i></div>
+<div class="a" id="vd"><span class="chip dk k">MY VERDICT</span><span class="big">HYPE</span><span class="sub">for India</span></div>
+<div class="a" id="hd"><span class="bx" id="hh">HYPE<span class="tick">✓</span></span><span id="hor">or</span><span class="bx" id="hf">FACT<span class="strike"></span></span><span id="hq">?</span></div>
+<div class="a" id="cap"></div>
+</div>
+<script>
+const TL=__TL__, ST=__ST__;
+const $=id=>document.getElementById(id), cl=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
+const eo=x=>1-Math.pow(1-cl(x),3), eb=x=>{x=cl(x);const c=1.70158;return 1+(c+1)*Math.pow(x-1,3)+c*Math.pow(x-1,2)};
+const LBL={guide:'STEP 1 · HIS GUIDE',prompt:'STEP 2 · SAME PROMPT',search:'STEP 3 · CLAUDE SEARCHES',r1:'RESULT · ME',r1b:'RESULT · ME',f1:'TEST 2 · A FRIEND',f2:'RESULT · FRIEND',r2:'WHAT CLAUDE SAYS'};
+const IMG={guide:'guide',prompt:'prompt',search:'search',r1:'r1',r1b:'r1',f1:'f1',f2:'f2',r2:'r2'};
+const HLI={r1:[0],r1b:[1],guide:[0],search:[0],r2:[0],f1:[0,1],f2:[0,1]};
+const QT={guide:['HIS GUIDE SAYS','“Claude does the searching, the writing and the form filling.”'],
+ search:['CLAUDE','“I’ll search for your name, phone number and email across people-search and data broker sites.”'],
+ r1:['CLAUDE SAYS','“I couldn’t find any data broker or people-search page showing your information.”'],
+ r1b:['CLAUDE SAYS','“The well-known people-search sites… mostly cover the US.”'],
+ f1:['CLAUDE SAYS','“I’m not going to run these lookups yet.” It checks it’s really you.'],
+ f2:['CLAUDE SAYS','“None of the three show up on any people-search site.”'],
+ r2:['CLAUDE SAYS','“In India the bigger exposure is caller-ID apps.”']};
+const T=s=>TL.segs.find(x=>x.scene===s);
+const IND=[ // body times derived from source times of what he says
+ {s:'india',src:106.4,n:'1909',t:'Turn on full DND',d:'Call or SMS 1909 and choose full block. Stops promo calls and SMS.'},
+ {s:'india',src:116.6,n:'✕',t:'Unlist from Truecaller',d:'truecaller.com/unlisting'},
+ {s:'india2',src:123.7,n:'!',t:'Report scam calls on Chakshu',d:'sancharsaathi.gov.in'},
+ {s:'india2',src:126.5,n:'1930',t:'Lost money? Call 1930',d:'or file at cybercrime.gov.in'}];
+IND.forEach(c=>{const g=T(c.s);c.at=g.t0+(c.src-g.a)});
+$('ind').innerHTML=IND.map((c,i)=>`<div class="ic" id="ic${i}"><div class="n" style="${c.n.length>3?'font-size:54px':''}">${c.n}</div><div><div class="t">${c.t}</div><div class="s">${c.d}</div></div></div>`).join('');
+const VAT=T('verdict').t0+1.3; // "it didn't work"
+const show=(id,on)=>$(id).classList.toggle('hide',!on);
+function capHTML(s){const k=/\{/.test(s);return `<span class="${k?'ky':'pl'}">${s.replace(/[{}]/g,'')}</span>`}
+let lastImg='';
+window.frame=t=>{
+  const g=TL.segs.find(x=>t>=x.t0&&t<x.t1)||TL.segs[TL.segs.length-1], lt=t-g.t0, sc=g.scene;
+  // heading: drops in at 0, verdict state after VAT
+  const hi=eb(t/0.45);$('hd').style.transform=`translateX(-50%) translateY(${(1-hi)*-60}px) scale(${0.9+0.1*hi})`;$('hd').style.opacity=cl(t/0.25);
+  const v=t-VAT, vo=v>=0;
+  $('hf').style.opacity=vo?1-0.55*cl(v/0.3):1; $('hf').querySelector('.strike').style.transform=`scaleX(${vo?eo(v/0.3):0})`;
+  $('hh').style.transform=`scale(${vo?1+0.12*Math.sin(Math.PI*cl(v/0.5)):1})`; $('hh').querySelector('.tick').style.transform=`scale(${vo?eb((v-0.15)/0.35):0})`;
+  // claim
+  show('claim',sc==='claim'); show('credit',sc==='claim');
+  if(sc==='claim'){const k=eb((lt-0.15)/0.45);$('claim').style.transform=`translateY(${(1-k)*60}px)`;$('claim').style.opacity=cl((lt-0.15)/0.2);$('credit').style.opacity=cl((lt-0.2)/0.25)}
+  // let's test
+  show('go',sc==='go'); if(sc==='go'){const k=eb(lt/0.35);$('go').style.transform=`translateX(-50%) scale(${0.6+0.4*k}) rotate(${-4*k}deg)`;$('go').style.opacity=cl(lt/0.15)*cl((g.t1-t)/0.2)}
+  // screen card
+  const split=g.layout==='split'; show('card',split); show('lbl',split);
+  if(split){
+    const key=IMG[sc], meta=ST[key]; if(lastImg!==key){$('cimg').src='stills/'+key+'.png';lastImg=key}
+    const k=eo(lt/0.4), s=1000/meta.w, ih=meta.h*s, ch=Math.min(QT[sc]?310:520,ih); $('card').style.height=ch+'px';
+    const pan=Math.max(0,ih-ch), dur=g.t1-g.t0; const py=pan*cl((lt-0.6)/Math.max(1,dur-1.2));
+    const z=1+0.03*cl(lt/dur); $('cimg').style.transform=`translateY(${-py}px) scale(${z})`;$('cimg').style.transformOrigin='50% 0';
+    $('card').style.top=(340+(1-k)*80)+'px'; $('card').style.opacity=cl(lt/0.25);
+    $('lbl').textContent=LBL[sc]; $('lbl').style.opacity=cl((lt-0.1)/0.25); $('lbl').style.transform=`translateX(${(1-eo((lt-0.1)/0.35))*-40}px)`;
+    $('hls').innerHTML=(HLI[sc]||[]).map((idx,j)=>{const r=meta.hl[idx];if(!r)return'';const p=eo((lt-0.9-j*1.2)/0.6);
+      return `<div class="hl" style="left:${r[0]*s}px;top:${r[1]*s-py}px;width:${(r[2]-r[0])*s}px;height:${(r[3]-r[1])*s}px;transform:scaleX(${p})"></div>`}).join('');
+  }
+  const q=split&&QT[sc]; show('qt',!!q); if(q){$('qt').querySelector('.ql').textContent=q[0];$('qt').querySelector('.qq').textContent=q[1];
+    const top=340+Math.min(310,ST[IMG[sc]].h*1000/ST[IMG[sc]].w)+26; const k=eb((lt-0.7)/0.4); $('qt').style.top=top+'px';
+    $('qt').style.opacity=cl((lt-0.7)/0.15); $('qt').style.transform=`translateY(${(1-k)*40}px) scale(${0.94+0.06*k})`}
+  // india cards
+  const ind=sc==='india'||sc==='india2'; show('ind',ind); show('dots',ind); show('ichip',ind);
+  if(ind){let cur=-1;IND.forEach((c,i)=>{if(t>=c.at-0.15)cur=i});
+    IND.forEach((c,i)=>{const e=$('ic'+i),d=t-(c.at-0.15);
+      if(i===cur){const k=eb(d/0.4);e.style.display='flex';e.style.transform=`translateX(${(1-k)*700}px) rotate(${(1-k)*3}deg)`;e.style.opacity=cl(d/0.2)}
+      else if(i===cur-1&&d<0.6){} else e.style.display='none'});
+    if(cur>0){const p=$('ic'+(cur-1)),d=t-(IND[cur].at-0.15);if(d<0.35){p.style.display='flex';p.style.transform=`translateX(${-eo(d/0.35)*900}px)`;p.style.opacity=1-cl(d/0.35)}else p.style.display='none'}
+    [...$('dots').children].forEach((d,i)=>d.classList.toggle('on',i<=cur));
+    $('ichip').style.opacity=cl((t-T('india').t0)/0.3)}
+  // verdict stamp
+  show('vd',vo); if(vo){const k=eb(v/0.45);$('vd').style.transform=`translateX(-50%) scale(${1.6-0.6*k}) rotate(${-3*k}deg)`;$('vd').style.opacity=cl(v/0.12)}
+  // captions
+  const c=g.caps.filter(x=>x[0]<=t).pop(); const ci=g.caps.indexOf(c);
+  if(c){const end=ci<g.caps.length-1?g.caps[ci+1][0]:g.t1;const d=t-c[0];$('cap').innerHTML=capHTML(c[1]);
+    const y=split?880:(vo||ind?1390:1390);$('cap').style.top=y+'px';const k=eb(d/0.22);$('cap').style.transform=`scale(${0.85+0.15*k})`;$('cap').style.opacity=cl(d/0.08)*cl((end-t)/0.06+0.001)}
+  else $('cap').innerHTML='';
+};
+</script></body></html>
