@@ -1,0 +1,72 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+/* HYPE or FACT? minimal template (Tunde-style layout, uk_speaks.ai yellow/black, Inter only) */
+@font-face{font-family:IN;src:url(../../templates/fonts/inter-latin-700-normal.woff2);font-weight:700}
+@font-face{font-family:IN;src:url(../../templates/fonts/inter-latin-800-normal.woff2);font-weight:800}
+:root{--y:#FFD84D;--ink:#0d0d0d}
+html,body{margin:0;background:transparent}
+#st{position:relative;width:1080px;height:1920px;overflow:hidden;font-family:IN;-webkit-font-smoothing:antialiased}
+.a{position:absolute}.hide{display:none!important}
+/* intro: label above the subject card + frame + credit */
+#lab{left:40px;top:236px;font:800 46px/1 IN;background:var(--y);color:var(--ink);padding:14px 22px 16px;border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,.25)}
+#hfr{left:34px;top:324px;width:520px;height:924px;border:6px solid var(--y);border-radius:30px}
+#cred{left:40px;top:1272px;font:700 28px/1 IN;color:#fff;background:var(--ink);padding:10px 16px;border-radius:12px}
+/* title pop */
+#ti{left:50%;top:1120px;transform:translateX(-50%);text-align:center}
+#ti span{display:inline-block;font:800 132px/1.02 IN;letter-spacing:-.04em;background:var(--ink);color:var(--y);padding:26px 40px 34px;border-radius:30px;box-shadow:0 24px 60px rgba(0,0,0,.4)}
+/* checkbox row */
+#row{left:50%;top:1186px;transform:translateX(-50%);display:flex;align-items:center;gap:22px;background:rgba(13,13,13,.9);padding:14px 26px;border-radius:22px}
+.cb{display:flex;align-items:center;gap:14px;font:800 46px/1 IN;color:#fff}
+.bx{width:48px;height:48px;border-radius:10px;border:5px solid #fff;box-sizing:border-box;position:relative}
+.bx b{position:absolute;inset:-6px;background:var(--y);border-radius:10px;color:var(--ink);font:800 44px/58px IN;text-align:center}
+#or{font:800 34px/1 IN;color:var(--y)}
+#cfact.off{opacity:.4;text-decoration:line-through;text-decoration-thickness:5px}
+/* screen card */
+#card{left:40px;top:1284px;width:1000px;height:440px;border-radius:30px;background:var(--y);padding:12px;box-sizing:border-box;box-shadow:0 20px 50px rgba(0,0,0,.35)}
+#win{position:relative;width:976px;height:416px;border-radius:20px;overflow:hidden;background:#fff}
+#win img{position:absolute;left:0;top:0;width:976px;transform-origin:0 0}
+.hl{position:absolute;background:rgba(255,216,77,.6);mix-blend-mode:multiply;border-radius:6px;transform-origin:left center}
+/* answer + cta */
+#ans{left:50%;top:1300px;transform:translateX(-50%);text-align:center}
+#ans span{display:inline-block;white-space:nowrap;font:800 64px/1 IN;background:var(--y);color:var(--ink);padding:20px 34px 24px;border-radius:22px}
+#cta{left:50%;top:1300px;transform:translateX(-50%)}
+#cta span{display:inline-block;font:800 60px/1 IN;background:var(--y);color:var(--ink);padding:22px 34px 26px;border-radius:22px;white-space:nowrap}
+</style></head><body><div id="st">
+<div class="a" id="hfr"></div><div class="a" id="lab">HYPE or FACT?</div><div class="a" id="cred">Reel: @hadibuilds.ai</div>
+<div class="a" id="ti"><span>HYPE<br>OR FACT?</span></div>
+<div class="a" id="card"><div id="win"><img id="img"><div id="hls"></div></div></div>
+<div class="a" id="row"><div class="cb" id="chype"><div class="bx" id="bh"><b>✓</b></div>HYPE</div><span id="or">OR</span><div class="cb" id="cfact"><div class="bx"></div>FACT</div></div>
+<div class="a" id="ans"><span>For India: HYPE</span></div>
+<div class="a" id="cta"><span>Comment DELETE for the guide</span></div>
+</div><script>
+const TL=__TL__, ST=__ST__;
+const $=id=>document.getElementById(id), cl=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
+const eo=x=>1-Math.pow(1-cl(x),3), eb=x=>{x=cl(x);const c=1.70158;return 1+(c+1)*Math.pow(x-1,3)+c*Math.pow(x-1,2)};
+const IMG={guide:'guide',r1:'r1',f1:'f1',f1b:'f1',f2:'f2',india:'india',india2:'india'};
+const show=(id,on)=>$(id).classList.toggle('hide',!on); let last='';
+const seg=s=>TL.segs.find(x=>x.scene===s), ANS=seg('answer').t0+1.0;
+window.frame=t=>{
+  const g=TL.segs.find(x=>t>=x.t0&&t<x.t1)||TL.segs[TL.segs.length-1], lt=t-g.t0, sc=g.scene;
+  // intro
+  const intro=sc==='intro'; show('lab',intro); show('hfr',intro); show('cred',intro);
+  if(intro){const k=eb(t/0.4);$('lab').style.transform=`scale(${0.8+0.2*k})`;$('lab').style.transformOrigin='0 50%';$('cred').style.opacity=cl((t-0.4)/0.3)}
+  // title
+  show('ti',sc==='title'); if(sc==='title'){const k=eb(lt/0.35);$('ti').style.transform=`translateX(-50%) scale(${0.6+0.4*k})`;$('ti').style.opacity=cl(lt/0.12)*cl((g.t1-t)/0.2)}
+  // checkbox row from the first test step to the end
+  const main=!intro&&sc!=='title'; show('row',main);
+  if(main){const t0=seg('guide').t0;const k=eb((t-t0)/0.35);$('row').style.transform=`translateX(-50%) translateY(${(1-k)*30}px)`;$('row').style.opacity=cl((t-t0)/0.2)}
+  const v=t-ANS; $('bh').querySelector('b').style.transform=`scale(${v>=0?eb(v/0.35):0})`; $('cfact').classList.toggle('off',v>=0.2);
+  $('chype').style.transform=`scale(${v>=0?1+0.15*Math.sin(Math.PI*cl(v/0.45)):1})`;
+  // screen card
+  const key=IMG[sc]; show('card',!!key);
+  if(key){const m=ST[key]; if(last!==key){$('img').src='stills/'+key+'.png';last=key}
+    const s=976/m.w, ih=m.h*s, pan=Math.max(0,ih-416), dur=g.t1-g.t0;
+    const first=TL.segs.find(x=>IMG[x.scene]===key); const tt=t-first.t0, D=TL.segs.filter(x=>IMG[x.scene]===key).reduce((a,x)=>a+x.t1-x.t0,0);
+    const py=pan*cl((tt-0.8)/Math.max(1,D-1.6)); $('img').style.transform=`translateY(${-py}px)`;
+    const k=eo(lt/0.35); const fresh=g===first; $('card').style.transform=fresh?`translateY(${(1-k)*80}px)`:'none'; $('card').style.opacity=fresh?cl(lt/0.2):1;
+    $('hls').innerHTML=g.hl.map(([ht,idx])=>{const r=m.hl[idx];if(!r)return'';const p=eo((t-ht)/0.5);if(p<=0)return'';
+      return `<div class="hl" style="left:${r[0]*s}px;top:${r[1]*s-py}px;width:${(r[2]-r[0])*s}px;height:${(r[3]-r[1])*s}px;transform:scaleX(${p})"></div>`}).join('');}
+  // answer + cta
+  show('ans',sc==='answer'&&v>=0.3); if(sc==='answer'){const k=eb((v-0.3)/0.35);$('ans').style.transform=`translateX(-50%) scale(${0.7+0.3*k})`}
+  show('cta',sc==='cta'); if(sc==='cta'){const k=eb((lt-0.3)/0.35);$('cta').style.transform=`translateX(-50%) scale(${0.7+0.3*k})`;$('cta').style.opacity=cl((lt-0.3)/0.15)}
+};
+</script></body></html>

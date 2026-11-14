@@ -42,3 +42,7 @@ jobs/*/test.jpg
 jobs/*/final-sheet.jpg
 jobs/*/*.mp4
 jobs/*/render.log
+jobs/hof2/raw/
+jobs/hof2/stills/*.png
+jobs/hof2/mask.png
+jobs/hof2/sheet.jpg
