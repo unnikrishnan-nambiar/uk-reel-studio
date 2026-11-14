@@ -7,18 +7,18 @@ html,body{margin:0;background:transparent}
 #st{position:relative;width:1080px;height:1920px;overflow:hidden;font-family:IN;-webkit-font-smoothing:antialiased}
 .a{position:absolute}.hide{display:none!important}
 /* intro: label above the subject card + frame + credit */
-#lab{left:40px;top:236px;font:800 46px/1 IN;background:var(--y);color:var(--ink);padding:14px 22px 16px;border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,.25)}
+#lab{left:50%;top:190px;font:800 76px/1 IN;letter-spacing:-.02em;white-space:nowrap;background:var(--y);color:var(--ink);padding:18px 32px 22px;border-radius:22px;box-shadow:0 10px 30px rgba(0,0,0,.25)}
 #hfr{left:34px;top:324px;width:520px;height:924px;border:6px solid var(--y);border-radius:30px}
 #cred{left:40px;top:1272px;font:700 28px/1 IN;color:#fff;background:var(--ink);padding:10px 16px;border-radius:12px}
 /* title pop */
 #ti{left:50%;top:1120px;transform:translateX(-50%);text-align:center}
 #ti span{display:inline-block;font:800 132px/1.02 IN;letter-spacing:-.04em;background:var(--ink);color:var(--y);padding:26px 40px 34px;border-radius:30px;box-shadow:0 24px 60px rgba(0,0,0,.4)}
 /* checkbox row */
-#row{left:50%;top:1186px;transform:translateX(-50%);display:flex;align-items:center;gap:22px;background:rgba(13,13,13,.9);padding:14px 26px;border-radius:22px}
-.cb{display:flex;align-items:center;gap:14px;font:800 46px/1 IN;color:#fff}
-.bx{width:48px;height:48px;border-radius:10px;border:5px solid #fff;box-sizing:border-box;position:relative}
-.bx b{position:absolute;inset:-6px;background:var(--y);border-radius:10px;color:var(--ink);font:800 44px/58px IN;text-align:center}
-#or{font:800 34px/1 IN;color:var(--y)}
+#row{left:50%;top:420px;transform:translateX(-50%);display:flex;align-items:center;gap:22px;background:rgba(13,13,13,.9);padding:14px 26px;border-radius:22px}
+.cb{display:flex;align-items:center;gap:16px;font:800 58px/1 IN;color:#fff}
+.bx{width:58px;height:58px;border-radius:10px;border:5px solid #fff;box-sizing:border-box;position:relative}
+.bx b{position:absolute;inset:-6px;background:var(--y);border-radius:10px;color:var(--ink);font:800 52px/68px IN;text-align:center}
+#or{font:800 40px/1 IN;color:var(--y)}
 #cfact.off{opacity:.4;text-decoration:line-through;text-decoration-thickness:5px}
 /* screen card */
 #card{left:40px;top:1284px;width:1000px;height:440px;border-radius:30px;background:var(--y);padding:12px;box-sizing:border-box;box-shadow:0 20px 50px rgba(0,0,0,.35)}
@@ -48,7 +48,7 @@ window.frame=t=>{
   const g=TL.segs.find(x=>t>=x.t0&&t<x.t1)||TL.segs[TL.segs.length-1], lt=t-g.t0, sc=g.scene;
   // intro
   const intro=sc==='intro'; show('lab',intro); show('hfr',intro); show('cred',intro);
-  if(intro){const k=eb(t/0.4);$('lab').style.transform=`scale(${0.8+0.2*k})`;$('lab').style.transformOrigin='0 50%';$('cred').style.opacity=cl((t-0.4)/0.3)}
+  if(intro){const k=eb(t/0.4);$('lab').style.transform=`translateX(-50%) scale(${0.8+0.2*k})`;$('lab').style.transformOrigin='50% 50%';$('cred').style.opacity=cl((t-0.4)/0.3)}
   // title
   show('ti',sc==='title'); if(sc==='title'){const k=eb(lt/0.35);$('ti').style.transform=`translateX(-50%) scale(${0.6+0.4*k})`;$('ti').style.opacity=cl(lt/0.12)*cl((g.t1-t)/0.2)}
   // checkbox row from the first test step to the end
