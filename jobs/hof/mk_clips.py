@@ -16,17 +16,27 @@ CLIPS = [
     ('6-result-friend', 212.0, 236.0, (700, 60, 1500, 850)),
     ('7-india-steps-his-guide', 240.0, 262.0, (480, 60, 1440, 1032)),
 ]
-OCR_EVERY = 6     # OCR every 3rd frame (10/s) and apply boxes to neighbours
+OCR_EVERY = 3     # OCR every 3rd frame (10/s) and apply boxes to neighbours
 def boxes_for(img):
     g = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY); g = cv2.resize(g, None, fx=1.6, fy=1.6, interpolation=cv2.INTER_CUBIC)
     d = pytesseract.image_to_data(g, output_type=Output.DICT, config='--psm 3')
-    out = []
+    out = []; lines = {}
     for i, t in enumerate(d['text']):
         t = (t or '').strip()
-        if t and PAT.search(t):
-            x, y, w, h = int(d['left'][i] / 1.6), int(d['top'][i] / 1.6), int(d['width'][i] / 1.6), int(d['height'][i] / 1.6)
-            out.append((x - 8, y - 6, x + w + 8, y + h + 6))
+        if not t: continue
+        x, y, w, h = int(d['left'][i] / 1.6), int(d['top'][i] / 1.6), int(d['width'][i] / 1.6), int(d['height'][i] / 1.6)
+        lines.setdefault((d['block_num'][i], d['par_num'][i], d['line_num'][i]), []).append((t, x, y, x + w, y + h))
+        if PAT.search(t): out.append((x - 10, y - 8, x + w + 10, y + h + 8))
+    for ws in lines.values():   # usage / limit bars: blur the whole line
+        if USAGE.search(' '.join(w[0] for w in ws)):
+            out.append((min(w[1] for w in ws) - 12, min(w[2] for w in ws) - 8, max(w[3] for w in ws) + 12, max(w[4] for w in ws) + 8))
     return out
+USAGE = re.compile(r'(weekly|limit|usage|session|reset|messages left|% of)', re.I)
+def shift(a, b):
+    # vertical scroll between two frames (phase correlation on grey), returns dy to move boxes from a to b
+    ga = cv2.cvtColor(a, cv2.COLOR_BGR2GRAY).astype(np.float32); gb = cv2.cvtColor(b, cv2.COLOR_BGR2GRAY).astype(np.float32)
+    (dx, dy), r = cv2.phaseCorrelate(ga, gb)
+    return int(round(dy)) if r > 0.2 else 0
 def blur(img, bs):
     H, W = img.shape[:2]
     for x1, y1, x2, y2 in bs:
@@ -55,7 +65,11 @@ for name, a, b, (cx1, cy1, cx2, cy2) in CLIPS:
                            '-movflags', '+faststart', OUT + name + '.mp4'], stdin=subprocess.PIPE)
     tot = 0
     for i, fr in enumerate(frames):
-        near = [k for k in keys if abs(k - i) <= OCR_EVERY + 2]   # boxes from neighbouring OCR frames cover scrolling
-        bs = [b_ for k in near for b_ in bx[k]]; tot += len(bs)
+        near = [k for k in keys if abs(k - i) <= OCR_EVERY + 1]   # neighbouring OCR frames, boxes moved by the measured scroll
+        bs = []
+        for k in near:
+            dy = 0 if k == i else shift(frames[k], fr)
+            bs += [(x1, y1 + dy, x2, y2 + dy) for x1, y1, x2, y2 in bx[k]]
+        tot += len(bs)
         ff.stdin.write(blur(fr, bs).tobytes())
     ff.stdin.close(); ff.wait(); print(name, n, 'frames, blur boxes', tot, flush=True)
