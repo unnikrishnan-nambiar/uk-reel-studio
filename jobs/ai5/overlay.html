@@ -39,6 +39,7 @@ function style(el,size){el.style.fontSize=size+'px';const o=Math.max(3,Math.roun
   el.style.filter=`drop-shadow(${o}px 0 0 #0d0d0d) drop-shadow(-${o}px 0 0 #0d0d0d) drop-shadow(0 ${o}px 0 #0d0d0d) drop-shadow(0 -${o}px 0 #0d0d0d) drop-shadow(0 5px 0 #0d0d0d) drop-shadow(0 10px 0 #0d0d0d) drop-shadow(0 16px 24px rgba(0,0,0,.55))`;
   [...el.children].forEach(sp=>{sp.style.backgroundImage='linear-gradient(#FFD84D,#FFD84D)'})}
 function setWord(el,txt,maxSize,maxW){if(el.dataset.k===txt)return;el.dataset.k=txt;
+  if(txt.includes('|')){el.innerHTML=txt.split('').map(ch=>ch==='|'?'<br>':`<span>${ch===' '?'&nbsp;':ch}</span>`).join('');style(el,150);[...el.children].forEach(sp=>{if(sp.tagName==='BR')sp.style.backgroundImage=''});return}
   el.innerHTML=txt.split('').map(ch=>`<span>${ch===' '?'&nbsp;':ch}</span>`).join('');style(el,maxSize);
   const W=[...el.children].reduce((s,x)=>s+x.getBoundingClientRect().width,0);if(W>maxW)style(el,maxSize*maxW/W)}
 function animWord(el,t,a,b){const n=el.children.length;const ord=[...Array(n).keys()].sort((x,y)=>((x*7+3)%n)-((y*7+3)%n));
@@ -47,22 +48,22 @@ function animWord(el,t,a,b){const n=el.children.length;const ord=[...Array(n).ke
 // cues in SOURCE time: [start, end, big word, question label, scene]. A scene replaces the big word with a big card.
 const CUES=[
  [0.5,1.7,'60 SECONDS','',''],
- [1.7,4.6,'5 AI WORDS','',''],
- [6.7,8.8,'WHAT IS AI?','QUESTION 1/5',''],
- [8.8,12.8,'','QUESTION 1/5','brain'],
- [14.7,16.2,'CHATGPT? CLAUDE?','QUESTION 2/5',''],
- [16.2,20.2,'','QUESTION 2/5','apps'],
- [20.5,23.0,'WHAT IS A MODEL?','QUESTION 3/5',''],
- [23.0,30.3,'','QUESTION 3/5','models'],
- [30.4,33.5,'= QUALITY','QUESTION 3/5',''],
- [34.7,36.7,'WHAT IS A TOKEN?','QUESTION 4/5',''],
- [36.7,42.4,'','QUESTION 4/5','tokens'],
- [42.4,45.2,'','QUESTION 4/5','mal'],
- [45.8,48.6,'WHAT IS A PROMPT?','QUESTION 5/5',''],
- [48.6,57.0,'','QUESTION 5/5','order'],
- [57.0,59.25,'CLEAR = BETTER','QUESTION 5/5',''],
+ [1.7,3.8,'5 AI WORDS','',''],
+ [3.8,6.7,'ARTIFICIAL|INTELLIGENCE','1 OF 5',''],
+ [6.7,12.8,'','1 OF 5','brain'],
+ [13.0,16.2,'CHATGPT + CLAUDE','2 OF 5',''],
+ [16.2,20.3,'','2 OF 5','apps'],
+ [20.5,23.0,'MODELS','3 OF 5',''],
+ [23.0,30.3,'','3 OF 5','models'],
+ [30.4,33.5,'= QUALITY','3 OF 5',''],
+ [33.6,36.7,'TOKENS','4 OF 5',''],
+ [36.7,42.4,'','4 OF 5','tokens'],
+ [42.4,45.8,'','4 OF 5','mal'],
+ [45.8,48.6,'PROMPT','5 OF 5',''],
+ [48.6,57.0,'','5 OF 5','order'],
+ [57.0,59.25,'CLEAR = BETTER','5 OF 5',''],
  [59.25,62.9,'YOUR SCORE?','','score'],
- [62.9,65.3,'COMMENT IT','','score'],
+ [62.9,65.4,'COMMENT IT','','score'],
 ].map(c=>({a:B(c[0]),b:B(c[1]),w:c[2],q:c[3],fx:c[4],sa:c[0]}));
 const S2B=s=>B(s);
 const card=(title,body)=>`<div class="card"><div class="ct">${title}</div><div class="cb">${body}</div></div>`;
@@ -107,7 +108,7 @@ window.frame=t=>{
       <div style="flex:1;background:#0d0d0d;color:#FFD84D;border-radius:18px;padding:18px 22px;font:800 38px IN">API cost</div></div>
       <div style="padding:0 30px 26px;opacity:${op(lt,2.4)}"><div style="height:22px;border-radius:10px;background:#eee;overflow:hidden"><div style="height:100%;width:${meter*70}%;background:#FFD84D"></div></div><div style="font:700 24px IN;color:#444;margin-top:8px">counted in tokens</div></div>`)}
   if(fx==='mal'){ // English vs Malayalam chips (illustration)
-    const row=(lab,n,at,col)=>`<div style="display:flex;align-items:center;gap:16px;margin:16px 0;opacity:${op(lt,at)}"><div style="width:220px;font:800 40px IN">${lab}</div><div>${[...Array(n)].map((_,i)=>`<span style="display:inline-block;width:56px;height:56px;margin:0 5px;border-radius:12px;background:${col};border:5px solid #0d0d0d;transform:scale(${pop(lt,at+i*.08)})"></span>`).join('')}</div></div>`;
+    const row=(lab,n,at,col)=>`<div style="display:flex;align-items:center;gap:16px;margin:16px 0;opacity:${op(lt,at)}"><div style="width:220px;font:800 40px IN">${lab}</div><div>${[...Array(n)].map((_,i)=>`<span style="display:inline-block;width:46px;height:46px;margin:0 4px;border-radius:10px;background:${col};border:5px solid #0d0d0d;transform:scale(${pop(lt,at+i*.08)})"></span>`).join('')}</div></div>`;
     h=card('MALAYALAM USES MORE TOKENS',`<div style="padding:24px 34px 10px">${row('English',3,.2,'#fff')}${row('Malayalam',9,.8,'#FFD84D')}</div><div style="padding:0 34px 24px;font:700 24px IN;color:#555">Illustration: the same sentence</div>`)}
   if(fx==='order'){ // hotel order: vague vs clear
     const vague=op(lt,0),x1=lt>1.6,clear=op(lt,2.6),ok=lt>3.4;
