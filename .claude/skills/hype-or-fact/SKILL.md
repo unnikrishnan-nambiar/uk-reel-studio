@@ -4,7 +4,14 @@ description: The "HYPE or FACT?" reel template - he tests another creator's AI c
 ---
 # HYPE or FACT? template
 
-Job folder to copy: `jobs/hof/` (first episode: "Claude deleted me from the internet", Nov 2026).
+Job folder to copy: **`jobs/hof3/`** (current approved layout, Nov 2026). `jobs/hof/` is the older busy version, `jobs/hof2/` the first minimal one.
+
+## Current approved layout (hof3)
+- Hook: 0.3 s of him, then one black/yellow hook box at the top (3 lines). The subject reel plays as a big yellow-framed card on the left (560x996) for ~6 s with its audio while he listens; label under it: `Credits: @handle` (never "viral video"). Then his line.
+- Test: big `☐ HYPE OR ☐ FACT` row above his head (top 380, 78 px text, 76 px boxes) - he asked for it bigger, keep it at least this size. Yellow-framed screen card (1032 wide) at the bottom.
+- Malayalam subtitles (Noto Sans Malayalam + Inter for English), one box per chunk, words rise in one by one, slow. Above his head during the test, low during the hook.
+- End: HYPE ticked, FACT struck, `For India: HYPE`, then `Comment KEYWORD for the guide`.
+- Screen material: blurred clips via `jobs/hof/mk_clips.py` (OCR blur every frame, 3+ digit numbers, crop the usage bar), then an OCR scan of the output before sending.
 
 ## Layout (fixed, reuse as is)
 - **Heading, always on:** `HYPE or FACT?` pill at the top (yellow HYPE box, white FACT box). At the verdict, the winner gets a green tick and the loser is struck through.
