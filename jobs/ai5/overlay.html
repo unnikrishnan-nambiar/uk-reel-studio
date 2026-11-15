@@ -10,7 +10,10 @@ html,body{margin:0;background:transparent}
 .word{position:absolute;left:0;right:0;text-align:center;white-space:nowrap;font-weight:800;text-transform:uppercase;letter-spacing:-.035em;line-height:.92}
 .word span{display:inline-block;-webkit-background-clip:text;background-clip:text;color:transparent}
 #qn{left:50%;top:228px;transform:translateX(-50%);font:800 34px/1 IN;letter-spacing:.14em;background:var(--ink);color:var(--y);padding:12px 22px;border-radius:14px;white-space:nowrap}
-#fx{left:0;top:470px;width:1080px;height:200px}
+#fx{left:0;top:470px;width:1080px}
+.card{margin:0 50px;background:#fff;border-radius:30px;overflow:hidden;box-shadow:0 0 0 6px #0d0d0d,0 26px 60px rgba(0,0,0,.45)}
+.ct{background:#0d0d0d;color:#FFD84D;font:800 30px/1 IN;letter-spacing:.06em;padding:18px 26px}
+.cb{position:relative}
 .pill{display:inline-block;font:800 50px/1 IN;padding:18px 28px;border-radius:20px;margin:0 10px;background:#fff;color:var(--ink);box-shadow:0 12px 30px rgba(0,0,0,.35)}
 .pill.y{background:var(--y)}.pill.k{background:var(--ink);color:var(--y)}
 .ord{display:inline-block;font:800 44px/1.1 IN,ML;padding:18px 26px;border-radius:20px;margin:0 8px;box-shadow:0 12px 30px rgba(0,0,0,.35);position:relative}
@@ -41,46 +44,87 @@ function setWord(el,txt,maxSize,maxW){if(el.dataset.k===txt)return;el.dataset.k=
 function animWord(el,t,a,b){const n=el.children.length;const ord=[...Array(n).keys()].sort((x,y)=>((x*7+3)%n)-((y*7+3)%n));
   [...el.children].forEach((sp,i)=>{const k=p(t,a+ord.indexOf(i)*.035,.22);sp.style.opacity=eo(k);sp.style.transform=`translateY(${(1-eo(k))*-40}px) scale(${1.5-.5*back(k)})`});
   el.style.opacity=cl((b-t)/.1)}
-// cues in SOURCE time: [start, end, big word, question label, fx]
+// cues in SOURCE time: [start, end, big word, question label, scene]. A scene replaces the big word with a big card.
 const CUES=[
  [0.5,1.7,'60 SECONDS','',''],
  [1.7,4.6,'5 AI WORDS','',''],
  [6.7,8.8,'WHAT IS AI?','QUESTION 1/5',''],
- [8.8,10.6,'THINKS LIKE US','QUESTION 1/5',''],
- [10.6,12.8,'A BRAIN','QUESTION 1/5','brain'],
+ [8.8,12.8,'','QUESTION 1/5','brain'],
  [14.7,16.2,'CHATGPT? CLAUDE?','QUESTION 2/5',''],
- [16.2,20.2,'= THE APP','QUESTION 2/5','apps'],
+ [16.2,20.2,'','QUESTION 2/5','apps'],
  [20.5,23.0,'WHAT IS A MODEL?','QUESTION 3/5',''],
- [23.0,26.0,'THE CHEF','QUESTION 3/5','speed'],
- [26.0,30.3,'INSIDE THE APP','QUESTION 3/5','models'],
+ [23.0,30.3,'','QUESTION 3/5','models'],
  [30.4,33.5,'= QUALITY','QUESTION 3/5',''],
  [34.7,36.7,'WHAT IS A TOKEN?','QUESTION 4/5',''],
- [36.7,39.0,'WORD PIECES','QUESTION 4/5','tokens'],
- [39.1,42.4,'LIMIT + COST','QUESTION 4/5',''],
- [42.4,45.2,'MALAYALAM = MORE','QUESTION 4/5','mal'],
+ [36.7,42.4,'','QUESTION 4/5','tokens'],
+ [42.4,45.2,'','QUESTION 4/5','mal'],
  [45.8,48.6,'WHAT IS A PROMPT?','QUESTION 5/5',''],
- [48.6,57.0,'YOUR ORDER','QUESTION 5/5','order'],
+ [48.6,57.0,'','QUESTION 5/5','order'],
  [57.0,59.25,'CLEAR = BETTER','QUESTION 5/5',''],
  [59.25,62.9,'YOUR SCORE?','','score'],
  [62.9,65.3,'COMMENT IT','','score'],
-].map(c=>({a:B(c[0]),b:B(c[1]),w:c[2],q:c[3],fx:c[4]}));
-let lastFx='';
+].map(c=>({a:B(c[0]),b:B(c[1]),w:c[2],q:c[3],fx:c[4],sa:c[0]}));
+const S2B=s=>B(s);
+const card=(title,body)=>`<div class="card"><div class="ct">${title}</div><div class="cb">${body}</div></div>`;
+const pop=(lt,at)=>back((lt-at)/.35), op=(lt,at)=>eo((lt-at)/.2);
 window.frame=t=>{
   const c=CUES.find(x=>t>=x.a&&t<x.b);
-  if(c){$('w').style.display='block';setWord($('w'),c.w,180,920);animWord($('w'),t,c.a,c.b)}else $('w').style.display='none';
-  // question label stays across the cues of the same question
+  const big=c&&c.w&&!(c.fx&&c.fx!=='score');
+  if(big){$('w').style.display='block';setWord($('w'),c.w,180,920);animWord($('w'),t,c.a,c.b)}else $('w').style.display='none';
   if(c&&c.q){$('qn').classList.remove('hide');$('qn').textContent=c.q;const first=CUES.find(x=>x.q===c.q);const k=back(p(t,first.a,.3));$('qn').style.transform=`translateX(-50%) scale(${.7+.3*k})`}else $('qn').classList.add('hide');
-  // per-word animation strip
   const fx=c?c.fx:''; const lt=c?t-c.a:0; let h='';
-  if(fx==='brain'){h=`<div style="text-align:center"><span class="pill" style="opacity:${eo(lt/.3)}">READS</span><span class="pill" style="opacity:${eo((lt-.4)/.3)}">LEARNS</span><span class="pill y" style="opacity:${eo((lt-.8)/.3)}">ANSWERS</span></div>`}
-  if(fx==='apps'){h=`<div style="text-align:center">${['ChatGPT','Claude','Gemini'].map((x,i)=>`<span class="pill${i==1?' y':''}" style="display:inline-block;opacity:${eo((lt-.2-i*.35)/.3)};transform:translateY(${(1-back((lt-.2-i*.35)/.4))*60}px)">${x}</span>`).join('')}</div>`}
-  if(fx==='speed'){h=`<div style="text-align:center"><span class="pill" style="opacity:${eo((lt-.3)/.3)}">FAST</span><span class="pill y" style="opacity:${eo((lt-1.2)/.3)}">SMART</span></div>`}
-  if(fx==='models'){h=`<div style="text-align:center">${['GPT','Opus','Sonnet'].map((x,i)=>`<span class="pill${i==1?' y':''}" style="display:inline-block;opacity:${eo((lt-.2-i*.6)/.3)};transform:scale(${.7+.3*back((lt-.2-i*.6)/.35)})">${x}</span>`).join('')}</div>`}
-  if(fx==='tokens'){const sp=eo((lt-.5)/.5)*26;h=`<div style="text-align:center">${['UN','BELIEV','ABLE'].map((x,i)=>`<span class="pill${i==1?' y':''}" style="display:inline-block;margin:0 ${sp}px;border-radius:${sp>2?20:0}px">${x}</span>`).join('')}</div>`}
-  if(fx==='mal'){h=`<div style="text-align:center"><span class="pill" style="opacity:${eo(lt/.3)}">English: fewer</span><span class="pill y" style="opacity:${eo((lt-.6)/.3)}">Malayalam: more</span></div>`}
-  if(fx==='order'){const s1=eo(lt/.3),s2=eo((lt-2.6)/.3),x1=lt>1.6;h=`<div style="text-align:center"><span class="ord bad" style="opacity:${s1}">"എന്തെങ്കിലും താ"${x1?'<span class="m" style="background:#E5484D">✕</span>':''}</span><span class="ord good" style="opacity:${s2}">"Chicken biryani, half plate"${lt>3.4?'<span class="m" style="background:#1fbf5f">✓</span>':''}</span></div>`}
-  if(fx==='score'){const k=back(p(t,CUES[CUES.length-2].a+.3,.4));h=`<div style="text-align:center"><span class="pill k" style="font-size:96px;padding:22px 44px;transform:scale(${.6+.4*k});display:inline-block">? / 5</span></div>`}
-  $('fx').innerHTML=h;
+  const enter=`transform:translateY(${(1-eo(lt/.35))*60}px) scale(${.92+.08*eo(lt/.35)});opacity:${cl(lt/.2)*cl(((c?c.b:0)-t)/.15)}`;
+  if(fx==='brain'){ // books fly into the AI brain, then it answers
+    const books=['#FFD84D','#ffffff','#FFD84D','#ffffff','#FFD84D'].map((col,i)=>{const k=eo((lt-i*.18)/.6);const x0=40+i*30,y0=60+(i%2)*90,x=x0+(330-x0)*k,y=y0+(150-y0)*k;
+      return `<div style="position:absolute;left:${x}px;top:${y}px;width:70px;height:92px;border-radius:8px;background:${col};border:5px solid #0d0d0d;opacity:${1-k*.9};transform:rotate(${(1-k)*(-12+i*6)}deg)"></div>`}).join('');
+    const r=1+.06*Math.sin(lt*6);
+    const msg='Hi! How can I help?'.slice(0,Math.max(0,Math.floor((lt-1.6)*14)));
+    h=card('A BRAIN THAT LEARNED BY READING',`<div style="position:relative;height:300px">${books}
+      <div style="position:absolute;left:330px;top:80px;width:180px;height:180px;border-radius:50%;background:#0d0d0d;color:#FFD84D;font:800 76px/180px IN;text-align:center;transform:scale(${r})">AI</div>
+      <div style="position:absolute;left:560px;top:110px;width:340px;padding:22px 26px;border-radius:26px 26px 26px 6px;background:#FFD84D;font:800 40px/1.15 IN;opacity:${op(lt,1.5)}">${msg}<span style="opacity:${Math.floor(lt*3)%2}">|</span></div></div>`)}
+  if(fx==='apps'){ // three shops
+    const shops=[['ChatGPT','OpenAI'],['Claude','Anthropic'],['Gemini','Google']].map(([n,co],i)=>{const k=pop(lt,.2+i*.6);
+      return `<div style="width:270px;transform:translateY(${(1-k)*120}px) scale(${.6+.4*k});opacity:${op(lt,.2+i*.6)}">
+        <div style="height:46px;border-radius:14px 14px 0 0;background:repeating-linear-gradient(90deg,#FFD84D 0 34px,#0d0d0d 34px 68px)"></div>
+        <div style="background:#fff;border:6px solid #0d0d0d;border-top:none;border-radius:0 0 18px 18px;padding:22px 10px;text-align:center"><div style="font:800 46px/1 IN">${n}</div><div style="font:700 26px/1 IN;color:#555;margin-top:12px">by ${co}</div></div></div>`}).join('');
+    h=card('CHATGPT, CLAUDE, GEMINI = APPS (THE SHOP)',`<div style="display:flex;justify-content:space-between;padding:26px 30px">${shops}</div>`)}
+  if(fx==='models'){ // chefs inside each shop, then quality meter
+    const chef=(name,tag,i,hl)=>{const k=pop(lt,.3+i*.9);return `<div style="display:flex;align-items:center;gap:16px;background:${hl?'#FFD84D':'#f3f3f3'};border-radius:18px;padding:14px 18px;transform:scale(${.6+.4*k});opacity:${op(lt,.3+i*.9)}">
+      <svg width="58" height="58" viewBox="0 0 24 24"><path d="M6 13a4 4 0 1 1 2-7.5A4 4 0 0 1 16 5.5 4 4 0 1 1 18 13v5H6z" fill="#fff" stroke="#0d0d0d" stroke-width="1.6"/><rect x="6" y="18" width="12" height="3" fill="#0d0d0d"/></svg>
+      <div><div style="font:800 40px/1 IN">${name}</div><div style="font:700 24px/1 IN;color:#444;margin-top:6px">${tag}</div></div></div>`};
+    const q=eo((lt-4.2)/1.4);
+    h=card('MODEL = THE CHEF INSIDE THE APP',`<div style="display:flex;gap:26px;padding:22px 30px 10px">
+      <div style="flex:1"><div style="font:800 28px IN;letter-spacing:.1em;margin-bottom:12px">CHATGPT</div>${chef('GPT models','fast or smart',0,0)}</div>
+      <div style="flex:1;display:flex;flex-direction:column;gap:12px"><div style="font:800 28px IN;letter-spacing:.1em">CLAUDE</div>${chef('Opus','smartest',1,1)}${chef('Sonnet','fast + smart',2,0)}</div></div>
+      <div style="padding:6px 30px 24px;opacity:${op(lt,4)}"><div style="font:800 28px IN;letter-spacing:.1em">ANSWER QUALITY</div><div style="height:30px;border-radius:12px;background:#eee;margin-top:10px;overflow:hidden"><div style="height:100%;width:${q*92}%;background:#FFD84D;border-right:6px solid #0d0d0d"></div></div></div>`)}
+  if(fx==='tokens'){ // a sentence splits into token chips, then "limit + cost"
+    const parts=['I',' love',' using',' AI',' tools'],sp=eo((lt-.6)/.6)*18;
+    const chips=parts.map((x,i)=>`<span style="display:inline-block;font:800 54px/1 IN;padding:16px ${10+sp}px;margin:0 ${sp/2}px;border-radius:${sp>3?16:0}px;background:${i%2?'#FFD84D':'#fff'};border:${sp>3?'5px solid #0d0d0d':'0'}">${x.trim()}</span>`).join('');
+    const meter=eo((lt-2.5)/2);
+    h=card('TOKENS = SMALL WORD PIECES',`<div style="text-align:center;padding:40px 20px 16px">${chips}</div>
+      <div style="display:flex;gap:20px;padding:6px 30px 26px;opacity:${op(lt,2.4)}">
+      <div style="flex:1;background:#0d0d0d;color:#FFD84D;border-radius:18px;padding:18px 22px;font:800 38px IN">Your limit</div>
+      <div style="flex:1;background:#0d0d0d;color:#FFD84D;border-radius:18px;padding:18px 22px;font:800 38px IN">API cost</div></div>
+      <div style="padding:0 30px 26px;opacity:${op(lt,2.4)}"><div style="height:22px;border-radius:10px;background:#eee;overflow:hidden"><div style="height:100%;width:${meter*70}%;background:#FFD84D"></div></div><div style="font:700 24px IN;color:#444;margin-top:8px">counted in tokens</div></div>`)}
+  if(fx==='mal'){ // English vs Malayalam chips (illustration)
+    const row=(lab,n,at,col)=>`<div style="display:flex;align-items:center;gap:16px;margin:16px 0;opacity:${op(lt,at)}"><div style="width:220px;font:800 40px IN">${lab}</div><div>${[...Array(n)].map((_,i)=>`<span style="display:inline-block;width:56px;height:56px;margin:0 5px;border-radius:12px;background:${col};border:5px solid #0d0d0d;transform:scale(${pop(lt,at+i*.08)})"></span>`).join('')}</div></div>`;
+    h=card('MALAYALAM USES MORE TOKENS',`<div style="padding:24px 34px 10px">${row('English',3,.2,'#fff')}${row('Malayalam',9,.8,'#FFD84D')}</div><div style="padding:0 34px 24px;font:700 24px IN;color:#555">Illustration: the same sentence</div>`)}
+  if(fx==='order'){ // hotel order: vague vs clear
+    const vague=op(lt,0),x1=lt>1.6,clear=op(lt,2.6),ok=lt>3.4;
+    h=card('PROMPT = YOUR ORDER',`<div style="display:flex;gap:24px;padding:26px 30px">
+      <div style="flex:1;background:#f3f3f3;border-radius:22px;padding:22px;opacity:${vague};position:relative">
+        <div style="font:800 40px/1.2 IN,ML">"എന്തെങ്കിലും താ"</div>
+        <div style="margin-top:22px;height:110px;border-radius:50%;background:#ddd;display:flex;align-items:center;justify-content:center;font:800 70px IN;color:#888">?</div>
+        ${x1?`<div style="position:absolute;right:-14px;top:-14px;width:64px;height:64px;border-radius:50%;background:#E5484D;color:#fff;font:800 42px/64px IN;text-align:center;transform:scale(${pop(lt,1.6)})">✕</div>`:''}</div>
+      <div style="flex:1;background:#FFD84D;border-radius:22px;padding:22px;opacity:${clear};position:relative;transform:scale(${.85+.15*eo((lt-2.6)/.3)})">
+        <div style="font:800 40px/1.2 IN">"Chicken biryani, half plate"</div>
+        <div style="margin-top:22px;height:110px;border-radius:50%;background:#fff;border:6px solid #0d0d0d;display:flex;align-items:center;justify-content:center;font:800 34px IN">BIRYANI</div>
+        ${ok?`<div style="position:absolute;right:-14px;top:-14px;width:64px;height:64px;border-radius:50%;background:#1fbf5f;color:#fff;font:800 42px/64px IN;text-align:center;transform:scale(${pop(lt,3.4)})">✓</div>`:''}</div></div>`)}
+  if(fx==='score'){ // 5 boxes tick one by one, then ? / 5
+    const s0=CUES[CUES.length-2].a, u=t-s0;
+    h=`<div style="text-align:center;margin-top:20px">${[...Array(5)].map((_,i)=>`<span style="display:inline-block;width:110px;height:110px;margin:0 9px;border-radius:22px;background:${u>.4+i*.35?'#FFD84D':'#fff'};border:7px solid #0d0d0d;font:800 70px/96px IN;text-align:center;transform:scale(${.6+.4*back((u-.4-i*.35)/.3)})">${u>.4+i*.35?'✓':''}</span>`).join('')}</div>`}
+  $('fx').innerHTML=fx&&fx!=='score'?`<div style="${enter}">${h}</div>`:h;
+  $('fx').style.top=(fx&&fx!=='score')?'236px':'480px';
   // Malayalam subtitles: one box per chunk, words rise in
   const g=TL.segs.find(x=>t>=x.t0&&t<x.t1)||TL.segs[TL.segs.length-1];
   const s=g.caps.find(x=>t>=x[0]&&t<x[1]);
