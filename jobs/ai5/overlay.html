@@ -1,0 +1,92 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+/* 5 AI words: TRADE-style big 3D yellow/black words + quiz questions + Malayalam subtitles */
+@font-face{font-family:IN;src:url(../../templates/fonts/inter-latin-700-normal.woff2);font-weight:700}
+@font-face{font-family:IN;src:url(../../templates/fonts/inter-latin-800-normal.woff2);font-weight:800}
+@font-face{font-family:ML;src:url(../../templates/fonts/noto-sans-malayalam-malayalam-800-normal.woff2);font-weight:800}
+:root{--y:#FFD84D;--ink:#0d0d0d}
+html,body{margin:0;background:transparent}
+#st{position:relative;width:1080px;height:1920px;overflow:hidden;font-family:IN,ML;-webkit-font-smoothing:antialiased}
+.a{position:absolute}.hide{display:none!important}
+.word{position:absolute;left:0;right:0;text-align:center;white-space:nowrap;font-weight:800;text-transform:uppercase;letter-spacing:-.035em;line-height:.92}
+.word span{display:inline-block;-webkit-background-clip:text;background-clip:text;color:transparent}
+#qn{left:50%;top:228px;transform:translateX(-50%);font:800 34px/1 IN;letter-spacing:.14em;background:var(--ink);color:var(--y);padding:12px 22px;border-radius:14px;white-space:nowrap}
+#fx{left:0;top:470px;width:1080px;height:200px}
+.pill{display:inline-block;font:800 50px/1 IN;padding:18px 28px;border-radius:20px;margin:0 10px;background:#fff;color:var(--ink);box-shadow:0 12px 30px rgba(0,0,0,.35)}
+.pill.y{background:var(--y)}.pill.k{background:var(--ink);color:var(--y)}
+.ord{display:inline-block;font:800 44px/1.1 IN,ML;padding:18px 26px;border-radius:20px;margin:0 8px;box-shadow:0 12px 30px rgba(0,0,0,.35);position:relative}
+.ord.bad{background:#fff;color:#6b6b6b}.ord.good{background:var(--y);color:var(--ink)}
+.ord .m{position:absolute;right:-16px;top:-18px;width:52px;height:52px;border-radius:50%;font:800 34px/52px IN;text-align:center;color:#fff}
+/* subtitles */
+#cap{left:0;width:1080px;top:1430px;text-align:center}
+#box{display:inline-block;font:800 58px/1.35 IN,ML;padding:14px 30px 20px;border-radius:20px;max-width:960px}
+#box.pl{background:var(--ink);color:#FFF06A}#box.ky{background:var(--y);color:var(--ink)}
+#box i{font-style:normal;display:inline-block;margin:0 .14em}
+</style></head><body><div id="st">
+<div class="word" id="w" style="top:300px"></div>
+<div class="a" id="qn"></div>
+<div class="a" id="fx"></div>
+<div class="a" id="cap"><span id="box"></span></div>
+</div><script>
+const TL=__TL__;
+const $=id=>document.getElementById(id), cl=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
+const eo=x=>1-Math.pow(1-cl(x),3), back=x=>{x=cl(x);const c=1.70158;return 1+(c+1)*Math.pow(x-1,3)+c*Math.pow(x-1,2)}, p=(t,a,d)=>cl((t-a)/d);
+// source time -> body time
+const B=s=>{for(const g of TL.segs){const a=g.a,b=g.b;if(s>=a&&s<=b)return g.t0+(s-a)}let best=0;for(const g of TL.segs)if(s>g.b)best=g.t1;return best};
+function style(el,size){el.style.fontSize=size+'px';const o=Math.max(3,Math.round(size*.022));
+  el.style.filter=`drop-shadow(${o}px 0 0 #0d0d0d) drop-shadow(-${o}px 0 0 #0d0d0d) drop-shadow(0 ${o}px 0 #0d0d0d) drop-shadow(0 -${o}px 0 #0d0d0d) drop-shadow(0 5px 0 #0d0d0d) drop-shadow(0 10px 0 #0d0d0d) drop-shadow(0 16px 24px rgba(0,0,0,.55))`;
+  [...el.children].forEach(sp=>{sp.style.backgroundImage='linear-gradient(#FFD84D,#FFD84D)'})}
+function setWord(el,txt,maxSize,maxW){if(el.dataset.k===txt)return;el.dataset.k=txt;
+  el.innerHTML=txt.split('').map(ch=>`<span>${ch===' '?'&nbsp;':ch}</span>`).join('');style(el,maxSize);
+  const W=[...el.children].reduce((s,x)=>s+x.getBoundingClientRect().width,0);if(W>maxW)style(el,maxSize*maxW/W)}
+function animWord(el,t,a,b){const n=el.children.length;const ord=[...Array(n).keys()].sort((x,y)=>((x*7+3)%n)-((y*7+3)%n));
+  [...el.children].forEach((sp,i)=>{const k=p(t,a+ord.indexOf(i)*.035,.22);sp.style.opacity=eo(k);sp.style.transform=`translateY(${(1-eo(k))*-40}px) scale(${1.5-.5*back(k)})`});
+  el.style.opacity=cl((b-t)/.1)}
+// cues in SOURCE time: [start, end, big word, question label, fx]
+const CUES=[
+ [0.5,1.7,'60 SECONDS','',''],
+ [1.7,4.6,'5 AI WORDS','',''],
+ [6.7,8.8,'WHAT IS AI?','QUESTION 1/5',''],
+ [8.8,10.6,'THINKS LIKE US','QUESTION 1/5',''],
+ [10.6,12.8,'A BRAIN','QUESTION 1/5','brain'],
+ [14.7,16.2,'CHATGPT? CLAUDE?','QUESTION 2/5',''],
+ [16.2,20.2,'= THE APP','QUESTION 2/5','apps'],
+ [20.5,23.0,'WHAT IS A MODEL?','QUESTION 3/5',''],
+ [23.0,26.0,'THE CHEF','QUESTION 3/5','speed'],
+ [26.0,30.3,'INSIDE THE APP','QUESTION 3/5','models'],
+ [30.4,33.5,'= QUALITY','QUESTION 3/5',''],
+ [34.7,36.7,'WHAT IS A TOKEN?','QUESTION 4/5',''],
+ [36.7,39.0,'WORD PIECES','QUESTION 4/5','tokens'],
+ [39.1,42.4,'LIMIT + COST','QUESTION 4/5',''],
+ [42.4,45.2,'MALAYALAM = MORE','QUESTION 4/5','mal'],
+ [45.8,48.6,'WHAT IS A PROMPT?','QUESTION 5/5',''],
+ [48.6,57.0,'YOUR ORDER','QUESTION 5/5','order'],
+ [57.0,59.25,'CLEAR = BETTER','QUESTION 5/5',''],
+ [59.25,62.9,'YOUR SCORE?','','score'],
+ [62.9,65.3,'COMMENT IT','','score'],
+].map(c=>({a:B(c[0]),b:B(c[1]),w:c[2],q:c[3],fx:c[4]}));
+let lastFx='';
+window.frame=t=>{
+  const c=CUES.find(x=>t>=x.a&&t<x.b);
+  if(c){$('w').style.display='block';setWord($('w'),c.w,180,920);animWord($('w'),t,c.a,c.b)}else $('w').style.display='none';
+  // question label stays across the cues of the same question
+  if(c&&c.q){$('qn').classList.remove('hide');$('qn').textContent=c.q;const first=CUES.find(x=>x.q===c.q);const k=back(p(t,first.a,.3));$('qn').style.transform=`translateX(-50%) scale(${.7+.3*k})`}else $('qn').classList.add('hide');
+  // per-word animation strip
+  const fx=c?c.fx:''; const lt=c?t-c.a:0; let h='';
+  if(fx==='brain'){h=`<div style="text-align:center"><span class="pill" style="opacity:${eo(lt/.3)}">READS</span><span class="pill" style="opacity:${eo((lt-.4)/.3)}">LEARNS</span><span class="pill y" style="opacity:${eo((lt-.8)/.3)}">ANSWERS</span></div>`}
+  if(fx==='apps'){h=`<div style="text-align:center">${['ChatGPT','Claude','Gemini'].map((x,i)=>`<span class="pill${i==1?' y':''}" style="display:inline-block;opacity:${eo((lt-.2-i*.35)/.3)};transform:translateY(${(1-back((lt-.2-i*.35)/.4))*60}px)">${x}</span>`).join('')}</div>`}
+  if(fx==='speed'){h=`<div style="text-align:center"><span class="pill" style="opacity:${eo((lt-.3)/.3)}">FAST</span><span class="pill y" style="opacity:${eo((lt-1.2)/.3)}">SMART</span></div>`}
+  if(fx==='models'){h=`<div style="text-align:center">${['GPT','Opus','Sonnet'].map((x,i)=>`<span class="pill${i==1?' y':''}" style="display:inline-block;opacity:${eo((lt-.2-i*.6)/.3)};transform:scale(${.7+.3*back((lt-.2-i*.6)/.35)})">${x}</span>`).join('')}</div>`}
+  if(fx==='tokens'){const sp=eo((lt-.5)/.5)*26;h=`<div style="text-align:center">${['UN','BELIEV','ABLE'].map((x,i)=>`<span class="pill${i==1?' y':''}" style="display:inline-block;margin:0 ${sp}px;border-radius:${sp>2?20:0}px">${x}</span>`).join('')}</div>`}
+  if(fx==='mal'){h=`<div style="text-align:center"><span class="pill" style="opacity:${eo(lt/.3)}">English: fewer</span><span class="pill y" style="opacity:${eo((lt-.6)/.3)}">Malayalam: more</span></div>`}
+  if(fx==='order'){const s1=eo(lt/.3),s2=eo((lt-2.6)/.3),x1=lt>1.6;h=`<div style="text-align:center"><span class="ord bad" style="opacity:${s1}">"എന്തെങ്കിലും താ"${x1?'<span class="m" style="background:#E5484D">✕</span>':''}</span><span class="ord good" style="opacity:${s2}">"Chicken biryani, half plate"${lt>3.4?'<span class="m" style="background:#1fbf5f">✓</span>':''}</span></div>`}
+  if(fx==='score'){const k=back(p(t,CUES[CUES.length-2].a+.3,.4));h=`<div style="text-align:center"><span class="pill k" style="font-size:96px;padding:22px 44px;transform:scale(${.6+.4*k});display:inline-block">? / 5</span></div>`}
+  $('fx').innerHTML=h;
+  // Malayalam subtitles: one box per chunk, words rise in
+  const g=TL.segs.find(x=>t>=x.t0&&t<x.t1)||TL.segs[TL.segs.length-1];
+  const s=g.caps.find(x=>t>=x[0]&&t<x[1]);
+  if(!s){$('cap').style.display='none'}else{$('cap').style.display='block';
+    const w=s[2].split(' '),d=s[1]-s[0],per=Math.min(0.3,(d*0.6)/w.length),q=t-s[0];
+    $('box').className=s[3]?'ky':'pl';const bk=eo(q/0.25);$('box').style.transform=`translateY(${(1-bk)*24}px)`;$('box').style.opacity=cl(q/0.15);
+    $('box').innerHTML=w.filter((x,i)=>q-i*per>0).map((x,i)=>{const k=eo((q-i*per)/0.28);return `<i style="opacity:${k};transform:translateY(${(1-k)*26}px)">${x}</i>`}).join('')}
+};
+</script></body></html>

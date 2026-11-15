@@ -53,3 +53,6 @@ jobs/hof/clips.log
 jobs/hof3/stills/*.png
 jobs/hof3/mask.png
 jobs/hof3/sheet.jpg
+jobs/ai5/raw/
+jobs/ai5/*.jpg
+jobs/ai5/*.mp4
