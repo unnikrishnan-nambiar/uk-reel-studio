@@ -50,3 +50,6 @@ jobs/*/_ov.html
 jobs/*/list.txt
 jobs/hook-cap/*.png
 jobs/hof/clips.log
+jobs/hof3/stills/*.png
+jobs/hof3/mask.png
+jobs/hof3/sheet.jpg
