@@ -1,0 +1,35 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+@font-face{font-family:IN;src:url(../../templates/fonts/inter-latin-800-normal.woff2);font-weight:800}
+@font-face{font-family:IN;src:url(../../templates/fonts/inter-latin-700-normal.woff2);font-weight:700}
+@font-face{font-family:ML;src:url(../../templates/fonts/noto-sans-malayalam-malayalam-800-normal.woff2);font-weight:800}
+html,body{margin:0;background:transparent}
+#st{position:relative;width:1080px;height:1920px;overflow:hidden;font-family:IN,ML;-webkit-font-smoothing:antialiased}
+.a{position:absolute}
+#hk{left:50%;top:230px;transform:translateX(-50%);text-align:center;white-space:nowrap}
+#hk span{display:inline-block;background:#0d0d0d;color:#FFD84D;font:800 66px/1.12 IN;letter-spacing:-.02em;padding:24px 34px 30px;border-radius:26px;box-shadow:0 18px 44px rgba(0,0,0,.35)}
+#fr{left:34px;top:574px;width:360px;height:640px;border:6px solid #FFD84D;border-radius:30px}
+#vl{left:40px;top:1232px;font:700 28px/1 IN;color:#fff;background:#0d0d0d;padding:10px 16px;border-radius:12px;white-space:nowrap}
+#cap{left:0;width:1080px;top:1380px;text-align:center}
+#box{display:inline-block;font:800 62px/1.35 IN,ML;padding:14px 32px 20px;border-radius:20px;max-width:940px}
+#box.pl{background:#0d0d0d;color:#FFF06A}#box.ky{background:#FFD84D;color:#0d0d0d}
+#box i{font-style:normal;display:inline-block;margin:0 .14em}
+</style></head><body><div id="st">
+<div class="a" id="hk"><span>Can Claude really delete<br>your digital footprint?<br>I tested this viral video.</span></div>
+<div class="a" id="fr"></div><div class="a" id="vl">Viral video · @hadibuilds.ai</div>
+<div class="a" id="cap"><span id="box"></span></div></div><script>
+const IN0=0.5, IN1=2.4;   // Hadi inset on screen (must match run.py)
+const C=[[0.4,2.0,'ഇതൊക്കെ ശരിക്കും work ചെയ്യുമോ,',0],[2.0,3.3,'അതോ വെറും hype ആണോ?',1],[3.3,4.8,'നമുക്കൊന്ന് ചെയ്ത് നോക്കിയാലോ',0]];
+const cl=(x,a=0,b=1)=>Math.max(a,Math.min(b,x)), eo=x=>1-Math.pow(1-cl(x),3), eb=x=>{x=cl(x);const c=1.70158;return 1+(c+1)*Math.pow(x-1,3)+c*Math.pow(x-1,2)};
+const $=id=>document.getElementById(id);
+window.frame=t=>{
+ const h=eb((t-0.35)/0.4); $('hk').style.opacity=cl((t-0.35)/0.12); $('hk').style.transform=`translateX(-50%) translateY(${(1-h)*-40}px) scale(${0.88+0.12*h})`;
+ const vi=t>=IN0&&t<IN1, k=eb((t-IN0)/0.3), o=cl((IN1-t)/0.2);
+ ['fr','vl'].forEach(id=>{$(id).style.display=vi?'block':'none';$(id).style.opacity=cl((t-IN0)/0.12)*o});
+ $('fr').style.transform=`scale(${0.85+0.15*k})`;
+ const c=C.find(x=>t>=x[0]&&t<x[1]); if(!c){$('box').style.display='none';return}
+ const w=c[2].split(' '), d=c[1]-c[0], per=Math.min(0.32,(d*0.7)/w.length), lt=t-c[0];
+ $('box').style.display='inline-block'; $('box').className=c[3]?'ky':'pl';
+ const bk=eo(lt/0.25); $('box').style.transform=`translateY(${(1-bk)*24}px)`; $('box').style.opacity=cl(lt/0.15);
+ $('box').innerHTML=w.map((x,i)=>{const p=eo((lt-i*per)/0.28);return `<i style="opacity:${p};transform:translateY(${(1-p)*26}px)">${x}</i>`}).join('');
+};
+</script></body></html>
