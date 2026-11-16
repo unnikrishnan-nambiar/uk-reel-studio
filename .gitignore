@@ -56,3 +56,8 @@ jobs/hof3/sheet.jpg
 jobs/ai5/raw/
 jobs/ai5/*.jpg
 jobs/ai5/*.mp4
+jobs/wifi/chk/
+jobs/wifi/snips.log
+jobs/wifi/silences.json
+jobs/wifi/words.json
+jobs/wifi/sheet.jpg
