@@ -61,3 +61,16 @@ jobs/wifi/snips.log
 jobs/wifi/silences.json
 jobs/wifi/words.json
 jobs/wifi/sheet.jpg
+jobs/wifi3/snip/
+jobs/wifi3/pm2/
+jobs/wifi3/ovT/
+jobs/wifi3/ovB/
+jobs/wifi3/ovP/
+jobs/wifi3/*.log
+jobs/wifi3/test.jpg
+jobs/wifi3/sheet.jpg
+jobs/wifi3/words.json
+jobs/wifi3/silences.json
+jobs/wifi3/edit.json
+jobs/wifi3/caps_body.json
+jobs/wifi3/list.txt
