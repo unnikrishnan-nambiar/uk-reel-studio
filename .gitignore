@@ -74,3 +74,17 @@ jobs/wifi3/silences.json
 jobs/wifi3/edit.json
 jobs/wifi3/caps_body.json
 jobs/wifi3/list.txt
+jobs/speak/snip/
+jobs/speak/pm2/
+jobs/speak/ovT/
+jobs/speak/ovB/
+jobs/speak/ovP/
+jobs/speak/*.log
+jobs/speak/test.jpg
+jobs/speak/sheet.jpg
+jobs/speak/words.json
+jobs/speak/silences.json
+jobs/speak/edit.json
+jobs/speak/caps_body.json
+jobs/speak/list.txt
+jobs/speak/p*.mov
