@@ -89,3 +89,5 @@ jobs/speak/caps_body.json
 jobs/speak/list.txt
 jobs/speak/p*.mov
 jobs/speak/overlay_how.html
+jobs/speak/overlay_real.html
+jobs/speak/snip/real/
