@@ -101,12 +101,7 @@
  "yo": 700,
  "pb": 1000,
  "grade": 0.3,
- "panel_ranges": [
-  [
-   0,
-   1
-  ]
- ],
+ "panel_ranges": [],
  "mask_rows": [
   0,
   1400

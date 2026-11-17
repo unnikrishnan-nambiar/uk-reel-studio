@@ -1,0 +1,168 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+@font-face{font-family:IN;src:url(../../templates/fonts/inter-latin-600-normal.woff2);font-weight:600}
+@font-face{font-family:IN;src:url(../../templates/fonts/inter-latin-700-normal.woff2);font-weight:700}
+@font-face{font-family:IN;src:url(../../templates/fonts/inter-latin-800-normal.woff2);font-weight:800}
+@font-face{font-family:ML;src:url(../../templates/fonts/noto-sans-malayalam-malayalam-700-normal.woff2);font-weight:700}
+@font-face{font-family:ML;src:url(../../templates/fonts/noto-sans-malayalam-malayalam-800-normal.woff2);font-weight:800}
+html,body{margin:0;background:transparent}
+#st{position:relative;width:1080px;height:1920px;overflow:hidden;font-family:IN;color:#fff;-webkit-font-smoothing:antialiased}
+.a{position:absolute}.hide{display:none!important}
+.word{position:absolute;left:0;right:0;text-align:center;white-space:nowrap;font-weight:800;text-transform:uppercase;letter-spacing:-.035em;line-height:.92}
+.word span{display:inline-block;-webkit-background-clip:text;background-clip:text;color:transparent}
+.win{background:none;box-sizing:border-box;filter:drop-shadow(2px 0 0 #0d0d0d) drop-shadow(-2px 0 0 #0d0d0d) drop-shadow(0 2px 0 #0d0d0d) drop-shadow(0 -2px 0 #0d0d0d) drop-shadow(0 10px 18px rgba(0,0,0,.45))}
+.win .lab{color:#fff;font-size:28px!important}
+.bar{display:none}
+.dot{width:14px;height:14px;border-radius:50%}
+.wt{margin:0 auto;font:700 18px IN;letter-spacing:.22em;color:#9aa3d6;padding:4px 16px;border-radius:999px;background:rgba(255,255,255,.06)}
+.lab{font:700 20px IN;letter-spacing:.18em;color:#9aa3d6}
+.pill{display:inline-flex;align-items:center;gap:10px;font:800 24px IN;letter-spacing:.12em;color:#0d0d0d;background:#FFD84D;border-radius:999px;padding:12px 22px}
+.btn{display:inline-flex;align-items:center;gap:14px;border-radius:999px;font:800 44px IN;padding:24px 46px;color:#fff}
+.shot{display:block;width:936px;border-radius:14px}
+.bub{max-width:640px;font:700 38px/1.3 IN,ML;padding:20px 26px;border-radius:26px}
+/* hook: ONE box, yellow text on black, static */
+#hook{left:50%;top:190px;transform:translateX(-50%);width:max-content;max-width:1010px;text-align:center;background:#0d0d0d;color:#FFF06A;font:800 54px/1.16 IN;letter-spacing:-.02em;padding:24px 36px 30px;border-radius:24px;box-shadow:0 14px 40px rgba(0,0,0,.45)}
+/* subtitles: no box, line shown in full, then covered word by word */
+#sub{left:80px;right:140px;top:1370px;text-align:center;font:700 44px/1.38 ML,IN}
+#sub b{font-weight:700;position:relative;display:inline-block;margin:0 .12em;color:#fff;
+  text-shadow:0 0 3px #000,0 0 3px #000,0 2px 0 #000,0 3px 10px rgba(0,0,0,.8)}
+#sub b i{position:absolute;left:0;top:0;font-style:normal;color:#FFD84D;white-space:nowrap}
+</style></head><body><div id="st">
+<div id="B" class="a" style="inset:0"><div id="top" class="word"></div></div>
+<div id="T" class="a" style="inset:0">
+  <div id="fade" class="a" style="left:0;right:0;top:1200px;height:720px;background:linear-gradient(180deg,rgba(0,0,0,0),rgba(0,0,0,.45) 55%,rgba(0,0,0,.6))"></div>
+  <div id="ui" class="a" style="inset:0"></div>
+  <div id="top2" class="word"></div>
+  <div id="bot" class="word"></div>
+  <div id="hook" class="a hide"></div>
+  <div id="sub" class="a"></div>
+</div>
+</div>
+<script>
+const Q=new URLSearchParams(location.search),PASS=Q.get('pass')||'T';
+const $=id=>document.getElementById(id);const cl=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
+const eo=x=>1-Math.pow(1-cl(x),3);const back=x=>{x=cl(x);const c=1.7;return 1+(c+1)*Math.pow(x-1,3)+c*Math.pow(x-1,2)};
+const p=(t,a,d=.4)=>cl((t-a)/d);
+// edit order (source in/out). Must match segs.py ALL.
+const SEGS=[[0.88, 5.95], [7.27, 14.0], [15.27, 19.67], [21.19, 25.21], [25.32, 31.39], [31.58, 34.0], [34.28, 36.64], [36.75, 38.97], [39.48, 41.11], [41.28, 47.28], [47.4, 48.13], [48.31, 55.32], [55.54, 59.64], [59.88, 61.96], [62.04, 69.08], [69.46, 71.13], [71.23, 75.39], [75.71, 79.06], [79.46, 87.58], [87.97, 90.88], [91.23, 98.45], [98.74, 100.04], [100.14, 105.48]];
+function src(t){let b=0;for(const [a,e] of SEGS){const d=e-a;if(t<b+d)return a+(t-b);b+=d}return SEGS[SEGS.length-1][1]}
+// ---------- cues (SOURCE time): [a, b, top word (behind head), bottom word, ui] ----------
+const CUES=[
+ [0.88,5.95,'','90% BETTER','h1'],[7.27,14.00,'','90% BETTER','h2'],[15.27,19.67,'','90% BETTER','h3'],
+ [21.19,25.21,'','STUCK','stuck'],
+ [25.32,28.10,'','','headtongue'],
+ [28.10,31.39,'','3 MIN A DAY','clock'],
+ [31.58,34.00,'NO TUTOR','₹0 FEES',''],
+ [34.28,38.97,'','NEW PROJECT','sa'],
+ [39.48,47.28,'','THE PROMPT','sb'],
+ [47.40,48.13,'THAT\'S IT','',''],
+ [48.31,55.32,'','VOICE, NOT MIC','sc'],
+ [55.54,59.64,'','','chatq'],
+ [59.88,61.96,'','','chatme'],
+ [62.04,69.08,'','INTERRUPTS YOU','chatfix'],
+ [69.46,71.13,'BEST PART','',''],
+ [71.23,79.06,'','FIXED ON THE SPOT','gowent'],
+ [79.46,81.75,'','3 MINUTES, DONE','timer'],
+ [81.75,90.88,'','DAILY REMINDER','task'],
+ [91.23,98.45,'','NOTIFICATIONS ON','notif'],
+ [98.74,100.04,'EXPERIENCE','',''],
+ [100.14,103.50,'','COMMENT SPEAK','comment'],
+ [103.50,105.48,'','SEND TO A FRIEND','fs']];
+function cue(s){return CUES.find(c=>s>=c[0]&&s<c[1])}
+const HOOK={h1:'No class for your English?<br>ChatGPT fixed mine 90%, free.',h2:'Can\'t speak your English?<br>ChatGPT fixed mine 90%, free.',h3:'No tutor, free. ChatGPT improved<br>my English 90%. Your turn?'};
+// ---------- subtitles (SOURCE time) ----------
+const SUB=[
+ [0.95,2.75,'English class-ന് പോകാൻ പറ്റാറില്ല'],[2.75,5.95,'ChatGPT വെച്ചിട്ട് എന്റെ English 90% ശരിയാക്കി'],
+ [7.30,9.50,'English അറിയാം, പക്ഷേ സംസാരിക്കാൻ പറ്റാറില്ല'],[9.50,13.00,'ChatGPT വെച്ചിട്ട് എന്റെ English ഏകദേശം 90% ശരിയായി'],[13.00,14.00,'അതും free ആയിട്ട്'],
+ [15.30,18.60,'ChatGPT എന്റെ English 90% improve ആയി'],[18.60,19.67,'അതും fully free'],
+ [21.22,22.90,'English അറിയാം, പക്ഷേ സംസാരിക്കുന്ന'],[22.90,25.21,'സമയത്ത് correct words correct സ്ഥലത്ത് വരാറില്ല'],
+ [25.35,27.10,'കാരണം, English തലയിൽ ഉണ്ട്'],[27.10,28.10,'പക്ഷേ നാക്കിൽ ഇല്ല'],
+ [28.10,30.65,'ഇത് solve ചെയ്യാൻ ഒരു മണിക്കൂറിന്റെ class ഒന്നും വേണ്ട'],[30.65,31.39,'ദിവസം 3 മിനിറ്റ്'],
+ [31.60,34.00,'ഒരു tutor-ഉം വേണ്ട, പൈസയും കൊടുക്കണ്ട'],
+ [34.30,36.64,'ChatGPT-യിൽ പോയിട്ട് ഒരു Project ഉണ്ടാക്കിയിട്ട്'],[36.75,38.97,'"3 Minutes of Speaking a Day" എന്ന് പേരിടുക'],
+ [39.50,41.11,'Project Instructions-ൽ പോയിട്ട്'],[41.30,43.95,'ഒരു prompt കൊടുക്കുക: "Be my English conversation partner.'],[43.95,47.28,'When I make a mistake, stop me, correct me and make me say it again."'],
+ [47.42,48.13,'അത്രേ ഉള്ളൂ'],
+ [48.33,50.50,'Project-ന്റെ ഉള്ളിൽ ഒരു mic ചിഹ്നം ഉണ്ടാവും'],[50.50,51.40,'അതല്ല click ചെയ്യേണ്ടത്'],[51.40,53.45,'അതിന്റെ അപ്പുറത്ത് തന്നെ ഒരു voice ചിഹ്നം ഉണ്ടാവും'],[53.45,55.32,'അത് അമർത്തുക, എന്നിട്ട് പറയുക: "Start"'],
+ [55.56,56.30,'ഉദാഹരണത്തിന്'],[56.30,59.64,'ChatGPT ചോദിക്കും: "Tell me something that happened at work today"'],
+ [59.90,61.96,'അപ്പോ നിങ്ങൾ പറയും: "Yesterday I go to office"'],
+ [62.06,64.90,'അത് പറയുന്ന moment-ൽ തന്നെ ChatGPT വന്നിട്ട് പറയും'],[64.90,68.40,'"ഡേയ്, I go to office അല്ല, Yesterday I went to the office"'],[68.40,69.08,'ഒന്നൂടി പറയ്'],
+ [69.48,71.13,'ഇതാണ് actually ഇതിന്റെ best part'],
+ [71.25,73.10,'നമുക്ക് ദേഷ്യം വരും, പക്ഷേ'],[73.10,75.39,'correct വാക്ക് correct സമയത്ത് തന്നെ തിരുത്താൻ പറ്റും'],
+ [75.73,77.79,'അങ്ങനെ ചെയ്താൽ അടുത്ത പ്രാവശ്യം "go" വരില്ല'],[77.79,79.06,'പകരം "went" മാത്രമേ വരൂ'],
+ [79.48,81.75,'3 മിനിറ്റ് കഴിഞ്ഞ് session തനിയെ end ആയിക്കോളും'],[81.75,84.70,'ഇതൊരു habit ആക്കാൻ, daily reminder കിട്ടാൻ വേണ്ടി'],[84.70,87.58,'ChatGPT-യുടെ ഉള്ളിൽ തന്നെ ഒരു scheduled task set ചെയ്യാൻ പറ്റും'],
+ [87.99,90.88,'ദിവസവും നമ്മൾ പറയുന്ന സമയത്ത് ഒരു notification വരും'],
+ [91.25,94.95,'വേറൊരു കാര്യം: notification ഓണാക്കാതെ reminder വരില്ല'],[94.95,97.25,'Reminder വന്നില്ലെങ്കിൽ ChatGPT waste ആണെന്ന് പറയരുത്'],[97.25,98.45,'Just ഒന്ന് check ചെയ്തോ'],
+ [98.76,100.04,'അനുഭവത്തിന്റെ വെളിച്ചത്തിൽ പറയാം'],
+ [100.16,102.15,'ഇതിന്റെ full setup-ഉം prompt-ഉം വേണമെങ്കിൽ'],[102.15,103.50,'SPEAK എന്ന് comment ചെയ്താൽ മതി'],[103.50,105.48,'ഇത് helpful ആവുന്ന friend-ന് അയച്ചുകൊടുത്തോ']];
+function subAt(s){return SUB.find(c=>s>=c[0]&&s<c[1])}
+function setSub(s){const el=$('sub');const c=subAt(s);if(!c){el.innerHTML='';el.dataset.k='';return}
+  if(el.dataset.k!==c[2]){el.dataset.k=c[2];el.innerHTML=c[2].split(' ').map(w=>`<b>${w}<i>${w}</i></b>`).join(' ')}
+  const ws=[...el.children],L=ws.map(w=>w.textContent.length/2),T=L.reduce((x,y)=>x+y,0);
+  const d=c[1]-c[0],a=c[0]+Math.min(.25,d*.1),e=c[1]-Math.min(.35,d*.15);const pr=cl((s-a)/(e-a))*T;let acc=0;
+  ws.forEach((w,i)=>{const f=cl((pr-acc)/L[i]);acc+=L[i];const ii=w.firstElementChild;ii.style.clipPath=`inset(-20% ${100-f*100}% -20% 0)`});
+  el.style.opacity=cl((s-c[0])/.08)}
+// ---------- big 3D words (yellow + black) ----------
+function style(el,size){el.style.fontSize=size+'px';const o=Math.max(3,Math.round(size*.022));
+  el.style.filter=`drop-shadow(${o}px 0 0 #0d0d0d) drop-shadow(-${o}px 0 0 #0d0d0d) drop-shadow(0 ${o}px 0 #0d0d0d) drop-shadow(0 -${o}px 0 #0d0d0d) drop-shadow(0 5px 0 #0d0d0d) drop-shadow(0 10px 0 #0d0d0d) drop-shadow(0 16px 24px rgba(0,0,0,.55))`;
+  [...el.children].forEach(sp=>{sp.style.backgroundImage='linear-gradient(#FFD84D,#FFD84D)'})}
+function setWord(el,txt,maxSize,maxW){if(el.dataset.k!==txt){el.dataset.k=txt;el.innerHTML=txt.split('').map(ch=>`<span>${ch===' '?'&nbsp;':ch}</span>`).join('');
+  style(el,maxSize);const W=[...el.children].reduce((s,x)=>s+x.getBoundingClientRect().width,0);if(W>maxW)style(el,maxSize*maxW/W)}}
+function animWord(el,t,a,b){const n=el.children.length;const ord=[...Array(n).keys()].sort((x,y)=>((x*7+3)%n)-((y*7+3)%n));
+  [...el.children].forEach((sp,i)=>{const k=p(t,a+ord.indexOf(i)*.03,.22);sp.style.opacity=eo(k);sp.style.transform=`translateY(${(1-eo(k))*-40}px) scale(${1.5-.5*back(k)})`});
+  el.style.opacity=cl((b-t)/.1)}
+// ---------- UI ----------
+function win(title,inner,st){return `<div class="win a" style="${st}"><div class="bar"><span class="dot" style="background:#ff5f57"></span><span class="dot" style="background:#febc2e"></span><span class="dot" style="background:#28c840"></span><span class="wt">${title}</span><span style="width:62px"></span></div>${inner}</div>`}
+const WS='left:60px;top:200px;width:960px';
+function bub(txt,me,st=''){return `<div class="bub" style="${me?'align-self:flex-end;background:#FFD84D;color:#0d0d0d':'align-self:flex-start;background:#1f1f3d;color:#fff'};${st}">${txt}</div>`}
+function orb(lt){const n=Math.min(90,1+Math.floor(lt*30)%90);return `<img id="orb" src="snip/d/${String(n).padStart(4,'0')}.jpg" style="width:300px;height:300px;border-radius:50%;object-fit:cover">`}
+function ui(s,c){const k=c[4],el=$('ui'),a=c[0];let h='';
+ if(k==='stuck'){h=`<div class="win a" style="${WS};display:flex;flex-direction:column;gap:18px;padding:20px">${bub('Yesterday I… <span id="um"></span>',1,'font-size:46px')}<div id="q" style="align-self:flex-end;font:800 120px/1 IN;color:#ff4b72;margin-right:40px">?!</div></div>`}
+ if(k==='headtongue'){h=`<div class="win a" id="ph" style="left:0;right:0;top:250px;text-align:center"><span class="pill" style="font-size:40px;background:#45dd6c">ENGLISH IN THE HEAD ✓</span></div><div class="win a" id="pt" style="left:0;right:0;top:1190px;text-align:center"><span class="pill" style="font-size:40px;background:#ff4b72;color:#fff">NOT ON THE TONGUE ✗</span></div>`}
+ if(k==='clock'){h=`<div class="win a" style="${WS};display:flex;gap:30px;justify-content:center;padding:10px"><div id="cl1" style="width:420px;height:300px;border-radius:30px;background:#1f1f3d;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative"><div style="font:800 64px IN">1 HOUR</div><div class="lab">CLASS</div><svg id="xx" class="a" style="inset:0" width="420" height="300"><path d="M60 60 L360 240 M360 60 L60 240" stroke="#ff4b72" stroke-width="16" stroke-linecap="round"/></svg></div><div style="width:420px;height:300px;border-radius:30px;background:#FFD84D;color:#0d0d0d;display:flex;flex-direction:column;align-items:center;justify-content:center"><div style="font:800 80px IN">3 MIN</div><div style="font:800 28px IN;letter-spacing:.18em">A DAY</div></div></div>`}
+ if(k==='sa'||k==='sb'||k==='sc'){const tt={sa:'NEW PROJECT',sb:'PROJECT INSTRUCTIONS',sc:'TAP THIS ONE'}[k];
+   h=win(tt,`<div style="padding:12px;position:relative"><img id="shot" class="shot" ${k==='sb'?'src="snip/b/0001.jpg"':''}>${k==='sb'?'<div id="hl1" class="a" style="left:302px;top:147px;width:500px;height:46px;background:rgba(255,216,77,.55);mix-blend-mode:multiply;transform-origin:left"></div><div id="hl2" class="a" style="left:82px;top:197px;width:780px;height:92px;background:rgba(255,216,77,.55);mix-blend-mode:multiply;transform-origin:left"></div>':''}${k==='sc'?'<div id="ring" class="a" style="left:744px;top:64px;width:120px;height:120px;border-radius:50%;box-shadow:0 0 0 8px #FFD84D,0 0 30px 6px #FFD84D"></div><svg id="nomic" class="a" style="left:627px;top:59px" width="130" height="130"><path d="M25 25 L105 105 M105 25 L25 105" stroke="#ff4b72" stroke-width="12" stroke-linecap="round"/></svg>':''}</div>`,WS)}
+ if(k==='chatq'||k==='chatme'||k==='chatfix'){const fix=k==='chatfix';
+   h=`<div class="win a" style="${WS};display:flex;flex-direction:column;align-items:center;gap:16px"><div id="orbw">${orb(0)}</div><div style="display:flex;flex-direction:column;gap:14px;width:900px">`
+    +(k==='chatq'?bub('Tell me something that happened at work today.',0):'')
+    +(k!=='chatq'?bub(`Yesterday I <span id="go">go</span> to off—`,1):'')
+    +(fix?bub(`Not "go". Yesterday I <b style="color:#45dd6c">went</b> to the office. Try again.`,0,'opacity:0" id="fixb'):'')+`</div></div>`}
+ if(k==='gowent'){h=`<div class="win a" style="${WS};display:flex;align-items:center;justify-content:center;gap:40px;padding:40px 0"><div id="gw1" style="font:800 150px/1 IN;color:#ff4b72">GO</div><svg width="140" height="70"><path d="M5 35 H115 M90 10 L120 35 L90 60" stroke="#fff" stroke-width="11" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg><div id="gw2" style="font:800 150px/1 IN;color:#45dd6c">WENT</div></div>`}
+ if(k==='timer'){h=`<div class="win a" style="${WS};display:flex;justify-content:center"><svg width="360" height="360"><circle cx="180" cy="180" r="150" fill="#1f1f3d" stroke="#2a2a52" stroke-width="26"/><circle id="tr" cx="180" cy="180" r="150" fill="none" stroke="#FFD84D" stroke-width="26" stroke-linecap="round" pathLength="100" stroke-dasharray="100 100" transform="rotate(-90 180 180)"/><text id="tt" x="180" y="205" text-anchor="middle" font-family="IN" font-weight="800" font-size="84" fill="#fff">3:00</text></svg></div>`}
+ if(k==='task'){h=`<div class="win a" style="${WS};display:flex;justify-content:center"><div style="width:860px;border-radius:30px;background:#fff;color:#0d0d0d;padding:30px 36px;display:flex;gap:26px;align-items:center"><svg id="bell" width="110" height="110" viewBox="0 0 24 24"><path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4z" fill="#FFD84D" stroke="#0d0d0d" stroke-width="1.6" stroke-linejoin="round"/><path d="M10 20a2 2 0 0 0 4 0" fill="none" stroke="#0d0d0d" stroke-width="1.6"/></svg><div><div style="font:700 24px IN;letter-spacing:.16em;color:#555">SCHEDULED TASK</div><div style="font:800 46px/1.15 IN;margin-top:6px">3-minute English practice</div><div style="font:700 30px IN;color:#555;margin-top:8px">Every day · 9:00 PM</div></div></div></div>`}
+ if(k==='notif'){h=`<div class="win a" style="${WS};display:flex;flex-direction:column;align-items:center;gap:26px"><div id="ban" style="width:860px;border-radius:30px;background:#fff;color:#0d0d0d;padding:24px 30px;font:700 34px/1.3 IN"><b style="font-weight:800">ChatGPT</b> · now<br>Time for your 3-minute English practice</div><div style="display:flex;align-items:center;gap:26px"><span style="font:800 48px IN">Notifications</span><div id="tg" style="width:150px;height:84px;border-radius:42px;background:#8e8e93;position:relative"><div id="kn" style="position:absolute;top:6px;left:6px;width:72px;height:72px;border-radius:50%;background:#fff"></div></div></div></div>`}
+ if(k==='comment'){h=`<div class="a" style="left:90px;top:300px;width:900px;height:110px;border-radius:999px;background:rgba(30,30,50,.8);box-shadow:0 0 0 2px rgba(255,255,255,.18);display:flex;align-items:center;gap:22px;padding:0 34px;box-sizing:border-box"><span style="width:58px;height:58px;border-radius:50%;background:conic-gradient(#ff4b72,#9a6bff,#2fd0f2,#ffc21f,#ff4b72)"></span><span id="cmt" style="font:800 46px IN;color:#FFD84D"></span><span id="cur" style="width:4px;height:50px;background:#fff"></span></div>`}
+ if(k==='fs'){h=`<div class="a" style="left:0;right:0;top:300px;display:flex;justify-content:center;gap:26px"><span class="btn" id="bS" style="background:#FFD84D;color:#0d0d0d"><svg width="40" height="40" viewBox="0 0 24 24"><path d="M3 11 L21 3 L14 21 L11 13 Z" fill="#0d0d0d"/></svg>SEND TO A FRIEND</span></div>`}
+ if(el.dataset.k!==k+a){el.dataset.k=k+a;el.innerHTML=h}
+ [...el.children].forEach((e,i)=>{const q=p(s,a+.03+i*.08,.32);e.style.opacity=eo(q)*cl((c[1]-s)/.12);e.style.transform=`translateY(${(1-eo(q))*50}px) scale(${.88+.12*back(q)})`});
+ const lt=s-a;
+ if(k==='stuck'){$('um').textContent=['','um…','um… uh…','um… uh… …'][Math.min(3,Math.floor(lt/0.9))];$('q').style.opacity=lt>2.6?1:0;$('q').style.transform=`scale(${back(p(s,a+2.6,.3))})`}
+ if(k==='headtongue'){$('ph').style.opacity=eo(p(s,25.9,.3));$('pt').style.opacity=eo(p(s,27.19,.3));$('pt').style.transform=`scale(${.8+.2*back(p(s,27.19,.3))})`}
+ if(k==='clock'){const q=eo(p(s,a+.6,.35));$('xx').style.clipPath=`inset(0 ${100-q*100}% 0 0)`;$('cl1').style.opacity=1-.4*q}
+ if(k==='sa'){const n=Math.min(228,1+Math.floor(lt*30*1.6));const pr=`snip/a/${String(n).padStart(4,'0')}.jpg`;const im=$('shot');if(!im.src.endsWith(pr)){im.src=pr;return im.decode().catch(()=>{})}}
+ if(k==='sb'){$('hl1').style.transform=`scaleX(${eo(p(s,43.95,.5))})`;$('hl2').style.transform=`scaleX(${eo(p(s,45.0,.6))})`;const im=$('shot');if(!im.complete)return im.decode().catch(()=>{})}
+ if(k==='sc'){const n=Math.min(49,1+Math.floor(lt*30));const pr=`snip/c/${String(n).padStart(4,'0')}.jpg`;
+   $('nomic').style.opacity=eo(p(s,50.0,.3));$('ring').style.opacity=eo(p(s,51.9,.3));$('ring').style.transform=`scale(${1+.08*Math.sin(s*8)})`;
+   const im=$('shot');if(!im.src.endsWith(pr)){im.src=pr;return im.decode().catch(()=>{})}}
+ if(k==='chatq'||k==='chatme'||k==='chatfix'){const im=$('orb');const n=30+Math.floor(s*30)%60;const pr=`snip/d/${String(n).padStart(4,'0')}.jpg`;
+   if(k==='chatfix'){const g=$('go');const on=s>=64.9;g.style.color=on?'#ff4b72':'';g.style.textDecoration=on?'line-through':'none';$('fixb').style.opacity=eo(p(s,64.9,.3))}
+   if(!im.src.endsWith(pr)){im.src=pr;return im.decode().catch(()=>{})}}
+ if(k==='gowent'){const q=eo(p(s,a+.4,.4));$('gw1').style.textDecoration=q>.5?'line-through':'none';$('gw1').style.opacity=1-.5*q;$('gw2').style.opacity=eo(p(s,a+.8,.4));$('gw2').style.transform=`scale(${.6+.4*back(p(s,a+.8,.4))})`}
+ if(k==='timer'){const v=cl(lt/1.9);$('tr').setAttribute('stroke-dasharray',`${100-v*100} 100`);const sec=Math.round(180*(1-v));$('tt').textContent=Math.floor(sec/60)+':'+String(sec%60).padStart(2,'0')}
+ if(k==='task'){$('bell').style.transform=`rotate(${Math.sin(lt*14)*12*cl(1-(lt%2.2)/0.8)}deg)`}
+ if(k==='notif'){const on=s>=93.0;$('tg').style.background=on?'#34c759':'#8e8e93';$('kn').style.left=(on?72:6)+'px';$('ban').style.opacity=eo(p(s,93.4,.35));$('ban').style.transform=`translateY(${(1-eo(p(s,93.4,.35)))*-40}px)`}
+ if(k==='comment'){$('cmt').textContent='SPEAK'.slice(0,Math.floor(cl((lt-.4)/.6)*5));$('cur').style.opacity=(Math.floor(s*3)%2)?1:0}
+ if(k==='fs'){$('bS').style.transform=`scale(${lt>1.0&&lt<1.15?.93:1})`}
+}
+window.setCaps=()=>{};
+window.frame=t=>{const s=src(t),c=cue(s);
+  if(PASS==='B'){$('T').classList.add('hide');const tp=$('top');
+    if(!c||!c[2]){tp.innerHTML='';tp.dataset.k='';return}
+    setWord(tp,c[2],230,980);tp.style.top='200px';animWord(tp,s,c[0],c[1]);return}
+  $('B').classList.add('hide');const bt=$('bot');
+  const hk=c&&HOOK[c[4]];$('hook').classList.toggle('hide',!hk);if(hk&&$('hook').dataset.k!==c[4]){$('hook').dataset.k=c[4];$('hook').innerHTML=hk}
+  setSub(s);
+  if(!c){bt.innerHTML='';bt.dataset.k='';$('top2').innerHTML='';$('top2').dataset.k='';$('ui').innerHTML='';$('ui').dataset.k='';return}
+  const t2=$('top2');if(c&&c[2]){setWord(t2,c[2],230,980);t2.style.top='200px';animWord(t2,s,c[0],c[1])}else{t2.innerHTML='';t2.dataset.k=''}
+  if(c[3]){setWord(bt,c[3],c[3].length>9?120:160,960);bt.style.top='1180px';animWord(bt,s,c[0]+(hk?.6:.15),c[1])}else{bt.innerHTML='';bt.dataset.k=''}
+  if(c[4]&&!hk)return ui(s,c);else{$('ui').innerHTML='';$('ui').dataset.k=''}
+};
+</script></body></html>
