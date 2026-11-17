@@ -55,7 +55,7 @@ def bell():
 def key():
     n = int(0.04 * SR); return lp(rng.standard_normal(n).astype(np.float32), 0.5) * env(n, 0.0005, 0.008) * 0.9
 # ---- cues (source times) ----
-CUES = [0.88,7.27,15.27,21.19,25.32,28.10,31.58,34.28,39.48,47.40,48.31,55.54,59.88,62.04,69.46,71.23,79.46,81.75,91.23,98.74,100.14,103.50]
+CUES = [0.88,7.27,15.27,21.19,25.32,28.10,31.58,34.28,39.48,47.40,48.31,49.80,55.54,59.88,62.04,69.46,71.23,79.46,81.75,91.23,98.74,100.14,103.50]
 for c in CUES:
     put(c - 0.10, whoosh(), 0.5)
     put(c + 0.16, pop(950), 0.32)
@@ -67,6 +67,7 @@ put(31.6, boom(0.8), 0.6)                                               # NO TUT
 for i in range(14): put(34.4 + i * 0.16, key(), 0.5)                   # typing project name
 put(43.95, riser(0.5), 0.35); put(45.0, ding(1568, 0.6), 0.4)          # prompt highlight
 put(47.42, boom(0.6), 0.55)                                             # THAT'S IT
+put(48.33, boom(0.6), 0.5)                                              # HOW TO USE IT
 put(50.0, down(0.5), 0.45); put(51.9, ding(1760, 0.7), 0.5)            # mic no / voice yes
 put(55.7, chime(), 0.4)                                                 # ChatGPT question
 put(59.95, pop(1300, 0.07), 0.5)                                        # my line
