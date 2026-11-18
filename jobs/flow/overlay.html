@@ -1,0 +1,190 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+@font-face{font-family:IN;src:url(../../templates/fonts/inter-latin-600-normal.woff2);font-weight:600}
+@font-face{font-family:IN;src:url(../../templates/fonts/inter-latin-700-normal.woff2);font-weight:700}
+@font-face{font-family:IN;src:url(../../templates/fonts/inter-latin-800-normal.woff2);font-weight:800}
+@font-face{font-family:ML;src:url(../../templates/fonts/noto-sans-malayalam-malayalam-700-normal.woff2);font-weight:700}
+@font-face{font-family:ML;src:url(../../templates/fonts/noto-sans-malayalam-malayalam-800-normal.woff2);font-weight:800}
+html,body{margin:0;background:transparent}
+#st{position:relative;width:1080px;height:1920px;overflow:hidden;font-family:IN;color:#fff;-webkit-font-smoothing:antialiased}
+.a{position:absolute}.hide{display:none!important}
+.word{position:absolute;left:0;right:0;text-align:center;white-space:nowrap;font-weight:800;text-transform:uppercase;letter-spacing:-.035em;line-height:.92}
+.word span{display:inline-block;-webkit-background-clip:text;background-clip:text;color:transparent}
+.win{background:none;box-sizing:border-box;filter:drop-shadow(2px 0 0 #0d0d0d) drop-shadow(-2px 0 0 #0d0d0d) drop-shadow(0 2px 0 #0d0d0d) drop-shadow(0 -2px 0 #0d0d0d) drop-shadow(0 10px 18px rgba(0,0,0,.45))}
+.win .lab{color:#fff;font-size:28px!important}
+.bar{display:none}
+.dot{width:14px;height:14px;border-radius:50%}
+.wt{margin:0 auto;font:700 18px IN;letter-spacing:.22em;color:#9aa3d6;padding:4px 16px;border-radius:999px;background:rgba(255,255,255,.06)}
+.lab{font:800 26px IN;letter-spacing:.18em;color:#FFD84D}
+.pill{display:inline-flex;align-items:center;gap:10px;font:800 24px IN;letter-spacing:.12em;color:#0d0d0d;background:#FFD84D;border-radius:999px;padding:12px 22px}
+.btn{display:inline-flex;align-items:center;gap:14px;border-radius:999px;font:800 44px IN;padding:24px 46px;color:#fff}
+.shot{display:block;width:936px;border-radius:14px}
+.bub{max-width:640px;font:700 38px/1.3 IN,ML;padding:20px 26px;border-radius:26px}
+/* hook: ONE box, yellow text on black, static */
+#hook{left:50%;top:190px;transform:translateX(-50%);width:max-content;max-width:1010px;text-align:center;background:#0d0d0d;color:#FFF06A;font:800 54px/1.16 IN;letter-spacing:-.02em;padding:24px 36px 30px;border-radius:24px;box-shadow:0 14px 40px rgba(0,0,0,.45)}
+/* subtitles: no box, line shown in full, then covered word by word */
+#sub{left:80px;right:140px;top:1370px;text-align:center;font:700 44px/1.38 ML,IN}
+#sub b{font-weight:700;position:relative;display:inline-block;margin:0 .12em;color:#fff;
+  text-shadow:0 0 3px #000,0 0 3px #000,0 2px 0 #000,0 3px 10px rgba(0,0,0,.8)}
+#sub b i{position:absolute;left:0;top:0;font-style:normal;color:#FFD84D;white-space:nowrap}
+.gold{}
+.card{background:none;padding:10px 24px;box-sizing:border-box}
+.chip{display:inline-block;font:800 40px IN;color:#FFD84D;margin:6px 14px}
+.ln{font:800 42px/1.3 IN;color:#fff}
+.mk{color:#FFD84D;font-weight:800;text-shadow:0 0 18px rgba(255,216,77,.9);font-size:1.25em}
+</style></head><body><div id="st">
+<div id="B" class="a" style="inset:0"><div id="top" class="word"></div></div>
+<div id="T" class="a" style="inset:0">
+  <div id="fade" class="a" style="left:0;right:0;top:1200px;height:720px;background:linear-gradient(180deg,rgba(0,0,0,0),rgba(0,0,0,.45) 55%,rgba(0,0,0,.6))"></div>
+  <div id="dim" class="a" style="inset:0;background:radial-gradient(ellipse at 50% 30%,rgba(0,0,0,.35),rgba(0,0,0,.8));opacity:0"></div>
+  <div id="ui" class="a" style="inset:0"></div>
+  <div id="top2" class="word"></div>
+  <div id="bot" class="word"></div>
+  <div id="hook" class="a hide"></div>
+  <div id="sub" class="a"></div>
+</div>
+</div>
+<script>
+const Q=new URLSearchParams(location.search),PASS=Q.get('pass')||'T';
+const $=id=>document.getElementById(id);const cl=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
+const eo=x=>1-Math.pow(1-cl(x),3);const back=x=>{x=cl(x);const c=1.7;return 1+(c+1)*Math.pow(x-1,3)+c*Math.pow(x-1,2)};
+const p=(t,a,d=.4)=>cl((t-a)/d);
+// edit order (source in/out). Must match segs.py ALL.
+const SEGS=[[0.06, 4.42], [4.48, 8.66], [9.02, 12.82], [13.69, 19.88], [20.33, 23.83], [24.14, 28.43], [28.79, 36.38], [36.84, 39.93], [40.4, 41.53], [41.92, 43.41], [44.14, 46.71], [47.0, 49.3], [49.56, 50.61], [50.95, 56.44], [56.79, 59.69], [60.09, 64.92], [65.28, 70.26], [70.55, 73.81], [74.06, 75.78], [76.05, 81.85], [82.12, 84.16], [84.48, 89.22], [89.65, 95.25], [95.62, 102.9], [103.17, 104.31]];
+function src(t){let b=0;for(const [a,e] of SEGS){const d=e-a;if(t<b+d)return a+(t-b);b+=d}return SEGS[SEGS.length-1][1]}
+// ---------- cues (SOURCE time): [a, b, top word (behind head), bottom word, ui] ----------
+const CUES=[
+ [0.06,4.42,'','75% TIME SAVED','h1'],[4.48,8.66,'','75% TIME SAVED','h2'],[9.02,12.82,'','75% TIME SAVED','h3'],
+ [13.69,19.88,'','MORE DETAILS','prompt'],
+ [20.33,23.83,'','TYPING = SLOW','typing'],
+ [24.14,28.43,'','DETAILS CUT','cut'],
+ [28.79,34.41,'','','mail'],
+ [34.41,36.38,'','OOPS','mail2'],
+ [36.84,39.93,'','','head'],
+ [40.40,41.53,'','BLAME AI','blame'],
+ [41.92,43.41,'AI\'S FAULT?','',''],
+ [44.14,46.71,'NOT AI','',''],
+ [47.00,49.30,'','MY FAULT',''],
+ [49.56,50.61,'','HOW TO FIX IT?',''],
+ [50.95,54.08,'','','logo'],
+ [54.08,56.44,'','DON\'T SKIP','freealt'],
+ [56.79,59.69,'','NO TYPING','nokey'],
+ [60.09,63.34,'','4X FASTER','bars'],
+ [63.34,70.26,'','','mic'],
+ [70.55,71.65,'BEST PART','','bp'],
+ [71.65,75.78,'','','punct'],
+ [76.05,89.22,'','','fix'],
+ [89.65,91.30,'NEXT GEN TECH','',''],
+ [91.30,93.55,'','COMMENT TYPE','comment'],
+ [93.55,98.11,'','','dm'],
+ [98.11,100.39,'','SEND TO A FRIEND','fs'],
+ [100.39,101.05,'FOLLOW','',''],
+ [101.05,104.31,'','1 STEP AHEAD','']];
+function cue(s){return CUES.find(c=>s>=c[0]&&s<c[1])}
+const HOOK={h1:'1 AI tool saved 75% of my time.<br>Free.',h2:'Don\'t blame AI.<br>1 tool saved 75% of my time.',h3:'I don\'t type anymore.<br>1 AI tool saved 75% of my time.'};
+// ---------- subtitles (SOURCE time) ----------
+const SUB=[
+ [0.14,1.40,'ഒരു AI tool use ചെയ്തിട്ട്'],[1.40,3.26,'ഞാൻ 75% time ലാഭിച്ചു'],[3.26,4.42,'അതും free ആയിട്ട്'],
+ [4.54,6.10,'AI-യെ കുറ്റം പറയാൻ വരട്ടെ'],[6.24,8.66,'ഒരു tool വെച്ച് ഞാൻ 75% time ലാഭിച്ചു'],
+ [9.10,10.20,'ഞാൻ ഇപ്പോ type ചെയ്യാറില്ല'],[10.20,12.82,'ഒരു AI tool വെച്ച് 75% time ലാഭിച്ചു'],
+ [13.82,15.10,'AI ആയിട്ടുള്ള ഏകദേശം എല്ലാ'],[15.10,16.40,'interaction-ഉം prompt കൂടിയാണ്'],
+ [16.40,18.28,'കുറേ details ഉണ്ടെങ്കിൽ മാത്രമേ prompt വെച്ച്'],[18.28,19.88,'AI നമുക്ക് നല്ല response തരുള്ളൂ'],
+ [20.37,22.75,'പക്ഷേ full details വെച്ച് type ചെയ്ത് കഴിയുമ്പോ'],[22.75,23.83,'കുറേ time പോവും'],
+ [24.19,26.19,'സോ പെട്ടെന്ന് type ചെയ്ത് തീർക്കാൻ വേണ്ടി'],[26.19,28.43,'നമ്മൾ തന്നെ അറിയാതെ കുറച്ച് details cut ചെയ്യും'],
+ [28.89,30.69,'ഉദാഹരണത്തിന് ഒരു mail അയക്കാനുണ്ടെങ്കിൽ'],[30.69,33.63,'ആ mail prompt വെച്ചുണ്ടാക്കി അയച്ച് കഴിഞ്ഞിട്ടാവും'],[33.63,34.41,'നമുക്ക് മനസ്സിലാവുക'],[34.41,36.38,'"ഷെടാ, ഇതും കൂടി add ആക്കാനുണ്ടായിരുന്നല്ലോ"'],
+ [36.84,38.01,'ആലോചിക്കുമ്പോ ഉണ്ടായിരുന്നു'],[38.01,39.25,'പക്ഷേ type ചെയ്യുമ്പോ മറന്നുപോയി'],[39.49,39.93,'പിന്നെ എന്താ?'],[40.40,41.53,'നമ്മൾ AI-യെ കുറ്റം പറയും'],
+ [41.93,43.41,'പക്ഷേ actually ഇത് AI-യുടെ കുറ്റമാണോ?'],
+ [44.17,45.65,'ഒന്നിരുന്ന് ആലോചിച്ചപ്പോ മനസ്സിലായി'],[45.65,46.71,'ഇത് AI-യുടെ കുറ്റമല്ല'],[47.00,49.30,'നമ്മളാണ് AI-ക്ക് full details കൊടുക്കാത്തത്'],
+ [49.61,50.61,'സോ ഇത് എങ്ങനെ solve ചെയ്യാം?'],[50.95,53.85,'അപ്പോഴാണ് Wispr Flow എന്ന tool use ചെയ്തത്'],
+ [54.08,54.89,'Skip ചെയ്യാൻ വരട്ടെ'],[54.89,56.44,'ഇതിന് ഒരു free alternative ഉണ്ട്'],
+ [56.88,58.42,'ഈ tool വെച്ച് typing എന്ന'],[58.42,59.69,'process മൊത്തം ഞാൻ ഒഴിവാക്കി'],
+ [60.12,62.36,'പൊതുവേ type ചെയ്യുന്നതിനേക്കാൾ 4 ഇരട്ടി speed ആണ്'],[62.36,63.30,'സംസാരിക്കുമ്പോ'],
+ [63.34,64.92,'Mic just വായുടെ അടുത്ത് വെച്ചാൽ മതി'],[65.33,67.95,'type ചെയ്യാൻ ഉദ്ദേശിച്ച idea full ആയി പറഞ്ഞുകൊടുക്കും'],[67.95,69.57,'അത് full ആയി capture ചെയ്യും'],[69.57,70.26,'ഒന്നും miss ആവില്ല'],
+ [70.59,71.65,'ഇനി ഇതിന്റെ best part'],[71.65,73.81,'comma, apostrophe എല്ലാം ഇത് തന്നെ ചെയ്തോളും'],[74.12,75.78,'കാരണം ഇതൊരു AI integrated tool ആണ്'],
+ [76.14,78.46,'എന്തെങ്കിലും mistake പറ്റിയാൽ അപ്പോ തന്നെ correct ചെയ്യും'],[78.46,80.34,'അതായത് ഞാൻ ChatGPT-യോട് പറയുകയാണ്'],[80.34,81.85,'"രാഹുലിനും ശ്യാമിനും ഒരു mail അയക്കൂ"'],[82.16,84.16,'"അല്ലെങ്കിൽ വേണ്ട, ശ്യാമിന് മാത്രം അയച്ചാൽ മതി"'],
+ [84.56,85.95,'അപ്പോ അത് രാഹുലിന് mail അയക്കില്ല'],[86.04,87.94,'ഇത് consider ചെയ്ത് prompt ഉണ്ടാക്കിയിട്ട്'],[87.94,89.22,'automatically run ചെയ്തോളും'],
+ [89.68,91.25,'ഇതാണ് next generation of technology'],
+ [91.69,93.55,'TYPE എന്ന് comment ചെയ്താൽ'],[93.55,95.25,'Wispr Flow-ന്റെ link-ഉം setup guide-ഉം'],[95.65,97.49,'പിന്നെ അതിന്റെ free alternative-ന്റെ link-ഉം'],[97.49,98.11,'ഞാൻ അയച്ചുതരാം'],
+ [98.11,100.39,'AI-യെ കുറ്റം പറയുന്ന ആ friend-ന് അയച്ചുകൊടുത്തോ'],[100.39,101.05,'Follow ചെയ്തോ'],[101.05,102.43,'ഇത് use ചെയ്ത് നമുക്ക്'],[102.43,104.31,'ബാക്കിയുള്ളവരെക്കാൾ ഒരു step മുന്നിലെത്താം']];
+function subAt(s){return SUB.find(c=>s>=c[0]&&s<c[1])}
+function setSub(s){const el=$('sub');const c=subAt(s);if(!c){el.innerHTML='';el.dataset.k='';return}
+  if(el.dataset.k!==c[2]){el.dataset.k=c[2];el.innerHTML=c[2].split(' ').map(w=>`<b>${w}<i>${w}</i></b>`).join(' ')}
+  const ws=[...el.children],L=ws.map(w=>w.textContent.length/2),T=L.reduce((x,y)=>x+y,0);
+  const d=c[1]-c[0],a=c[0]+Math.min(.25,d*.1),e=c[1]-Math.min(.35,d*.15);const pr=cl((s-a)/(e-a))*T;let acc=0;
+  ws.forEach((w,i)=>{const f=cl((pr-acc)/L[i]);acc+=L[i];const ii=w.firstElementChild;ii.style.clipPath=`inset(-20% ${100-f*100}% -20% 0)`});
+  el.style.opacity=cl((s-c[0])/.08)}
+// ---------- big 3D words (yellow + black) ----------
+function style(el,size){el.style.fontSize=size+'px';const o=Math.max(3,Math.round(size*.022));
+  el.style.filter=`drop-shadow(${o}px 0 0 #0d0d0d) drop-shadow(-${o}px 0 0 #0d0d0d) drop-shadow(0 ${o}px 0 #0d0d0d) drop-shadow(0 -${o}px 0 #0d0d0d) drop-shadow(0 5px 0 #0d0d0d) drop-shadow(0 10px 0 #0d0d0d) drop-shadow(0 16px 24px rgba(0,0,0,.55))`;
+  [...el.children].forEach(sp=>{sp.style.backgroundImage='linear-gradient(#FFD84D,#FFD84D)'})}
+function setWord(el,txt,maxSize,maxW){if(el.dataset.k!==txt){el.dataset.k=txt;el.innerHTML=txt.split('').map(ch=>`<span>${ch===' '?'&nbsp;':ch}</span>`).join('');
+  style(el,maxSize);const W=[...el.children].reduce((s,x)=>s+x.getBoundingClientRect().width,0);if(W>maxW)style(el,maxSize*maxW/W)}}
+function animWord(el,t,a,b){const n=el.children.length;const ord=[...Array(n).keys()].sort((x,y)=>((x*7+3)%n)-((y*7+3)%n));
+  [...el.children].forEach((sp,i)=>{const k=p(t,a+ord.indexOf(i)*.03,.22);sp.style.opacity=eo(k);sp.style.transform=`translateY(${(1-eo(k))*-40}px) scale(${1.5-.5*back(k)})`});
+  el.style.opacity=cl((b-t)/.1)}
+// ---------- UI ----------
+function win(title,inner,st){return `<div class="win a" style="${st}"><div class="bar"><span class="dot" style="background:#ff5f57"></span><span class="dot" style="background:#febc2e"></span><span class="dot" style="background:#28c840"></span><span class="wt">${title}</span><span style="width:62px"></span></div>${inner}</div>`}
+const WS='left:60px;top:200px;width:960px';
+function bub(txt,me,st=''){return `<div class="bub" style="${me?'align-self:flex-end;background:#FFD84D;color:#0d0d0d':'align-self:flex-start;background:#1f1f3d;color:#fff'};${st}">${txt}</div>`}
+function orb(lt){const n=Math.min(90,1+Math.floor(lt*30)%90);return `<img id="orb" src="snip/d/${String(n).padStart(4,'0')}.jpg" style="width:300px;height:300px;border-radius:50%;object-fit:cover">`}
+function ui(s,c){const k=c[4],el=$('ui'),a=c[0];let h='';
+ const W2='left:60px;top:210px;width:960px';
+ if(k==='prompt'){h=`<div class="win a" style="${W2}"><div class="card"><div class="lab">YOUR PROMPT</div><div class="ln" style="margin:10px 0 14px">Write a mail to my client…</div><div id="chips">${['WHO','WHY','DEADLINE','TONE','WHAT TO ATTACH'].map((x,i)=>`<span class="chip" id="ch${i}">+ ${x}</span>`).join('')}</div></div></div><div class="win a" style="left:0;right:0;top:640px;text-align:center"><span class="pill" id="good" style="font-size:38px;background:#45dd6c">✓ GOOD RESPONSE</span></div>`}
+ if(k==='typing'){h=`<div class="win a" style="${W2}"><div class="card" style="display:flex;flex-direction:column;gap:18px"><div style="display:flex;justify-content:space-between;align-items:center"><span class="lab">TYPING…</span><span id="sw" style="font:800 64px IN;color:#ff4b72">0:00</span></div><div class="ln" style="min-height:150px"><span id="tx"></span><span id="cur" style="display:inline-block;width:4px;height:40px;background:#FFD84D;vertical-align:middle"></span></div></div></div>`}
+ if(k==='cut'){h=`<div class="win a" style="${W2}"><div class="card">${['Mail to client','Project is delayed','New date: 15th','Report attached','Call me if needed'].map((x,i)=>`<div class="ln" id="cl${i}" style="position:relative;display:flex;gap:14px;align-items:center;margin:6px 0"><span style="color:#45dd6c">•</span>${x}<span class="a" id="cs${i}" style="left:0;top:50%;height:6px;width:100%;background:#ff4b72;transform-origin:left;transform:scaleX(0)"></span></div>`).join('')}</div></div>`}
+ if(k==='mail'||k==='mail2'){h=`<div class="win a" style="${W2}"><div style="color:#fff;padding:10px 24px"><div style="font:800 30px IN;color:#FFD84D;letter-spacing:.12em">TO: CLIENT</div><div style="font:800 52px IN;margin:6px 0 12px">Project update</div><div style="font:700 40px/1.3 IN">Hi, the project is delayed. Sorry for the trouble.</div><div style="display:flex;justify-content:flex-end;margin-top:18px"><span id="send" class="pill" style="font-size:34px;background:#0d0d0d;color:#fff">SEND</span></div></div>${k==='mail2'?'<div id="forgot" class="a" style="right:-10px;top:-40px;transform:rotate(6deg);background:#ff4b72;color:#fff;font:800 40px IN;padding:16px 24px;border-radius:18px;box-shadow:0 10px 30px rgba(0,0,0,.5)">FORGOT: NEW DATE!</div>':''}</div>`}
+ if(k==='head'){h=`<div class="win a" id="ph" style="left:0;right:0;top:250px;text-align:center"><span class="pill" style="font-size:40px;background:#45dd6c">IN MY HEAD ✓</span></div><div class="win a" id="pt" style="left:0;right:0;top:1190px;text-align:center"><span class="pill" style="font-size:40px;background:#ff4b72;color:#fff">IN THE PROMPT ✗</span></div>`}
+ if(k==='blame'){h=`<div class="win a" style="${W2};display:flex;justify-content:flex-end">${bub('This AI is useless.',1,'font-size:48px;background:#ff4b72;color:#fff')}</div>`}
+ if(k==='logo'){h=`<div class="win a" style="${W2};display:flex;justify-content:center"><div style="display:flex;align-items:center;gap:30px;padding:20px 40px"><svg width="130" height="110" viewBox="0 0 130 110">${[[0,96],[1,56],[2,76],[3,46],[4,96]].map(([i,hh])=>`<rect class="wv" data-h="${hh}" x="${8+i*26}" y="${55-hh/2}" width="14" height="${hh}" rx="7" fill="#fff"/>`).join('')}</svg><span style="font:800 120px IN;letter-spacing:-.03em;color:#fff">Flow</span></div></div>`}
+ if(k==='freealt'){h=`<div class="win a" style="${W2};display:flex;gap:24px;justify-content:center"><div class="card" style="width:440px;text-align:center"><div style="font:800 56px IN">Wispr Flow</div><div class="lab" style="margin-top:8px">FREE TRIAL</div></div><div class="card" id="fa" style="width:440px;text-align:center;color:#FFD84D"><div style="font:800 56px IN">Free option</div><div style="font:800 26px IN;letter-spacing:.18em;margin-top:8px;color:#fff">ALSO IN THE DM</div></div></div>`}
+ if(k==='nokey'){h=`<div class="win a" style="${W2};display:flex;align-items:center;justify-content:center;gap:50px"><div style="position:relative"><svg width="300" height="190" viewBox="0 0 300 190"><rect x="6" y="6" width="288" height="178" rx="22" fill="none" stroke="#fff" stroke-width="6"/>${[0,1,2].map(r=>[0,1,2,3,4,5].map(i=>`<rect x="${28+i*42}" y="${30+r*42}" width="32" height="30" rx="6" fill="#fff" opacity=".8"/>`).join('')).join('')}<rect x="70" y="150" width="160" height="20" rx="6" fill="#fff" opacity=".8"/></svg><svg id="kx" class="a" style="left:0;top:0" width="300" height="190"><path d="M30 20 L270 170 M270 20 L30 170" stroke="#ff4b72" stroke-width="16" stroke-linecap="round"/></svg></div><svg width="110" height="60"><path d="M5 30 H90 M70 8 L98 30 L70 52" stroke="#fff" stroke-width="10" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg><div id="mk2" style="width:190px;height:190px;border-radius:50%;background:#FFD84D;display:flex;align-items:center;justify-content:center"><svg width="100" height="120" viewBox="0 0 24 28"><rect x="7" y="1" width="10" height="16" rx="5" fill="#0d0d0d"/><path d="M3 13a9 9 0 0 0 18 0M12 22v5M7 27h10" stroke="#0d0d0d" stroke-width="2.4" fill="none" stroke-linecap="round"/></svg></div></div>`}
+ if(k==='bars'){h=`<div class="win a" style="${W2}"><div class="card" style="display:flex;flex-direction:column;gap:26px"><div><div class="lab">TYPING</div><div style="display:flex;align-items:center;gap:20px;margin-top:10px"><div id="b1" style="height:70px;width:200px;border-radius:16px;background:#8e8e93;transform-origin:left"></div><span style="font:800 54px IN">1X</span></div></div><div><div class="lab">SPEAKING</div><div style="display:flex;align-items:center;gap:20px;margin-top:10px"><div id="b2" style="height:70px;width:700px;border-radius:16px;background:#FFD84D;transform-origin:left"></div><span id="b2t" style="font:800 54px IN;color:#FFD84D">4X</span></div></div></div></div>`}
+ if(k==='mic'){h=`<div class="win a" style="${W2}"><div class="card" style="display:flex;flex-direction:column;gap:18px"><div style="display:flex;align-items:center;gap:22px"><div style="width:96px;height:96px;border-radius:50%;background:#FFD84D;display:flex;align-items:center;justify-content:center"><svg width="48" height="58" viewBox="0 0 24 28"><rect x="7" y="1" width="10" height="16" rx="5" fill="#0d0d0d"/><path d="M3 13a9 9 0 0 0 18 0M12 22v5" stroke="#0d0d0d" stroke-width="2.4" fill="none" stroke-linecap="round"/></svg></div><svg width="560" height="90">${[...Array(28).keys()].map(i=>`<rect class="wv2" x="${i*20}" y="20" width="10" height="50" rx="5" fill="#FFD84D"/>`).join('')}</svg></div><div class="ln" style="min-height:190px;font-size:40px"><span id="tx"></span></div></div></div><div class="win a" style="left:0;right:0;top:720px;text-align:center"><span class="pill" id="nm" style="font-size:38px;background:#45dd6c">✓ NOTHING MISSED</span></div>`}
+ if(k==='bp'){h=`<div class="a" id="burst" style="left:540px;top:330px;width:0;height:0"><svg class="a" style="left:-700px;top:-700px" width="1400" height="1400" viewBox="-700 -700 1400 1400"><g id="rays">${[...Array(16).keys()].map(i=>`<path d="M0 0 L${Math.cos(i*Math.PI/8-.06)*700} ${Math.sin(i*Math.PI/8-.06)*700} L${Math.cos(i*Math.PI/8+.06)*700} ${Math.sin(i*Math.PI/8+.06)*700}Z" fill="#FFD84D" opacity=".35"/>`).join('')}</g><circle id="ring" r="100" fill="none" stroke="#FFD84D" stroke-width="18"/></svg></div>`}
+ if(k==='punct'){h=`<div class="win a" style="${W2}"><div class="card gold" style="display:flex;flex-direction:column;gap:20px"><div style="display:flex;justify-content:space-between"><span class="pill" style="font-size:26px">BEST PART</span><span class="lab" style="align-self:center">AUTO PUNCTUATION</span></div><div><div class="lab">YOU SAY</div><div class="ln" id="raw" style="color:#aab;margin-top:6px;font-size:40px">lets meet at 5 its urgent dont be late</div></div><div><div class="lab">IT WRITES</div><div class="ln" id="clean" style="margin-top:6px;font-size:54px;font-weight:800"></div></div></div></div>`}
+ if(k==='fix'){h=`<div class="win a" style="${W2}"><div class="card gold" style="display:flex;flex-direction:column;gap:22px"><div style="display:flex;justify-content:space-between"><span class="pill" style="font-size:26px">BEST PART</span><span class="lab" style="align-self:center">YOU CHANGE YOUR MIND</span></div><div class="lab">YOUR PROMPT</div><div id="pl" style="font:800 56px/1.25 IN;min-height:150px"><span id="w1">Send a mail to </span><span id="w2" class="cx">Rahul and </span><span id="w3">Syam</span><span id="w4" class="cx" style="color:#FFD84D"> … no wait, only Syam</span><span id="w5">.</span></div><div style="display:flex;justify-content:space-between;align-items:center"><span id="len" style="font:800 30px IN;color:#aab"></span><span id="sent" style="font:800 34px IN;color:#45dd6c">✓ Mail sent to Syam only</span></div></div><div id="stamp" class="a" style="right:30px;top:-60px;background:#FFD84D;color:#0d0d0d;font:800 50px IN;padding:14px 26px;border-radius:16px;transform:rotate(-6deg);box-shadow:0 12px 30px rgba(0,0,0,.5)">FIXED ITSELF</div></div>`}
+ if(k==='comment'){h=`<div class="a" style="left:90px;top:300px;width:900px;height:110px;border-radius:999px;background:rgba(30,30,50,.8);box-shadow:0 0 0 2px rgba(255,255,255,.18);display:flex;align-items:center;gap:22px;padding:0 34px;box-sizing:border-box"><span style="width:58px;height:58px;border-radius:50%;background:conic-gradient(#ff4b72,#9a6bff,#2fd0f2,#ffc21f,#ff4b72)"></span><span id="cmt" style="font:800 46px IN;color:#FFD84D"></span><span id="cur" style="width:4px;height:50px;background:#fff"></span></div>`}
+ if(k==='dm'){h=`<div class="win a" style="${W2}"><div class="card"><div class="lab">IN YOUR DM</div>${['Wispr Flow link','Setup guide','Free alternative link'].map((x,i)=>`<div class="ln" id="dm${i}" style="font-size:44px;display:flex;gap:18px;align-items:center;margin-top:16px"><span style="width:52px;height:52px;border-radius:50%;background:#45dd6c;color:#0d0d0d;display:inline-flex;align-items:center;justify-content:center;font:800 32px IN">✓</span>${x}</div>`).join('')}</div></div>`}
+ if(k==='fs'){h=`<div class="a" style="left:0;right:0;top:300px;display:flex;justify-content:center;gap:26px"><span class="btn" id="bS" style="background:#FFD84D;color:#0d0d0d"><svg width="40" height="40" viewBox="0 0 24 24"><path d="M3 11 L21 3 L14 21 L11 13 Z" fill="#0d0d0d"/></svg>SEND TO A FRIEND</span></div>`}
+ if(el.dataset.k!==k+a){el.dataset.k=k+a;el.innerHTML=h}
+ [...el.children].forEach((e,i)=>{const q=p(s,a+.03+i*.08,.32);e.style.opacity=eo(q)*cl((c[1]-s)/.12);e.style.transform=`translateY(${(1-eo(q))*50}px) scale(${.88+.12*back(q)})`});
+ const lt=s-a,show=(id,t,d=.3)=>{const e=$(id);const q=p(s,t,d);e.style.opacity=eo(q);e.style.transform=`scale(${.7+.3*back(q)})`};
+ if(k==='prompt'){[16.6,17.0,17.4,17.8,18.2].forEach((t,i)=>show('ch'+i,t,.25));show('good',18.9)}
+ if(k==='typing'){const T='Write a mail to the client about the delay, mention the new date, say sorry, attach the';$('tx').textContent=T.slice(0,Math.floor(lt*7));const sec=Math.floor(lt*55);$('sw').textContent=Math.floor(sec/60)+':'+String(sec%60).padStart(2,'0');$('cur').style.opacity=(Math.floor(s*3)%2)?1:0}
+ if(k==='cut'){[2,3,4].forEach((i,j)=>{const q=eo(p(s,26.3+j*.45,.3));$('cs'+i).style.transform=`scaleX(${q})`;$('cl'+i).style.opacity=1-.6*q})}
+ if(k==='mail'){const on=s>=32.8;$('send').textContent=on?'SENT ✓':'SEND';$('send').style.background=on?'#45dd6c':'#0d0d0d';$('send').style.transform=`scale(${s>32.7&&s<32.9?.9:1})`}
+ if(k==='mail2'){$('send').textContent='SENT ✓';$('send').style.background='#45dd6c';show('forgot',34.5,.3)}
+ if(k==='head'){$('ph').style.opacity=eo(p(s,36.9,.3));$('pt').style.opacity=eo(p(s,38.1,.3));$('pt').style.transform=`scale(${.8+.2*back(p(s,38.1,.3))})`}
+ if(k==='logo'){document.querySelectorAll('.wv').forEach((r,i)=>{const H0=+r.dataset.h;const hh=H0*(.75+.25*Math.sin(s*6+i*1.3));r.setAttribute('height',hh);r.setAttribute('y',55-hh/2)})}
+ if(k==='freealt'){show('fa',54.9,.35)}
+ if(k==='nokey'){const q=eo(p(s,57.6,.35));$('kx').style.clipPath=`inset(0 ${100-q*100}% 0 0)`;show('mk2',58.4,.35)}
+ if(k==='bars'){$('b1').style.transform=`scaleX(${eo(p(s,a+.3,.6))})`;$('b2').style.transform=`scaleX(${eo(p(s,a+.6,1.2))})`;show('b2t',61.0,.3)}
+ if(k==='mic'){document.querySelectorAll('.wv2').forEach((r,i)=>{const hh=10+70*Math.abs(Math.sin(s*9+i*.7))*(.4+.6*Math.abs(Math.sin(i*.37+s)));r.setAttribute('height',hh);r.setAttribute('y',45-hh/2)});
+   const T='Write a mail to the client: the project is delayed, the new date is the 15th, sorry for the trouble, the report is attached, and call me if anything is unclear.';$('tx').textContent=T.slice(0,Math.floor(cl((s-65.3)/3.5)*T.length));show('nm',69.57,.3)}
+ if(k==='bp'){$('rays').setAttribute('transform',`rotate(${lt*40}) scale(${eo(p(s,a,.35))})`);const q=p(s,a,.6);$('ring').setAttribute('r',100+600*eo(q));$('ring').style.opacity=1-q}
+ if(k==='punct'){const T=[['Let','s'],["'",'m'],['s meet at 5','t'],['.','m'],[' It','t'],["'",'m'],['s urgent','t'],[',','m'],[" don",'t'],["'",'m'],['t be late','t'],['.','m']];
+   const q=p(s,72.4,1.6);let n=Math.floor(q*T.length);$('clean').innerHTML=q<=0?'':T.slice(0,Math.max(1,n)).map(x=>x[1]==='m'?`<span class="mk">${x[0]}</span>`:x[0]).join('');$('raw').style.opacity=1-.5*cl(q)}
+ if(k==='fix'){const vis=(id,t)=>{$(id).style.opacity=s>=t?1:0};vis('w1',79.9);vis('w2',80.34);vis('w3',80.86);vis('w4',82.16);vis('w5',82.9);
+   const q=eo(p(s,84.6,.35)),z=eo(p(s,85.0,.45));
+   ['w2','w4'].forEach(id=>{const e=$(id);e.style.background=q>0?`rgba(255,75,114,${.55*q})`:'none';e.style.textDecoration=q>.3?'line-through':'none';e.style.textDecorationColor='#ff4b72';
+     if(z>0){e.style.display='inline-block';e.style.whiteSpace='pre';e.style.overflow='hidden';e.style.verticalAlign='bottom';if(!e.dataset.w){e.style.maxWidth='none';e.dataset.w=e.scrollWidth||1}e.style.maxWidth=(1-z)*e.dataset.w+'px'}else{e.style.display='inline';e.style.maxWidth='none';e.style.whiteSpace='normal'}e.style.opacity=s>=(id==='w2'?80.34:82.16)?1-z:0});
+   $('w3').style.background=z>.5?'#45dd6c':'none';$('w3').style.color=z>.5?'#0d0d0d':'';$('w3').style.borderRadius='10px';$('w3').style.padding=z>.5?'0 10px':'0';
+   const words=s<84.6?(s>=82.16?11:s>=80.86?6:s>=80.34?5:s>=79.9?4:0):Math.round(11-6*z);$('len').textContent=words?`PROMPT: ${words} WORDS`:'';
+   show('stamp',85.4,.3);show('sent',88.0,.3)}
+ if(k==='comment'){$('cmt').textContent='TYPE'.slice(0,Math.floor(cl((lt-.4)/.5)*4));$('cur').style.opacity=(Math.floor(s*3)%2)?1:0}
+ if(k==='dm'){[93.7,94.9,96.4].forEach((t,i)=>show('dm'+i,t,.3))}
+ if(k==='fs'){$('bS').style.transform=`scale(${lt>1.0&&lt<1.15?.93:1})`}
+}
+window.setCaps=()=>{};
+window.frame=t=>{const s=src(t),c=cue(s);
+  if(PASS==='B'){$('T').classList.add('hide');const tp=$('top');
+    if(!c||!c[2]){tp.innerHTML='';tp.dataset.k='';return}
+    setWord(tp,c[2],230,980);tp.style.top='200px';animWord(tp,s,c[0],c[1]);return}
+  $('B').classList.add('hide');const bt=$('bot');
+  const hk=c&&HOOK[c[4]];$('hook').classList.toggle('hide',!hk);if(hk&&$('hook').dataset.k!==c[4]){$('hook').dataset.k=c[4];$('hook').innerHTML=hk}
+  setSub(s);$('dim').style.opacity=(s>=70.55&&s<89.22)?Math.min(cl((s-70.55)/.25),cl((89.22-s)/.25)):0;
+  if(!c){bt.innerHTML='';bt.dataset.k='';$('top2').innerHTML='';$('top2').dataset.k='';$('ui').innerHTML='';$('ui').dataset.k='';return}
+  const t2=$('top2');if(c&&c[2]){setWord(t2,c[2],230,980);t2.style.top='200px';animWord(t2,s,c[0],c[1])}else{t2.innerHTML='';t2.dataset.k=''}
+  if(c[3]){setWord(bt,c[3],c[3].length>9?120:160,960);bt.style.top='1180px';animWord(bt,s,c[0]+(hk?.6:.15),c[1])}else{bt.innerHTML='';bt.dataset.k=''}
+  if(c[4]&&!hk)return ui(s,c);else{$('ui').innerHTML='';$('ui').dataset.k=''}
+};
+</script></body></html>

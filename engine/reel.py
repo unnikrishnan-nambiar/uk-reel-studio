@@ -189,10 +189,12 @@ def comp(j, test_times=None):
     PAPER = np.repeat((pf[990, :, :3] if pf is not None else np.full((W, 3), 238, np.uint8)).astype(np.float32)[None], H, 0)
     if hdr.ON: PAPER = hdr.sdr2hlg(PAPER)
     frames = [int(round(t * FPS)) for t in test_times] if test_times else list(range(N))
+    PR = os.environ.get('PATCH')
+    if PR: pa, pz = map(int, PR.split(',')); frames = list(range(pa, pz))
     want = set(frames); tiles = []
     dec = subprocess.Popen(['ffmpeg', '-v', 'error', '-i', 'cut60.mp4', '-f', 'rawvideo', '-pix_fmt', 'bgr24', '-'], stdout=subprocess.PIPE)
     enc = None if test_times else subprocess.Popen(['ffmpeg', '-v', 'error', '-y', '-f', 'rawvideo', '-pix_fmt', 'bgr24', '-s', f'{W}x{H}', '-r', str(FPS), '-i', '-',
-                                                    '-c:v', 'libx264', '-preset', 'medium', '-crf', '15', '-pix_fmt', 'yuv420p', 'body_v.mp4'], stdin=subprocess.PIPE)
+                                                    '-c:v', 'libx264', '-preset', 'medium', '-crf', '15', '-pix_fmt', 'yuv420p', 'patch_v.mp4' if PR else 'body_v.mp4'], stdin=subprocess.PIPE)
     n = 0
     while True:
         b = dec.stdout.read(W * H * 3)
@@ -256,7 +258,9 @@ def comp(j, test_times=None):
             else: tiles.append(cv2.resize(o, (270, 480)))
             if enc and n % 300 == 0: print('frame', n, '/', N, flush=True)
         n += 1
-        if test_times and n > max(frames): break
+        if (test_times or PR) and n > max(frames): break
+    if PR:
+        dec.kill(); enc.stdin.close(); enc.wait(); return
     if enc:
         enc.stdin.close(); enc.wait()
         sh(['ffmpeg', '-v', 'error', '-y', '-i', 'body.wav', '-af', 'highpass=f=70,acompressor=threshold=-24dB:ratio=2.2:attack=8:release=140,loudnorm=I=-14:TP=-1.5:LRA=7', '-ar', '48000', '-ac', '2', 'body_a.wav'])

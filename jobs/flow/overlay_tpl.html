@@ -1,0 +1,142 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+@font-face{font-family:IN;src:url(../../templates/fonts/inter-latin-600-normal.woff2);font-weight:600}
+@font-face{font-family:IN;src:url(../../templates/fonts/inter-latin-700-normal.woff2);font-weight:700}
+@font-face{font-family:IN;src:url(../../templates/fonts/inter-latin-800-normal.woff2);font-weight:800}
+@font-face{font-family:ML;src:url(../../templates/fonts/noto-sans-malayalam-malayalam-700-normal.woff2);font-weight:700}
+@font-face{font-family:ML;src:url(../../templates/fonts/noto-sans-malayalam-malayalam-800-normal.woff2);font-weight:800}
+html,body{margin:0;background:transparent}
+#st{position:relative;width:1080px;height:1920px;overflow:hidden;font-family:IN;color:#fff;-webkit-font-smoothing:antialiased}
+.a{position:absolute}.hide{display:none!important}
+.word{position:absolute;left:0;right:0;text-align:center;white-space:nowrap;font-weight:800;text-transform:uppercase;letter-spacing:-.035em;line-height:.92}
+.word span{display:inline-block;-webkit-background-clip:text;background-clip:text;color:transparent}
+.win{background:none;box-sizing:border-box;filter:drop-shadow(2px 0 0 #0d0d0d) drop-shadow(-2px 0 0 #0d0d0d) drop-shadow(0 2px 0 #0d0d0d) drop-shadow(0 -2px 0 #0d0d0d) drop-shadow(0 10px 18px rgba(0,0,0,.45))}
+.win .lab{color:#fff;font-size:28px!important}
+.bar{display:none}
+.dot{width:14px;height:14px;border-radius:50%}
+.wt{margin:0 auto;font:700 18px IN;letter-spacing:.22em;color:#9aa3d6;padding:4px 16px;border-radius:999px;background:rgba(255,255,255,.06)}
+.lab{font:800 26px IN;letter-spacing:.18em;color:#FFD84D}
+.pill{display:inline-flex;align-items:center;gap:10px;font:800 24px IN;letter-spacing:.12em;color:#0d0d0d;background:#FFD84D;border-radius:999px;padding:12px 22px}
+.btn{display:inline-flex;align-items:center;gap:14px;border-radius:999px;font:800 44px IN;padding:24px 46px;color:#fff}
+.shot{display:block;width:936px;border-radius:14px}
+.bub{max-width:640px;font:700 38px/1.3 IN,ML;padding:20px 26px;border-radius:26px}
+/* hook: ONE box, yellow text on black, static */
+#hook{left:50%;top:190px;transform:translateX(-50%);width:max-content;max-width:1010px;text-align:center;background:#0d0d0d;color:#FFF06A;font:800 54px/1.16 IN;letter-spacing:-.02em;padding:24px 36px 30px;border-radius:24px;box-shadow:0 14px 40px rgba(0,0,0,.45)}
+/* subtitles: no box, line shown in full, then covered word by word */
+#sub{left:80px;right:140px;top:1370px;text-align:center;font:700 44px/1.38 ML,IN}
+#sub b{font-weight:700;position:relative;display:inline-block;margin:0 .12em;color:#fff;
+  text-shadow:0 0 3px #000,0 0 3px #000,0 2px 0 #000,0 3px 10px rgba(0,0,0,.8)}
+#sub b i{position:absolute;left:0;top:0;font-style:normal;color:#FFD84D;white-space:nowrap}
+.gold{}
+.card{background:none;padding:10px 24px;box-sizing:border-box}
+.chip{display:inline-block;font:800 40px IN;color:#FFD84D;margin:6px 14px}
+.ln{font:800 42px/1.3 IN;color:#fff}
+.mk{color:#FFD84D;font-weight:800;text-shadow:0 0 18px rgba(255,216,77,.9);font-size:1.25em}
+</style></head><body><div id="st">
+<div id="B" class="a" style="inset:0"><div id="top" class="word"></div></div>
+<div id="T" class="a" style="inset:0">
+  <div id="fade" class="a" style="left:0;right:0;top:1200px;height:720px;background:linear-gradient(180deg,rgba(0,0,0,0),rgba(0,0,0,.45) 55%,rgba(0,0,0,.6))"></div>
+  <div id="dim" class="a" style="inset:0;background:radial-gradient(ellipse at 50% 30%,rgba(0,0,0,.35),rgba(0,0,0,.8));opacity:0"></div>
+  <div id="ui" class="a" style="inset:0"></div>
+  <div id="top2" class="word"></div>
+  <div id="bot" class="word"></div>
+  <div id="hook" class="a hide"></div>
+  <div id="sub" class="a"></div>
+</div>
+</div>
+<script>
+const Q=new URLSearchParams(location.search),PASS=Q.get('pass')||'T';
+const $=id=>document.getElementById(id);const cl=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
+const eo=x=>1-Math.pow(1-cl(x),3);const back=x=>{x=cl(x);const c=1.7;return 1+(c+1)*Math.pow(x-1,3)+c*Math.pow(x-1,2)};
+const p=(t,a,d=.4)=>cl((t-a)/d);
+// edit order (source in/out). Must match segs.py ALL.
+const SEGS=[[0.06, 4.42], [4.48, 8.66], [9.02, 12.82], [13.69, 19.88], [20.33, 23.83], [24.14, 28.43], [28.79, 36.38], [36.84, 39.93], [40.4, 41.53], [41.92, 43.41], [44.14, 46.71], [47.0, 49.3], [49.56, 50.61], [50.95, 56.44], [56.79, 59.69], [60.09, 64.92], [65.28, 70.26], [70.55, 73.81], [74.06, 75.78], [76.05, 81.85], [82.12, 84.16], [84.48, 89.22], [89.65, 95.25], [95.62, 102.9], [103.17, 104.31]];
+function src(t){let b=0;for(const [a,e] of SEGS){const d=e-a;if(t<b+d)return a+(t-b);b+=d}return SEGS[SEGS.length-1][1]}
+// ---------- cues (SOURCE time): [a, b, top word (behind head), bottom word, ui] ----------
+const CUES=[
+ [0.06,4.42,'','75% TIME SAVED','h1'],[4.48,8.66,'','75% TIME SAVED','h2'],[9.02,12.82,'','75% TIME SAVED','h3'],
+ [13.69,19.88,'','MORE DETAILS','prompt'],
+ [20.33,23.83,'','TYPING = SLOW','typing'],
+ [24.14,28.43,'','DETAILS CUT','cut'],
+ [28.79,34.41,'','','mail'],
+ [34.41,36.38,'','OOPS','mail2'],
+ [36.84,39.93,'','','head'],
+ [40.40,41.53,'','BLAME AI','blame'],
+ [41.92,43.41,'AI\'S FAULT?','',''],
+ [44.14,46.71,'NOT AI','',''],
+ [47.00,49.30,'','MY FAULT',''],
+ [49.56,50.61,'','HOW TO FIX IT?',''],
+ [50.95,54.08,'','','logo'],
+ [54.08,56.44,'','DON\'T SKIP','freealt'],
+ [56.79,59.69,'','NO TYPING','nokey'],
+ [60.09,63.34,'','4X FASTER','bars'],
+ [63.34,70.26,'','','mic'],
+ [70.55,71.65,'BEST PART','','bp'],
+ [71.65,75.78,'','','punct'],
+ [76.05,89.22,'','','fix'],
+ [89.65,91.30,'NEXT GEN TECH','',''],
+ [91.30,93.55,'','COMMENT TYPE','comment'],
+ [93.55,98.11,'','','dm'],
+ [98.11,100.39,'','SEND TO A FRIEND','fs'],
+ [100.39,101.05,'FOLLOW','',''],
+ [101.05,104.31,'','1 STEP AHEAD','']];
+function cue(s){return CUES.find(c=>s>=c[0]&&s<c[1])}
+const HOOK={h1:'1 AI tool saved 75% of my time.<br>Free.',h2:'Don\'t blame AI.<br>1 tool saved 75% of my time.',h3:'I don\'t type anymore.<br>1 AI tool saved 75% of my time.'};
+// ---------- subtitles (SOURCE time) ----------
+const SUB=[
+ [0.14,1.40,'ഒരു AI tool use ചെയ്തിട്ട്'],[1.40,3.26,'ഞാൻ 75% time ലാഭിച്ചു'],[3.26,4.42,'അതും free ആയിട്ട്'],
+ [4.54,6.10,'AI-യെ കുറ്റം പറയാൻ വരട്ടെ'],[6.24,8.66,'ഒരു tool വെച്ച് ഞാൻ 75% time ലാഭിച്ചു'],
+ [9.10,10.20,'ഞാൻ ഇപ്പോ type ചെയ്യാറില്ല'],[10.20,12.82,'ഒരു AI tool വെച്ച് 75% time ലാഭിച്ചു'],
+ [13.82,15.10,'AI ആയിട്ടുള്ള ഏകദേശം എല്ലാ'],[15.10,16.40,'interaction-ഉം prompt കൂടിയാണ്'],
+ [16.40,18.28,'കുറേ details ഉണ്ടെങ്കിൽ മാത്രമേ prompt വെച്ച്'],[18.28,19.88,'AI നമുക്ക് നല്ല response തരുള്ളൂ'],
+ [20.37,22.75,'പക്ഷേ full details വെച്ച് type ചെയ്ത് കഴിയുമ്പോ'],[22.75,23.83,'കുറേ time പോവും'],
+ [24.19,26.19,'സോ പെട്ടെന്ന് type ചെയ്ത് തീർക്കാൻ വേണ്ടി'],[26.19,28.43,'നമ്മൾ തന്നെ അറിയാതെ കുറച്ച് details cut ചെയ്യും'],
+ [28.89,30.69,'ഉദാഹരണത്തിന് ഒരു mail അയക്കാനുണ്ടെങ്കിൽ'],[30.69,33.63,'ആ mail prompt വെച്ചുണ്ടാക്കി അയച്ച് കഴിഞ്ഞിട്ടാവും'],[33.63,34.41,'നമുക്ക് മനസ്സിലാവുക'],[34.41,36.38,'"ഷെടാ, ഇതും കൂടി add ആക്കാനുണ്ടായിരുന്നല്ലോ"'],
+ [36.84,38.01,'ആലോചിക്കുമ്പോ ഉണ്ടായിരുന്നു'],[38.01,39.25,'പക്ഷേ type ചെയ്യുമ്പോ മറന്നുപോയി'],[39.49,39.93,'പിന്നെ എന്താ?'],[40.40,41.53,'നമ്മൾ AI-യെ കുറ്റം പറയും'],
+ [41.93,43.41,'പക്ഷേ actually ഇത് AI-യുടെ കുറ്റമാണോ?'],
+ [44.17,45.65,'ഒന്നിരുന്ന് ആലോചിച്ചപ്പോ മനസ്സിലായി'],[45.65,46.71,'ഇത് AI-യുടെ കുറ്റമല്ല'],[47.00,49.30,'നമ്മളാണ് AI-ക്ക് full details കൊടുക്കാത്തത്'],
+ [49.61,50.61,'സോ ഇത് എങ്ങനെ solve ചെയ്യാം?'],[50.95,53.85,'അപ്പോഴാണ് Wispr Flow എന്ന tool use ചെയ്തത്'],
+ [54.08,54.89,'Skip ചെയ്യാൻ വരട്ടെ'],[54.89,56.44,'ഇതിന് ഒരു free alternative ഉണ്ട്'],
+ [56.88,58.42,'ഈ tool വെച്ച് typing എന്ന'],[58.42,59.69,'process മൊത്തം ഞാൻ ഒഴിവാക്കി'],
+ [60.12,62.36,'പൊതുവേ type ചെയ്യുന്നതിനേക്കാൾ 4 ഇരട്ടി speed ആണ്'],[62.36,63.30,'സംസാരിക്കുമ്പോ'],
+ [63.34,64.92,'Mic just വായുടെ അടുത്ത് വെച്ചാൽ മതി'],[65.33,67.95,'type ചെയ്യാൻ ഉദ്ദേശിച്ച idea full ആയി പറഞ്ഞുകൊടുക്കും'],[67.95,69.57,'അത് full ആയി capture ചെയ്യും'],[69.57,70.26,'ഒന്നും miss ആവില്ല'],
+ [70.59,71.65,'ഇനി ഇതിന്റെ best part'],[71.65,73.81,'comma, apostrophe എല്ലാം ഇത് തന്നെ ചെയ്തോളും'],[74.12,75.78,'കാരണം ഇതൊരു AI integrated tool ആണ്'],
+ [76.14,78.46,'എന്തെങ്കിലും mistake പറ്റിയാൽ അപ്പോ തന്നെ correct ചെയ്യും'],[78.46,80.34,'അതായത് ഞാൻ ChatGPT-യോട് പറയുകയാണ്'],[80.34,81.85,'"രാഹുലിനും ശ്യാമിനും ഒരു mail അയക്കൂ"'],[82.16,84.16,'"അല്ലെങ്കിൽ വേണ്ട, ശ്യാമിന് മാത്രം അയച്ചാൽ മതി"'],
+ [84.56,85.95,'അപ്പോ അത് രാഹുലിന് mail അയക്കില്ല'],[86.04,87.94,'ഇത് consider ചെയ്ത് prompt ഉണ്ടാക്കിയിട്ട്'],[87.94,89.22,'automatically run ചെയ്തോളും'],
+ [89.68,91.25,'ഇതാണ് next generation of technology'],
+ [91.69,93.55,'TYPE എന്ന് comment ചെയ്താൽ'],[93.55,95.25,'Wispr Flow-ന്റെ link-ഉം setup guide-ഉം'],[95.65,97.49,'പിന്നെ അതിന്റെ free alternative-ന്റെ link-ഉം'],[97.49,98.11,'ഞാൻ അയച്ചുതരാം'],
+ [98.11,100.39,'AI-യെ കുറ്റം പറയുന്ന ആ friend-ന് അയച്ചുകൊടുത്തോ'],[100.39,101.05,'Follow ചെയ്തോ'],[101.05,102.43,'ഇത് use ചെയ്ത് നമുക്ക്'],[102.43,104.31,'ബാക്കിയുള്ളവരെക്കാൾ ഒരു step മുന്നിലെത്താം']];
+function subAt(s){return SUB.find(c=>s>=c[0]&&s<c[1])}
+function setSub(s){const el=$('sub');const c=subAt(s);if(!c){el.innerHTML='';el.dataset.k='';return}
+  if(el.dataset.k!==c[2]){el.dataset.k=c[2];el.innerHTML=c[2].split(' ').map(w=>`<b>${w}<i>${w}</i></b>`).join(' ')}
+  const ws=[...el.children],L=ws.map(w=>w.textContent.length/2),T=L.reduce((x,y)=>x+y,0);
+  const d=c[1]-c[0],a=c[0]+Math.min(.25,d*.1),e=c[1]-Math.min(.35,d*.15);const pr=cl((s-a)/(e-a))*T;let acc=0;
+  ws.forEach((w,i)=>{const f=cl((pr-acc)/L[i]);acc+=L[i];const ii=w.firstElementChild;ii.style.clipPath=`inset(-20% ${100-f*100}% -20% 0)`});
+  el.style.opacity=cl((s-c[0])/.08)}
+// ---------- big 3D words (yellow + black) ----------
+function style(el,size){el.style.fontSize=size+'px';const o=Math.max(3,Math.round(size*.022));
+  el.style.filter=`drop-shadow(${o}px 0 0 #0d0d0d) drop-shadow(-${o}px 0 0 #0d0d0d) drop-shadow(0 ${o}px 0 #0d0d0d) drop-shadow(0 -${o}px 0 #0d0d0d) drop-shadow(0 5px 0 #0d0d0d) drop-shadow(0 10px 0 #0d0d0d) drop-shadow(0 16px 24px rgba(0,0,0,.55))`;
+  [...el.children].forEach(sp=>{sp.style.backgroundImage='linear-gradient(#FFD84D,#FFD84D)'})}
+function setWord(el,txt,maxSize,maxW){if(el.dataset.k!==txt){el.dataset.k=txt;el.innerHTML=txt.split('').map(ch=>`<span>${ch===' '?'&nbsp;':ch}</span>`).join('');
+  style(el,maxSize);const W=[...el.children].reduce((s,x)=>s+x.getBoundingClientRect().width,0);if(W>maxW)style(el,maxSize*maxW/W)}}
+function animWord(el,t,a,b){const n=el.children.length;const ord=[...Array(n).keys()].sort((x,y)=>((x*7+3)%n)-((y*7+3)%n));
+  [...el.children].forEach((sp,i)=>{const k=p(t,a+ord.indexOf(i)*.03,.22);sp.style.opacity=eo(k);sp.style.transform=`translateY(${(1-eo(k))*-40}px) scale(${1.5-.5*back(k)})`});
+  el.style.opacity=cl((b-t)/.1)}
+// ---------- UI ----------
+function win(title,inner,st){return `<div class="win a" style="${st}"><div class="bar"><span class="dot" style="background:#ff5f57"></span><span class="dot" style="background:#febc2e"></span><span class="dot" style="background:#28c840"></span><span class="wt">${title}</span><span style="width:62px"></span></div>${inner}</div>`}
+const WS='left:60px;top:200px;width:960px';
+function bub(txt,me,st=''){return `<div class="bub" style="${me?'align-self:flex-end;background:#FFD84D;color:#0d0d0d':'align-self:flex-start;background:#1f1f3d;color:#fff'};${st}">${txt}</div>`}
+function orb(lt){const n=Math.min(90,1+Math.floor(lt*30)%90);return `<img id="orb" src="snip/d/${String(n).padStart(4,'0')}.jpg" style="width:300px;height:300px;border-radius:50%;object-fit:cover">`}
+/*UI*/window.setCaps=()=>{};
+window.frame=t=>{const s=src(t),c=cue(s);
+  if(PASS==='B'){$('T').classList.add('hide');const tp=$('top');
+    if(!c||!c[2]){tp.innerHTML='';tp.dataset.k='';return}
+    setWord(tp,c[2],230,980);tp.style.top='200px';animWord(tp,s,c[0],c[1]);return}
+  $('B').classList.add('hide');const bt=$('bot');
+  const hk=c&&HOOK[c[4]];$('hook').classList.toggle('hide',!hk);if(hk&&$('hook').dataset.k!==c[4]){$('hook').dataset.k=c[4];$('hook').innerHTML=hk}
+  setSub(s);$('dim').style.opacity=(s>=70.55&&s<89.22)?Math.min(cl((s-70.55)/.25),cl((89.22-s)/.25)):0;
+  if(!c){bt.innerHTML='';bt.dataset.k='';$('top2').innerHTML='';$('top2').dataset.k='';$('ui').innerHTML='';$('ui').dataset.k='';return}
+  const t2=$('top2');if(c&&c[2]){setWord(t2,c[2],230,980);t2.style.top='200px';animWord(t2,s,c[0],c[1])}else{t2.innerHTML='';t2.dataset.k=''}
+  if(c[3]){setWord(bt,c[3],c[3].length>9?120:160,960);bt.style.top='1180px';animWord(bt,s,c[0]+(hk?.6:.15),c[1])}else{bt.innerHTML='';bt.dataset.k=''}
+  if(c[4]&&!hk)return ui(s,c);else{$('ui').innerHTML='';$('ui').dataset.k=''}
+};
+</script></body></html>
