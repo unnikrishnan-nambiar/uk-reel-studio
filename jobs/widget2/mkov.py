@@ -7,7 +7,7 @@ head=head.replace('</style>','''.glass{position:absolute;box-sizing:border-box;b
 .glass img{display:block;width:100%;border-radius:44px;filter:drop-shadow(0 14px 30px rgba(0,0,0,.45))}
 .gtext{font:800 46px IN;color:#fff;text-shadow:0 2px 10px rgba(0,0,0,.35)}
 #fsimg{left:0;top:0;width:1080px;height:1920px;object-fit:cover}
-.dark{background:none!important}
+.dark{background:#0d0d0d!important}
 .dark .gtext,.gtext{text-shadow:0 3px 14px rgba(0,0,0,.75),0 0 3px rgba(0,0,0,.6)}
 </style>''')
 js=src[src.index('<script>'):]
