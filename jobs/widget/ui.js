@@ -23,7 +23,7 @@ function ui(s,c){const k=c[4],el=$('ui'),a=c[0];let h='';
  if(el.dataset.k!==k+a){el.dataset.k=k+a;el.innerHTML=h}
  const lt=s-a;
  if(k.startsWith('fs:')){const [_,nm,N]=k.split(':');const n=Math.min(+N,1+Math.floor(lt*30));const pr=`snip/${nm}/${String(n).padStart(4,'0')}.jpg`;const im=$('fsimg');
-   const q=eo(p(s,a,.18));im.style.opacity=q*cl((c[1]-s)/.08);$('sbg').style.opacity=im.style.opacity;if($('cpy')){const q2=back(p(s,a+.4,.3));$('cpy').style.transform=`scale(${q2})`;$('cpy').style.opacity=cl(q2)}im.style.transform=`scale(${1.06-.06*q})`;
+   const q=eo(p(s,a,.18));const fi=(a===32.00||a===51.40)?q:1,fo=(c[1]===44.86||c[1]===56.12)?cl((c[1]-s)/.08):1;im.style.opacity=fi*fo;$('sbg').style.opacity=im.style.opacity;if($('cpy')){const q2=back(p(s,a+.4,.3));$('cpy').style.transform=`scale(${q2})`;$('cpy').style.opacity=cl(q2)}im.style.transform=`scale(${1.06-.06*q})`;
    if(!im.src.endsWith(pr)){im.src=pr;return im.decode().catch(()=>{})}return}
  [...el.children].forEach((e,i)=>{const q=p(s,a+.05+i*.14,.35);e.style.opacity=eo(q)*cl((c[1]-s)/.12);
    const bob=(k==='hookw'||k==='showcase')?Math.sin(s*2.2+i*1.7)*8:0;e.style.transform=`translateY(${(1-eo(q))*70+bob}px) scale(${.85+.15*back(q)})`});
