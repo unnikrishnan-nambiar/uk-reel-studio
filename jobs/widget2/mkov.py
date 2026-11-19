@@ -14,7 +14,7 @@ head=head.replace('</style>','''.glass{position:absolute;border-radius:52px;padd
 js=src[src.index('<script>'):]
 js=re.sub(r'const SEGS=\[.*?\];',f'const SEGS={json.dumps(segs.ALL)};',js,flags=re.S)
 js=re.sub(r'const CUES=\[.*?\]\];',lambda m:open('cues.js',encoding='utf-8').read(),js,flags=re.S)
-js=re.sub(r'const HOOK=\{.*?\};',lambda m:"const HOOK={h1:'Claude made my iPhone widget<br>in 2 minutes.',h2:'Now anyone can make<br>an iPhone widget with Claude.',h3:'No coding. Make your own<br>working iPhone widget.'};",js,flags=re.S)
+js=re.sub(r'const HOOK=\{.*?\};',lambda m:"const HOOK={h1:'Claude made my iPhone widget<br>in 2 minutes.'};",js,flags=re.S)
 js=re.sub(r'const SUB=\[.*?\]\];',lambda m:open('sub.js',encoding='utf-8').read(),js,flags=re.S)
 u0=js.index('const APPS='); u1=js.index('window.setCaps')
 js=js[:u0]+open('ui.js',encoding='utf-8').read()+js[u1:]

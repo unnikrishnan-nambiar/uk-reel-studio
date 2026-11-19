@@ -55,17 +55,19 @@ def bell():
 def key():
     n = int(0.04 * SR); return lp(rng.standard_normal(n).astype(np.float32), 0.5) * env(n, 0.0005, 0.008) * 0.9
 # ---- cues (source times) ----
-CUES=[0.20,4.25,7.54,11.25,13.56,15.95,18.95,21.65,25.78,30.33,32.00,34.95,36.30,38.52,41.30,43.40,45.19,46.30,47.30,48.53,51.40,53.78,56.46,58.95]
+CUES=[0.20,11.25,13.56,15.95,18.95,21.65,25.78,30.33,32.00,34.95,36.30,38.52,41.30,43.40,45.19,46.30,47.30,48.53,51.40,53.78,56.46,58.95]
 for c in CUES:
     put(c - 0.10, whoosh(), 0.5)
     put(c + 0.16, pop(950), 0.32)
-for h in (0.20, 4.25, 7.54): put(h + 0.6, boom(0.6), 0.5)
-put(12.2, down(0.8), 0.45); put(12.7, pop(500,0.1), 0.4)          # glass drains, 0/8
-for i in range(5): put(23.0 + i*0.32, tick(4200), 0.5)            # apps crossed out
+put(0.8, boom(0.6), 0.5)
+for i in range(8): put(11.4 + i*0.25, tick(5200), 0.35)            # clock ticking
+put(12.3, pop(500,0.1), 0.45)                                      # STILL FULL
+for i in range(3): put(21.8 + i*0.35, pop(1100,0.06), 0.4); put(23.0 + i*0.45, whoosh(0.25), 0.5)  # apps listed, crossed out
 for i in range(3): put(27.9 + i*0.6, ding(1568+i*120,0.4), 0.35)  # glasses count up
 put(30.4, chime(), 0.5)                                            # notification
-put(39.2, boom(0.6), 0.55); put(39.25, ding(1760,0.6), 0.45)      # SCRIPTABLE
-put(43.5, ding(1568,0.7), 0.5)                                     # widget appears
+put(38.6, boom(0.6), 0.55); put(38.65, ding(1760,0.6), 0.45)      # 1 FREE APP
+put(40.4, pop(800,0.08), 0.5)                                      # PASTE
+put(44.0, ding(1568,0.7), 0.5)                                     # widget appears
 put(44.9, riser(0.3), 0.5); put(45.2, boom(1.0), 0.8); put(45.25, chime(), 0.45)   # BEST PART
 put(46.4, boom(0.5), 0.5); put(47.4, boom(0.5), 0.5)
 for i in range(3): put(48.6 + i*0.14, pop(1300+i*120,0.07), 0.45)  # widgets showcase
