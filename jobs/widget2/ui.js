@@ -2,7 +2,7 @@ const DROP='<svg width="64" height="64" viewBox="0 0 24 24"><path d="M12 2.5C9 7
 const XMARK='<svg class="xm" width="150" height="150" viewBox="0 0 24 24" style="position:absolute;left:50%;top:50%;margin:-75px 0 0 -75px"><path d="M5 5 L19 19 M19 5 L5 19" stroke="#ff4b72" stroke-width="3.4" stroke-linecap="round"/></svg>';
 function gl(src,x,y,w,cls=''){return `<div class="glass ${cls}" style="left:${x}px;top:${y}px;width:${w}px"><img src="snip/${src}"></div>`}
 function ui(s,c){const k=c[4],el=$('ui'),a=c[0];let h='';
- if(k==='hookw'){h=`<img class="a" src="snip/w_vk.png" style="left:780px;top:410px;width:250px;border-radius:52px;filter:drop-shadow(0 14px 30px rgba(0,0,0,.45))">`}
+ if(k==='hookw'){const st='border-radius:40px;filter:drop-shadow(0 14px 30px rgba(0,0,0,.45))';h=`<img class="a" src="snip/w_water.png" style="left:30px;top:390px;width:470px;${st}"><img class="a" src="snip/w_vk.png" style="left:830px;top:390px;width:220px;${st}">`}
  if(k==='glassw'){h=`<div class="win a" style="left:0;right:0;top:330px;display:flex;justify-content:center;align-items:flex-end;gap:40px">
    <svg width="260" height="330" viewBox="0 0 260 330"><defs><clipPath id="gc"><path d="M30 20 L230 20 L205 310 L55 310 Z"/></clipPath></defs>
    <rect id="wat" x="0" y="60" width="260" height="270" fill="#4fc3ff" clip-path="url(#gc)"/><path d="M30 20 L230 20 L205 310 L55 310 Z" fill="none" stroke="#fff" stroke-width="10" stroke-linejoin="round"/></svg>
@@ -32,7 +32,7 @@ function ui(s,c){const k=c[4],el=$('ui'),a=c[0];let h='';
    const q=eo(p(s,a,.18));const fi=(a===32.00||a===51.40)?q:1,fo=(c[1]===44.86||c[1]===56.12)?cl((c[1]-s)/.08):1;im.style.opacity=fi*fo;$('sbg').style.opacity=im.style.opacity;if($('cpy')){const q2=back(p(s,a+.4,.3));$('cpy').style.transform=`scale(${q2})`;$('cpy').style.opacity=cl(q2)}im.style.transform=`scale(${1+.05*cl(lt/Math.max(.5,c[1]-a))})`;
    if(!im.src.endsWith(pr)){im.src=pr;return im.decode().catch(()=>{})}return}
  [...el.children].forEach((e,i)=>{const q=p(s,a+.05+i*.14,.35);e.style.opacity=eo(q)*cl((c[1]-s)/.12);
-   const bob=(k==='hookw'||k==='showcase')?Math.sin(s*2.2+i*1.7)*8:0;e.style.transform=`translateY(${(1-eo(q))*70+bob}px) scale(${.85+.15*back(q)})`});
+   const bob=(k==='hookw'||k==='showcase')?Math.sin(s*2.2+i*1.7)*8:0;e.style.transform=k==='hookw'?`translateY(${bob}px) scale(${back(q)})`:`translateY(${(1-eo(q))*70+bob}px) scale(${.85+.15*back(q)})`});
  if(k==='glassw'){const v=eo(p(s,a+.3,1.4));$('wat').setAttribute('y',60+v*250);$('zero').style.opacity=eo(p(s,a+1.4,.3))}
  if(k==='apps'){document.querySelectorAll('.xm').forEach((x,i)=>{const q=back(p(s,23.0+i*.32,.25));x.style.transform=`scale(${q})`;x.style.opacity=cl(q)})}
 
