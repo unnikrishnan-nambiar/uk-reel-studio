@@ -94,3 +94,7 @@ jobs/speak/snip/real/
 jobs/widget/snip/*/
 jobs/widget/snip/*.png
 jobs/widget/ovT/
+jobs/widget2/snip/*/
+jobs/widget2/snip/*.png
+jobs/widget2/*.png
+jobs/widget2/ovT/

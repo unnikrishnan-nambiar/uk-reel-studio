@@ -1,0 +1,36 @@
+const DROP='<svg width="64" height="64" viewBox="0 0 24 24"><path d="M12 2.5C9 7 5.5 10.4 5.5 14.5a6.5 6.5 0 0 0 13 0C18.5 10.4 15 7 12 2.5z" fill="#fff"/></svg>';
+const XMARK='<svg class="xm" width="150" height="150" viewBox="0 0 24 24" style="position:absolute;left:50%;top:50%;margin:-75px 0 0 -75px"><path d="M5 5 L19 19 M19 5 L5 19" stroke="#ff4b72" stroke-width="3.4" stroke-linecap="round"/></svg>';
+function gl(src,x,y,w,cls=''){return `<div class="glass ${cls}" style="left:${x}px;top:${y}px;width:${w}px"><img src="snip/${src}"></div>`}
+function ui(s,c){const k=c[4],el=$('ui'),a=c[0];let h='';
+ if(k==='hookw'){h=gl('w_water.png',40,372,560)+gl('w_vk.png',700,360,300)}
+ if(k==='glassw'){h=`<div class="win a" style="left:0;right:0;top:330px;display:flex;justify-content:center;align-items:flex-end;gap:40px">
+   <svg width="260" height="330" viewBox="0 0 260 330"><defs><clipPath id="gc"><path d="M30 20 L230 20 L205 310 L55 310 Z"/></clipPath></defs>
+   <rect id="wat" x="0" y="60" width="260" height="270" fill="#4fc3ff" clip-path="url(#gc)"/><path d="M30 20 L230 20 L205 310 L55 310 Z" fill="none" stroke="#fff" stroke-width="10" stroke-linejoin="round"/></svg>
+   <div id="zero" style="font:800 120px/1 IN;color:#ff4b72">0/8</div></div>`}
+ if(k==='apps'){const cols=['#2fd0f2','#45a5ff','#3ddc97','#9a6bff'];
+   h=`<div class="win a" style="left:0;right:0;top:300px;display:flex;justify-content:center;gap:34px;align-items:center">${cols.map((cc,i)=>`<div class="ap" style="position:relative;width:170px;height:170px;border-radius:40px;background:${cc};display:flex;align-items:center;justify-content:center">${DROP}${XMARK}</div>`).join('')}</div>
+   <div class="win a" style="left:0;right:0;top:530px;display:flex;justify-content:center"><div class="ap" style="position:relative;width:200px;height:300px;display:flex;align-items:center;justify-content:center"><svg width="150" height="300" viewBox="0 0 150 300"><rect x="50" y="0" width="50" height="40" rx="8" fill="#fff"/><rect x="15" y="40" width="120" height="255" rx="34" fill="none" stroke="#fff" stroke-width="10"/><rect x="25" y="120" width="100" height="165" rx="24" fill="#4fc3ff"/><text x="75" y="210" text-anchor="middle" font-family="IN" font-weight="800" font-size="26" fill="#fff">2 L</text></svg>${XMARK}</div></div>`}
+ if(k==='mywidget'){h=`<div class="glass dark" style="left:200px;top:300px;width:680px;padding:34px 40px;display:flex;align-items:center;gap:36px">
+   <svg width="190" height="190" viewBox="0 0 190 190"><circle cx="95" cy="95" r="76" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="20"/><circle id="ring" cx="95" cy="95" r="76" fill="none" stroke="#4fc3ff" stroke-width="20" stroke-linecap="round" pathLength="100" stroke-dasharray="0 100" transform="rotate(-90 95 95)"/></svg>
+   <div><div class="gtext" style="font-size:34px;opacity:.9">Water</div><div class="gtext" id="cnt" style="font-size:110px;line-height:1">0<span style="font-size:50px;opacity:.8">/8</span></div><div class="gtext" style="font-size:28px;opacity:.85">glasses today</div></div></div>`}
+ if(k==='notif'){h=`<div class="glass dark" id="nt" style="left:50px;top:230px;width:980px;border-radius:44px;padding:28px 34px;display:flex;gap:26px;align-items:center">
+   <div style="width:96px;height:96px;border-radius:24px;background:#1a1a1a;display:flex;align-items:center;justify-content:center">${DROP}</div>
+   <div><div class="gtext" style="font-size:28px;opacity:.85;letter-spacing:.06em">NOW</div><div class="gtext" style="font-size:44px">Vellam kudikkaan samayamaayi!</div></div></div>`}
+ if(k.startsWith('fs:')){h=`<img id="fsimg" class="a">${k.startsWith('fs:code')?'<div id="cpy" class="glass dark a" style="left:340px;top:820px;width:400px;padding:26px 0;text-align:center;border-radius:999px"><span class="gtext" style="font-size:52px">Copy ✓</span></div>':''}<div id="sbg" class="a" style="left:0;right:0;top:1180px;height:740px;background:linear-gradient(180deg,rgba(0,0,0,0),rgba(0,0,0,.72) 30%,rgba(0,0,0,.82))"></div>`}
+ if(k==='showcase'){h=gl('w_water.png',40,230,620,'sc')+gl('w_vk.png',690,230,350,'sc')+gl('w_gym.png',190,600,700,'sc')}
+ if(k==='comment'){h=`<div class="a" style="left:90px;top:300px;width:900px;height:110px;border-radius:999px;background:rgba(30,30,50,.8);box-shadow:0 0 0 2px rgba(255,255,255,.18);display:flex;align-items:center;gap:22px;padding:0 34px;box-sizing:border-box"><span style="width:58px;height:58px;border-radius:50%;background:conic-gradient(#ff4b72,#9a6bff,#2fd0f2,#ffc21f,#ff4b72)"></span><span id="cmt" style="font:800 46px IN;color:#FFD84D"></span><span id="cur" style="width:4px;height:50px;background:#fff"></span></div>`}
+ if(k==='fsend'){h=`<div class="a" style="left:0;right:0;top:300px;display:flex;justify-content:center"><span class="btn" id="bS" style="background:#FFD84D;color:#0d0d0d"><svg width="40" height="40" viewBox="0 0 24 24"><path d="M3 11 L21 3 L14 21 L11 13 Z" fill="#0d0d0d"/></svg>SEND TO A FRIEND</span></div>`}
+ if(el.dataset.k!==k+a){el.dataset.k=k+a;el.innerHTML=h}
+ const lt=s-a;
+ if(k.startsWith('fs:')){const [_,nm,N]=k.split(':');const n=Math.min(+N,1+Math.floor(lt*30));const pr=`snip/${nm}/${String(n).padStart(4,'0')}.jpg`;const im=$('fsimg');
+   const q=eo(p(s,a,.18));const fi=(a===32.00||a===51.40)?q:1,fo=(c[1]===44.86||c[1]===56.12)?cl((c[1]-s)/.08):1;im.style.opacity=fi*fo;$('sbg').style.opacity=im.style.opacity;if($('cpy')){const q2=back(p(s,a+.4,.3));$('cpy').style.transform=`scale(${q2})`;$('cpy').style.opacity=cl(q2)}im.style.transform=`scale(${1.06-.06*q})`;
+   if(!im.src.endsWith(pr)){im.src=pr;return im.decode().catch(()=>{})}return}
+ [...el.children].forEach((e,i)=>{const q=p(s,a+.05+i*.14,.35);e.style.opacity=eo(q)*cl((c[1]-s)/.12);
+   const bob=(k==='hookw'||k==='showcase')?Math.sin(s*2.2+i*1.7)*8:0;e.style.transform=`translateY(${(1-eo(q))*70+bob}px) scale(${.85+.15*back(q)})`});
+ if(k==='glassw'){const v=eo(p(s,a+.3,1.4));$('wat').setAttribute('y',60+v*250);$('zero').style.opacity=eo(p(s,a+1.4,.3))}
+ if(k==='apps'){document.querySelectorAll('.xm').forEach((x,i)=>{const q=back(p(s,23.0+i*.32,.25));x.style.transform=`scale(${q})`;x.style.opacity=cl(q)})}
+ if(k==='mywidget'){const n=Math.min(3,Math.floor(cl((s-27.9)/2.0)*4));$('ring').setAttribute('stroke-dasharray',`${n/8*100} 100`);$('cnt').firstChild.textContent=n}
+ if(k==='notif'){const q=eo(p(s,a+.05,.35));$('nt').style.transform=`translateY(${(1-q)*-260}px)`;$('nt').style.opacity=q}
+ if(k==='comment'){$('cmt').textContent='WIDGET'.slice(0,Math.floor(cl((lt-.4)/.7)*6));$('cur').style.opacity=(Math.floor(s*3)%2)?1:0}
+ if(k==='fsend'){$('bS').style.transform=`scale(${lt>1.0&&lt<1.15?.93:1})`}
+}
