@@ -2,7 +2,7 @@ const DROP='<svg width="64" height="64" viewBox="0 0 24 24"><path d="M12 2.5C9 7
 const XMARK='<svg class="xm" width="150" height="150" viewBox="0 0 24 24" style="position:absolute;left:50%;top:50%;margin:-75px 0 0 -75px"><path d="M5 5 L19 19 M19 5 L5 19" stroke="#ff4b72" stroke-width="3.4" stroke-linecap="round"/></svg>';
 function gl(src,x,y,w,cls=''){return `<div class="glass ${cls}" style="left:${x}px;top:${y}px;width:${w}px"><img src="snip/${src}"></div>`}
 function ui(s,c){const k=c[4],el=$('ui'),a=c[0];let h='';
- if(k==='hookw'){const st='border-radius:40px;filter:drop-shadow(0 14px 30px rgba(0,0,0,.45))';h=`<img class="a" src="snip/w_water.png" style="left:30px;top:390px;width:470px;${st}"><img class="a" src="snip/w_vk.png" style="left:830px;top:390px;width:220px;${st}">`}
+ if(k==='hookw'){const st='border-radius:40px;filter:drop-shadow(0 14px 30px rgba(0,0,0,.45))';h=`<img class="a" src="snip/w_water.png" style="left:70px;top:430px;width:450px;${st}"><img class="a" src="snip/w_vk.png" style="left:800px;top:430px;width:210px;${st}">`}
  if(k==='glassw'){h=`<div class="win a" style="left:0;right:0;top:330px;display:flex;justify-content:center;align-items:flex-end;gap:40px">
    <svg width="260" height="330" viewBox="0 0 260 330"><defs><clipPath id="gc"><path d="M30 20 L230 20 L205 310 L55 310 Z"/></clipPath></defs>
    <rect id="wat" x="0" y="60" width="260" height="270" fill="#4fc3ff" clip-path="url(#gc)"/><path d="M30 20 L230 20 L205 310 L55 310 Z" fill="none" stroke="#fff" stroke-width="10" stroke-linejoin="round"/></svg>

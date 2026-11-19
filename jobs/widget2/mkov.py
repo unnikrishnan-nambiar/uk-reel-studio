@@ -2,6 +2,7 @@ import re, json, segs
 src=open('../wifi3/overlay.html',encoding='utf-8').read()
 head=src[:src.index('<script>')]
 head=head.replace('<div id="bot" class="word"></div>','<div id="bot" class="word"></div>\n  <div id="top2" class="word"></div>')
+head=head.replace('#hook{left:50%;top:190px','#hook{left:50%;top:230px')
 head=head.replace('</style>','''.glass{position:absolute;box-sizing:border-box;border-radius:44px}
 .glass img{display:block;width:100%;border-radius:44px;filter:drop-shadow(0 14px 30px rgba(0,0,0,.45))}
 .gtext{font:800 46px IN;color:#fff;text-shadow:0 2px 10px rgba(0,0,0,.35)}
