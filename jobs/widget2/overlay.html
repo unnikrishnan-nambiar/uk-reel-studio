@@ -26,14 +26,12 @@ html,body{margin:0;background:transparent}
 #sub b{font-weight:700;position:relative;display:inline-block;margin:0 .12em;color:#fff;
   text-shadow:0 0 3px #000,0 0 3px #000,0 2px 0 #000,0 3px 10px rgba(0,0,0,.8)}
 #sub b i{position:absolute;left:0;top:0;font-style:normal;color:#FFD84D;white-space:nowrap}
-.glass{position:absolute;border-radius:52px;padding:16px;box-sizing:border-box;
- background:linear-gradient(135deg,rgba(255,255,255,.42),rgba(255,255,255,.10) 45%,rgba(255,255,255,.22));
- border:2px solid rgba(255,255,255,.65);box-shadow:inset 0 2px 0 rgba(255,255,255,.85),inset 0 -2px 6px rgba(255,255,255,.25),0 24px 60px rgba(0,0,0,.35)}
-.glass img{display:block;width:100%;border-radius:38px}
-.glass::after{content:"";position:absolute;left:8%;top:6px;width:55%;height:22%;border-radius:40px;background:linear-gradient(180deg,rgba(255,255,255,.55),rgba(255,255,255,0));pointer-events:none}
+.glass{position:absolute;box-sizing:border-box;border-radius:44px}
+.glass img{display:block;width:100%;border-radius:44px;filter:drop-shadow(0 14px 30px rgba(0,0,0,.45))}
 .gtext{font:800 46px IN;color:#fff;text-shadow:0 2px 10px rgba(0,0,0,.35)}
 #fsimg{left:0;top:0;width:1080px;height:1920px;object-fit:cover}
-.dark{background:linear-gradient(135deg,rgba(25,35,60,.62),rgba(10,15,30,.45))!important}
+.dark{background:none!important}
+.dark .gtext,.gtext{text-shadow:0 3px 14px rgba(0,0,0,.75),0 0 3px rgba(0,0,0,.6)}
 </style></head><body><div id="st">
 <div id="B" class="a" style="inset:0"><div id="top" class="word"></div></div>
 <div id="T" class="a" style="inset:0">
@@ -131,7 +129,7 @@ const DROP='<svg width="64" height="64" viewBox="0 0 24 24"><path d="M12 2.5C9 7
 const XMARK='<svg class="xm" width="150" height="150" viewBox="0 0 24 24" style="position:absolute;left:50%;top:50%;margin:-75px 0 0 -75px"><path d="M5 5 L19 19 M19 5 L5 19" stroke="#ff4b72" stroke-width="3.4" stroke-linecap="round"/></svg>';
 function gl(src,x,y,w,cls=''){return `<div class="glass ${cls}" style="left:${x}px;top:${y}px;width:${w}px"><img src="snip/${src}"></div>`}
 function ui(s,c){const k=c[4],el=$('ui'),a=c[0];let h='';
- if(k==='hookw'){h=gl('w_water.png',40,372,560)+gl('w_vk.png',700,360,300)}
+ if(k==='hookw'){h=`<img class="a" src="snip/w_vk.png" style="left:780px;top:410px;width:250px;border-radius:52px;filter:drop-shadow(0 14px 30px rgba(0,0,0,.45))">`}
  if(k==='glassw'){h=`<div class="win a" style="left:0;right:0;top:330px;display:flex;justify-content:center;align-items:flex-end;gap:40px">
    <svg width="260" height="330" viewBox="0 0 260 330"><defs><clipPath id="gc"><path d="M30 20 L230 20 L205 310 L55 310 Z"/></clipPath></defs>
    <rect id="wat" x="0" y="60" width="260" height="270" fill="#4fc3ff" clip-path="url(#gc)"/><path d="M30 20 L230 20 L205 310 L55 310 Z" fill="none" stroke="#fff" stroke-width="10" stroke-linejoin="round"/></svg>
@@ -151,7 +149,7 @@ function ui(s,c){const k=c[4],el=$('ui'),a=c[0];let h='';
  if(k==='notif'){h=`<div class="glass dark" id="nt" style="left:50px;top:230px;width:980px;border-radius:44px;padding:28px 34px;display:flex;gap:26px;align-items:center">
    <div style="width:96px;height:96px;border-radius:24px;background:#1a1a1a;display:flex;align-items:center;justify-content:center">${DROP}</div>
    <div><div class="gtext" style="font-size:28px;opacity:.85;letter-spacing:.06em">NOW</div><div class="gtext" style="font-size:44px">Vellam kudikkaan samayamaayi!</div></div></div>`}
- if(k.startsWith('fs:')){h=`<img id="fsimg" class="a">${k.startsWith('fs:code')?'<div id="cpy" class="glass dark a" style="left:340px;top:820px;width:400px;padding:26px 0;text-align:center;border-radius:999px"><span class="gtext" style="font-size:52px">Copy ✓</span></div>':''}<div id="sbg" class="a" style="left:0;right:0;top:1180px;height:740px;background:linear-gradient(180deg,rgba(0,0,0,0),rgba(0,0,0,.72) 30%,rgba(0,0,0,.82))"></div>`}
+ if(k.startsWith('fs:')){h=`<img id="fsimg" class="a">${k.startsWith('fs:code')?'<div id="cpy" class="glass dark a" style="left:340px;top:820px;width:400px;padding:26px 0;text-align:center;border-radius:999px"><span class="gtext" style="font-size:64px;color:#0d0d0d;text-shadow:none">Copy ✓</span></div>':''}<div id="sbg" class="a" style="left:0;right:0;top:1180px;height:740px;background:linear-gradient(180deg,rgba(0,0,0,0),rgba(0,0,0,.72) 30%,rgba(0,0,0,.82))"></div>`}
  if(k==='showcase'){h=gl('w_water.png',40,230,620,'sc')+gl('w_vk.png',690,230,350,'sc')+gl('w_gym.png',190,600,700,'sc')}
  if(k==='comment'){h=`<div class="a" style="left:90px;top:300px;width:900px;height:110px;border-radius:999px;background:rgba(30,30,50,.8);box-shadow:0 0 0 2px rgba(255,255,255,.18);display:flex;align-items:center;gap:22px;padding:0 34px;box-sizing:border-box"><span style="width:58px;height:58px;border-radius:50%;background:conic-gradient(#ff4b72,#9a6bff,#2fd0f2,#ffc21f,#ff4b72)"></span><span id="cmt" style="font:800 46px IN;color:#FFD84D"></span><span id="cur" style="width:4px;height:50px;background:#fff"></span></div>`}
  if(k==='fsend'){h=`<div class="a" style="left:0;right:0;top:300px;display:flex;justify-content:center"><span class="btn" id="bS" style="background:#FFD84D;color:#0d0d0d"><svg width="40" height="40" viewBox="0 0 24 24"><path d="M3 11 L21 3 L14 21 L11 13 Z" fill="#0d0d0d"/></svg>SEND TO A FRIEND</span></div>`}
