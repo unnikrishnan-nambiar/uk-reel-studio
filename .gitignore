@@ -98,3 +98,5 @@ jobs/widget2/snip/*/
 jobs/widget2/snip/*.png
 jobs/widget2/*.png
 jobs/widget2/ovT/
+jobs/*/snip/*.png
+jobs/*/snip/*.jpg
