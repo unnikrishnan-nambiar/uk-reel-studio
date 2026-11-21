@@ -1,0 +1,179 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+@font-face{font-family:IN;src:url(../../templates/fonts/inter-latin-600-normal.woff2);font-weight:600}
+@font-face{font-family:IN;src:url(../../templates/fonts/inter-latin-700-normal.woff2);font-weight:700}
+@font-face{font-family:IN;src:url(../../templates/fonts/inter-latin-800-normal.woff2);font-weight:800}
+@font-face{font-family:ML;src:url(../../templates/fonts/noto-sans-malayalam-malayalam-700-normal.woff2);font-weight:700}
+@font-face{font-family:ML;src:url(../../templates/fonts/noto-sans-malayalam-malayalam-800-normal.woff2);font-weight:800}
+html,body{margin:0;background:transparent}
+#st{position:relative;width:1080px;height:1920px;overflow:hidden;font-family:IN;color:#fff;-webkit-font-smoothing:antialiased}
+.a{position:absolute}.hide{display:none!important}
+.word{position:absolute;left:0;right:0;text-align:center;white-space:nowrap;font-weight:800;text-transform:uppercase;letter-spacing:-.035em;line-height:.92}
+.word span{display:inline-block;-webkit-background-clip:text;background-clip:text;color:transparent}
+.win{background:none;box-sizing:border-box;filter:drop-shadow(2px 0 0 #0d0d0d) drop-shadow(-2px 0 0 #0d0d0d) drop-shadow(0 2px 0 #0d0d0d) drop-shadow(0 -2px 0 #0d0d0d) drop-shadow(0 10px 18px rgba(0,0,0,.45))}
+.win .lab{color:#fff;font-size:28px!important}
+.bar{display:none}
+.dot{width:14px;height:14px;border-radius:50%}
+.wt{margin:0 auto;font:700 18px IN;letter-spacing:.22em;color:#9aa3d6;padding:4px 16px;border-radius:999px;background:rgba(255,255,255,.06)}
+.lab{font:700 20px IN;letter-spacing:.18em;color:#9aa3d6}
+.pill{display:inline-flex;align-items:center;gap:10px;font:800 24px IN;letter-spacing:.12em;color:#0d0d0d;background:#FFD84D;border-radius:999px;padding:12px 22px}
+.btn{display:inline-flex;align-items:center;gap:14px;border-radius:999px;font:800 44px IN;padding:24px 46px;color:#fff}
+.shot{display:block;width:936px;border-radius:14px}
+.bub{max-width:640px;font:700 38px/1.3 IN,ML;padding:20px 26px;border-radius:26px}
+/* hook: ONE box, yellow text on black, static */
+#hook{left:50%;top:190px;transform:translateX(-50%);width:max-content;max-width:1010px;text-align:center;background:#0d0d0d;color:#FFF06A;font:800 54px/1.16 IN;letter-spacing:-.02em;padding:24px 36px 30px;border-radius:24px;box-shadow:0 14px 40px rgba(0,0,0,.45)}
+/* subtitles: no box, line shown in full, then covered word by word */
+#sub{left:80px;right:140px;top:1370px;text-align:center;font:700 44px/1.38 ML,IN}
+#sub b{font-weight:700;position:relative;display:inline-block;margin:0 .12em;color:#fff;
+  text-shadow:0 0 3px #000,0 0 3px #000,0 2px 0 #000,0 3px 10px rgba(0,0,0,.8)}
+#sub b i{position:absolute;left:0;top:0;font-style:normal;color:#FFD84D;white-space:nowrap}
+</style></head><body><div id="st">
+<div id="B" class="a" style="inset:0"><div id="top" class="word"></div></div>
+<div id="T" class="a" style="inset:0">
+  <div id="fade" class="a" style="left:0;right:0;top:1200px;height:720px;background:linear-gradient(180deg,rgba(0,0,0,0),rgba(0,0,0,.45) 55%,rgba(0,0,0,.6))"></div>
+  <div id="ui" class="a" style="inset:0"></div>
+  <div id="bot" class="word"></div>
+  <div id="hook" class="a hide"></div>
+  <div id="sub" class="a"></div>
+</div>
+</div>
+<script>
+const Q=new URLSearchParams(location.search),PASS=Q.get('pass')||'T';
+const $=id=>document.getElementById(id);const cl=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
+const eo=x=>1-Math.pow(1-cl(x),3);const back=x=>{x=cl(x);const c=1.7;return 1+(c+1)*Math.pow(x-1,3)+c*Math.pow(x-1,2)};
+const p=(t,a,d=.4)=>cl((t-a)/d);
+// edit order (source in/out). Must match segs.py ALL.
+const SEGS=[[0.05, 2.85], [3.75, 9.42], [10.8, 15.75], [17.5, 17.69], [17.81, 20.62], [20.83, 23.02], [23.1, 23.25], [23.35, 24.17], [24.33, 24.6], [24.69, 28.06], [28.17, 29.58], [29.85, 31.57], [31.91, 33.28], [33.41, 35.41], [35.8, 37.15], [37.48, 38.04], [38.16, 39.6], [39.96, 41.07], [41.17, 42.08], [42.21, 45.75], [45.91, 49.58], [49.85, 51.77], [52.2, 56.52], [56.86, 58.52], [58.66, 63.87], [64.25, 74.78], [74.86, 76.23], [76.48, 83.45], [86.55, 89.08], [83.45, 86.55], [89.22, 92.78]];
+function src(t){let b=0;for(const [a,e] of SEGS){const d=e-a;if(t<b+d)return a+(t-b);b+=d}return SEGS[SEGS.length-1][1]}
+// ---------- cues (SOURCE time): [a, b, top word (behind head), bottom word, ui] ----------
+const CUES=[
+ [0.05,2.85,'','2X SPEED','h1'],[3.75,9.42,'','2X SPEED','h2'],[10.80,15.75,'','2X SPEED','h3'],
+ [17.50,20.62,'','LAGGING','lag'],
+ [20.83,24.17,'','DOWNLOAD','dl'],
+ [24.33,27.40,'','RESET','router'],
+ [27.40,29.58,'FED UP','',''],
+ [29.85,31.57,'','','chat1'],
+ [31.91,37.15,'','UPGRADE?','chat2'],
+ [37.48,39.60,'','UPGRADED','plan'],
+ [39.96,42.08,'STILL SLOW','',''],
+ [42.21,45.75,'','1 PROMPT','s1'],
+ [45.91,49.58,'','PAID VS REAL','gauge'],
+ [49.85,51.77,'ONLY 40%','',''],
+ [52.20,56.52,'','DNS · SIGNAL','s2'],
+ [56.86,58.70,'ZERO TECH','',''],
+ [58.70,63.87,'','BACKGROUND APPS','apps'],
+ [64.25,65.70,'','REMOVED','apps'],
+ [65.70,67.20,'BEST PART','',''],
+ [67.20,72.00,'','SAME CHANNEL','nbr'],
+ [72.00,74.95,'','NEIGHBOUR WIFI','s5'],
+ [74.95,78.40,'','NEW CHANNEL','switch'],
+ [78.40,83.45,'','ASKS FIRST','s6'],
+ [86.55,89.08,'','40% → 80%','gauge2'],
+ [83.45,86.55,'','COMMENT WIFI','comment'],
+ [89.22,92.78,'','SEND IT','fs']];
+function cue(s){return CUES.find(c=>s>=c[0]&&s<c[1])}
+const HOOK={h1:'1 Claude prompt doubled my wifi.<br>Don\'t pay, your fix: free.',h2:'Don\'t upgrade your wifi.<br>1 Claude prompt doubled mine, free.',h3:'Wait, don\'t scold your wifi guy.<br>1 Claude prompt, free fix.'};
+// ---------- subtitles (SOURCE time) ----------
+const SUB=[
+ [0.10,2.85,'Claude doubled my WiFi speed'],
+ [3.80,6.00,"Don't upgrade your WiFi plan"],[6.03,9.42,'One Claude prompt doubled my WiFi speed'],
+ [10.83,12.70,"Wait, don't scold the WiFi guy"],[12.70,15.75,'This Claude prompt doubled my WiFi speed'],
+ [17.52,20.62,"My WiFi is slow whenever I'm in a meeting"],
+ [20.85,22.62,'Even when I start a download with no meeting'],[22.62,24.17,'Still slow'],
+ [24.35,27.40,'I reset the router. Nothing changed.'],
+ [27.40,29.58,'Fed up, I told my WiFi guy'],
+ [29.87,31.57,'"Bro, my WiFi speed is not enough."'],
+ [31.93,35.41,'He said, "Son, for more speed you need a plan upgrade."'],
+ [35.80,37.15,'"There is no other way."'],
+ [37.50,39.60,'Fine. I decided to upgrade my plan.'],
+ [39.98,42.08,'Still, no change in my WiFi'],
+ [42.23,44.45,'So I asked Claude if there is any way to fix this'],[44.45,45.75,'I gave it this prompt'],
+ [45.93,49.58,'First, it checked if I get the speed I pay for'],
+ [49.87,51.77,'I was getting only 40%'],
+ [52.22,56.52,'Then it ran a few checks: DNS, signal, everything'],
+ [56.88,58.70,"You don't even need to know what they are"],
+ [58.70,60.75,'After all that, Claude told me'],[60.75,63.87,'Many unwanted apps were using my net in the background'],
+ [64.27,65.70,'I said I would remove them'],
+ [65.70,69.60,"Best part: it even checked if my neighbour's WiFi"],[69.60,72.00,'and mine are on the same channel'],
+ [72.00,74.95,'If both share a channel, my speed drops'],
+ [74.95,78.40,'To fix that, Claude moves me to a different channel'],
+ [78.40,80.90,'Before that, Claude asks: "Shall I change it?"'],[80.90,83.45,'Only if I say yes does Claude go ahead'],
+ [86.57,89.08,'My WiFi speed went from about 40% to 80%'],
+ [83.47,86.55,'For the detailed guide, comment WIFI'],
+ [89.24,92.78,'Follow, then send this to the friend who scolds his WiFi guy']];
+function subAt(s){return SUB.find(c=>s>=c[0]&&s<c[1])}
+function setSub(s){const el=$('sub');const c=subAt(s);if(!c){el.innerHTML='';el.dataset.k='';return}
+  if(el.dataset.k!==c[2]){el.dataset.k=c[2];el.innerHTML=c[2].split(' ').map(w=>`<b>${w}<i>${w}</i></b>`).join(' ')}
+  const ws=[...el.children],L=ws.map(w=>w.textContent.length/2),T=L.reduce((x,y)=>x+y,0);
+  const d=c[1]-c[0],a=c[0]+Math.min(.25,d*.1),e=c[1]-Math.min(.35,d*.15);const pr=cl((s-a)/(e-a))*T;let acc=0;
+  ws.forEach((w,i)=>{const f=cl((pr-acc)/L[i]);acc+=L[i];const ii=w.firstElementChild;ii.style.clipPath=`inset(-20% ${100-f*100}% -20% 0)`});
+  el.style.opacity=cl((s-c[0])/.08)}
+// ---------- big 3D words (yellow + black) ----------
+function style(el,size){el.style.fontSize=size+'px';const o=Math.max(3,Math.round(size*.022));
+  el.style.filter=`drop-shadow(${o}px 0 0 #0d0d0d) drop-shadow(-${o}px 0 0 #0d0d0d) drop-shadow(0 ${o}px 0 #0d0d0d) drop-shadow(0 -${o}px 0 #0d0d0d) drop-shadow(0 5px 0 #0d0d0d) drop-shadow(0 10px 0 #0d0d0d) drop-shadow(0 16px 24px rgba(0,0,0,.55))`;
+  [...el.children].forEach(sp=>{sp.style.backgroundImage='linear-gradient(#FFD84D,#FFD84D)'})}
+function setWord(el,txt,maxSize,maxW){if(el.dataset.k!==txt){el.dataset.k=txt;el.innerHTML=txt.split('').map(ch=>`<span>${ch===' '?'&nbsp;':ch}</span>`).join('');
+  style(el,maxSize);const W=[...el.children].reduce((s,x)=>s+x.getBoundingClientRect().width,0);if(W>maxW)style(el,maxSize*maxW/W)}}
+function animWord(el,t,a,b){const n=el.children.length;const ord=[...Array(n).keys()].sort((x,y)=>((x*7+3)%n)-((y*7+3)%n));
+  [...el.children].forEach((sp,i)=>{const k=p(t,a+ord.indexOf(i)*.03,.22);sp.style.opacity=eo(k);sp.style.transform=`translateY(${(1-eo(k))*-40}px) scale(${1.5-.5*back(k)})`});
+  el.style.opacity=cl((b-t)/.1)}
+// ---------- UI ----------
+function win(title,inner,st){return `<div class="win a" style="${st}"><div class="bar"><span class="dot" style="background:#ff5f57"></span><span class="dot" style="background:#febc2e"></span><span class="dot" style="background:#28c840"></span><span class="wt">${title}</span><span style="width:62px"></span></div>${inner}</div>`}
+const WS='left:60px;top:200px;width:960px';
+function gaugeSvg(){let t='';for(let i=0;i<=10;i++){const a=Math.PI*(1-i/10);t+=`<line x1="${300+Math.cos(a)*200}" y1="${290-Math.sin(a)*200}" x2="${300+Math.cos(a)*226}" y2="${290-Math.sin(a)*226}" stroke="#9aa3d6" stroke-width="${i%5?3:6}"/>`}
+  return `<svg width="600" height="320"><path d="M60 290 A240 240 0 0 1 540 290" fill="none" stroke="#2a2a52" stroke-width="34" stroke-linecap="round"/><path id="garc" d="M60 290 A240 240 0 0 1 540 290" fill="none" stroke="#FFD84D" stroke-width="34" stroke-linecap="round" pathLength="100" stroke-dasharray="0 100" style="filter:drop-shadow(0 0 12px #ffb800)"/>${t}<line id="gnd" x1="300" y1="290" x2="300" y2="110" stroke="#fff" stroke-width="10" stroke-linecap="round"/><circle cx="300" cy="290" r="20" fill="#fff"/></svg>`}
+function setGauge(v){$('garc').setAttribute('stroke-dasharray',`${v} 100`);$('gnd').setAttribute('transform',`rotate(${-90+v*1.8} 300 290)`)}
+const APPS=[['Cloud photo sync','3.1 MB/s'],['System updates','2.4 MB/s'],['Game launcher','1.8 MB/s'],['Video app (minimised)','1.2 MB/s']];
+function ui(s,c){const k=c[4],el=$('ui'),a=c[0];let h='';
+ if(k==='lag'){h=win('VIDEO CALL',`<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:16px">${[0,1,2,3].map(i=>`<div style="height:170px;border-radius:16px;background:#262650;display:flex;align-items:center;justify-content:center"><span style="width:84px;height:84px;border-radius:50%;background:${['#9a6bff','#2fd0f2','#ff983a','#45dd6c'][i]};opacity:.7"></span></div>`).join('')}</div><div style="display:flex;align-items:center;gap:16px;padding:4px 22px 22px"><span class="pill" style="background:#ff4b72;color:#fff">● POOR CONNECTION</span><svg id="spin" width="56" height="56" style="margin-left:auto"><circle cx="28" cy="28" r="22" fill="none" stroke="#fff" stroke-width="6" stroke-dasharray="90 60" stroke-linecap="round"/></svg></div>`,WS)}
+ if(k==='dl'){h=win('DOWNLOADS',`<div style="padding:30px 36px"><div style="font:800 46px IN">Project_final.zip</div><div style="height:34px;border-radius:17px;background:#2a2a52;margin-top:26px;overflow:hidden"><div id="dlb" style="height:100%;width:0;background:#FFD84D;border-radius:17px"></div></div><div style="display:flex;margin-top:18px"><span class="lab" id="dlp" style="font-size:26px;color:#fff">0%</span><span class="lab" id="dlt" style="margin-left:auto;font-size:26px;color:#ff4b72">2 HRS LEFT</span></div></div>`,WS)}
+ if(k==='router'){h=win('ROUTER',`<div style="display:flex;align-items:center;gap:40px;padding:30px 44px"><svg width="300" height="240" viewBox="0 0 300 240"><line x1="80" y1="120" x2="60" y2="20" stroke="#cfd5ff" stroke-width="12" stroke-linecap="round"/><line x1="220" y1="120" x2="240" y2="20" stroke="#cfd5ff" stroke-width="12" stroke-linecap="round"/><rect x="20" y="110" width="260" height="100" rx="24" fill="#2a2a62"/>${[0,1,2,3].map(i=>`<circle class="led" cx="${80+i*46}" cy="160" r="11" fill="#45dd6c"/>`).join('')}</svg><div><svg id="rst" width="120" height="120" viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.3-5.6M20 4v5h-5" fill="none" stroke="#FFD84D" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><div id="rtx" style="font:800 40px IN;margin-top:10px">Restarting…</div></div></div>`,WS)}
+ if(k==='chat1'||k==='chat2'){h=win('WIFI CHETTAN',`<div style="padding:24px 26px 30px;display:flex;flex-direction:column;gap:18px;min-height:330px"><div class="bub m1" style="align-self:flex-end;background:#FFD84D;color:#0d0d0d">Chetta, ente wifi speed pora</div>${k==='chat2'?`<div class="bub m2" style="align-self:flex-start;background:#2a2a62;color:#fff"><span id="typ" style="letter-spacing:.2em">• • •</span><span id="rep">Mone, plan upgrade cheyyanam. Vere vazhiyilla.</span></div>`:''}</div>`,WS)}
+ if(k==='plan'){h=win('MY PLAN',`<div style="display:flex;align-items:center;gap:30px;padding:36px 44px"><div><div class="lab">PLAN</div><div style="font:800 96px/1 IN;color:#FFD84D;margin-top:8px">UPGRADED</div><div class="lab" style="margin-top:14px;font-size:24px">HIGHER SPEED · HIGHER BILL</div></div><svg id="tick" width="150" height="150" style="margin-left:auto"><circle cx="75" cy="75" r="64" fill="#45dd6c"/><path d="M42 78 l22 22 l44 -48" fill="none" stroke="#0d0d0d" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/></svg></div>`,WS)}
+ if(k==='gauge'||k==='gauge2'){h=win('SPEED TEST',`<div style="display:flex;align-items:center;padding:14px 24px 20px">${gaugeSvg()}<div style="margin-left:10px"><div class="lab">${k==='gauge'?'YOU PAY FOR':'NOW GETTING'}</div><div id="gv" style="font:800 110px/1 IN;color:#FFD84D;letter-spacing:-.03em">100%</div><div class="lab" style="margin-top:8px">${k==='gauge'?'CHECKING…':'OF MY PLAN'}</div></div></div>`,WS)}
+ if(k==='s1'||k==='s2'||k==='s6'){const tt={s1:'CLAUDE DESKTOP · PROMPT',s2:'CLAUDE · 7 STEPS',s6:'CLAUDE ASKS FIRST'}[k];
+   h=win(tt,`<div style="padding:12px"><img id="shot" class="shot"></div>`,WS)}
+ if(k==='s5'){h=win('CLAUDE · NEARBY WIFI',`<div style="padding:12px;position:relative"><div style="height:400px;overflow:hidden;border-radius:14px;position:relative"><img class="shot" src="snip/s5/0001.jpg" style="margin-top:-40px"><div id="hl1" class="a" style="left:0;top:${250-40-26}px;height:52px;width:936px;background:rgba(255,75,114,.28);transform-origin:left"></div><div id="hl2" class="a" style="left:0;top:${391-40-26}px;height:52px;width:936px;background:rgba(69,221,108,.3);transform-origin:left"></div></div></div>`,WS)}
+ if(k==='apps'){h=win('BACKGROUND APPS',`<div style="padding:18px 30px 26px">${APPS.map((r,i)=>`<div class="app" style="display:flex;align-items:center;gap:20px;padding:16px 0;border-bottom:2px solid rgba(255,255,255,.06)"><span style="width:52px;height:52px;border-radius:14px;background:${['#2fd0f2','#9a6bff','#ff983a','#ff4b72'][i]}"></span><span style="font:800 38px IN">${r[0]}</span><span class="lab" style="margin-left:auto;font-size:26px;color:#ff4b72">${r[1]}</span></div>`).join('')}</div>`,WS)}
+ if(k==='nbr'){h=`<div class="win a" style="${WS};height:520px"><svg width="960" height="520"><g id="w1"></g><g id="w2"></g>
+   <g transform="translate(70,150)"><path d="M0 120 L110 20 L220 120 V300 H0Z" fill="#2a2a62"/><rect x="70" y="190" width="80" height="110" rx="8" fill="#FFD84D"/></g>
+   <g transform="translate(670,150)"><path d="M0 120 L110 20 L220 120 V300 H0Z" fill="#2a2a62"/><rect x="70" y="190" width="80" height="110" rx="8" fill="#9aa3d6"/></g>
+   <text x="180" y="500" text-anchor="middle" font-family="IN" font-weight="800" font-size="34" fill="#FFD84D">YOU · CH 44</text><text x="780" y="500" text-anchor="middle" font-family="IN" font-weight="800" font-size="34" fill="#cfd5ff">NEIGHBOUR · CH 44</text>
+   <g id="zap" opacity="0"><path d="M480 170 l-40 90 h36 l-24 90 l70 -110 h-38 l30 -70z" fill="#ff4b72" style="filter:drop-shadow(0 0 18px #ff2d6a)"/></g></svg></div>`}
+ if(k==='switch'){h=win('WIFI CHANNEL',`<div style="display:flex;align-items:center;justify-content:center;gap:40px;padding:50px 30px 56px"><div id="ch1" style="font:800 110px/1 IN;color:#ff4b72">44</div><svg width="120" height="60"><path d="M5 30 H100 M80 10 L105 30 L80 50" stroke="#fff" stroke-width="9" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg><div id="ch2" style="font:800 110px/1 IN;color:#45dd6c">149</div></div><div style="text-align:center;padding-bottom:30px"><span class="pill" id="emp" style="background:#45dd6c">EMPTY CHANNEL</span></div>`,WS)}
+ if(k==='comment'){h=`<div class="a" style="left:90px;top:300px;width:900px;height:110px;border-radius:999px;background:rgba(30,30,50,.8);box-shadow:0 0 0 2px rgba(255,255,255,.18);display:flex;align-items:center;gap:22px;padding:0 34px;box-sizing:border-box"><span style="width:58px;height:58px;border-radius:50%;background:conic-gradient(#ff4b72,#9a6bff,#2fd0f2,#ffc21f,#ff4b72)"></span><span id="cmt" style="font:800 46px IN;color:#FFD84D"></span><span id="cur" style="width:4px;height:50px;background:#fff"></span></div>`}
+ if(k==='fs'){h=`<div class="a" style="left:0;right:0;top:300px;display:flex;justify-content:center;gap:26px"><span class="btn" id="bF" style="background:#FFD84D;color:#0d0d0d">+ FOLLOW</span><span class="btn" id="bS" style="background:#0d0d0d;color:#FFD84D;box-shadow:0 0 0 4px #FFD84D"><svg width="40" height="40" viewBox="0 0 24 24"><path d="M3 11 L21 3 L14 21 L11 13 Z" fill="#FFD84D"/></svg>SEND</span></div>`}
+ if(el.dataset.k!==k+a){el.dataset.k=k+a;el.innerHTML=h}
+ [...el.children].forEach((e,i)=>{const q=p(s,a+.03+i*.08,.32);e.style.opacity=eo(q)*cl((c[1]-s)/.12);e.style.transform=`translateY(${(1-eo(q))*50}px) scale(${.88+.12*back(q)})`});
+ const lt=s-a;let pr=null;
+ if(k==='lag'){$('spin').style.transform=`rotate(${lt*400}deg)`;$('spin').style.transformOrigin='50% 50%'}
+ if(k==='dl'){const v=Math.min(12,lt*9);$('dlb').style.width=v+'%';$('dlp').textContent=Math.floor(v)+'%'}
+ if(k==='router'){$('rst').style.transform=`rotate(${lt*540}deg)`;document.querySelectorAll('.led').forEach((l,i)=>l.style.opacity=(Math.floor(lt*6+i)%2)?1:.25);
+   if(lt>2.3){$('rtx').textContent='No change';$('rtx').style.color='#ff4b72';$('rst').style.opacity=.3}}
+ if(k==='chat2'){const on=lt>1.0;$('typ').style.display=on?'none':'inline';$('rep').style.display=on?'inline':'none'}
+ if(k==='plan'){const q=back(p(s,a+.5,.35));$('tick').style.transform=`scale(${q})`;$('tick').style.transformOrigin='50% 50%'}
+ if(k==='gauge'){const v=lt<1.6?eo(lt/1.6)*100:100-eo((lt-1.6)/1.8)*60;setGauge(v);$('gv').textContent=Math.round(v)+'%'}
+ if(k==='gauge2'){const v=40+eo((lt-.3)/1.6)*40;setGauge(v);$('gv').textContent=Math.round(v)+'%'}
+ if(k==='s1'||k==='s2'||k==='s6'){const n=Math.min({s1:182,s2:241,s6:211}[k],1+Math.floor(lt*30));pr=`snip/${k}/${String(n).padStart(4,'0')}.jpg`;const im=$('shot');
+   if(!im.src.endsWith(pr)){im.src=pr;return im.decode().catch(()=>{})}}
+ if(k==='s5'){$('hl1').style.transform=`scaleX(${eo(p(s,a+.5,.5))})`;$('hl2').style.transform=`scaleX(${eo(p(s,a+1.6,.5))})`}
+ if(k==='apps'){document.querySelectorAll('.app').forEach((r,i)=>{const on=s>=58.9+i*.35;r.style.opacity=on?1:0;
+   if(s>=64.4+i*.25){r.style.opacity=.35;r.style.textDecoration='line-through';r.style.textDecorationThickness='4px'}})}
+ if(k==='nbr'){const W=(cx,col)=>{let g='';for(let i=0;i<4;i++){const r=((lt*120+i*45)%180)+20;g+=`<circle cx="${cx}" cy="230" r="${r}" fill="none" stroke="${col}" stroke-width="5" opacity="${1-r/200}"/>`}return g};
+   $('w1').innerHTML=W(180,'#FFD84D');$('w2').innerHTML=W(780,'#cfd5ff');$('zap').setAttribute('opacity',lt>2.0?(0.6+0.4*Math.sin(lt*30)):0)}
+ if(k==='switch'){const q=eo(p(s,a+.8,.5));$('ch1').style.opacity=1-.6*q;$('ch1').style.textDecoration=q>.5?'line-through':'none';$('ch2').style.transform=`scale(${.6+.4*back(q)})`;$('ch2').style.opacity=q;$('emp').style.opacity=eo(p(s,a+1.4,.3))}
+ if(k==='comment'){$('cmt').textContent='WIFI'.slice(0,Math.floor(cl((lt-.4)/.5)*4));$('cur').style.opacity=(Math.floor(s*3)%2)?1:0}
+ if(k==='fs'){$('bF').textContent=lt>1.0?'✓ FOLLOWING':'+ FOLLOW';$('bS').style.transform=`scale(${lt>2.0&&lt<2.15?.93:1})`}
+}
+window.setCaps=()=>{};
+window.frame=t=>{const s=src(t),c=cue(s);
+  if(PASS==='B'){$('T').classList.add('hide');const tp=$('top');
+    if(!c||!c[2]){tp.innerHTML='';tp.dataset.k='';return}
+    setWord(tp,c[2],230,980);tp.style.top='200px';animWord(tp,s,c[0],c[1]);return}
+  $('B').classList.add('hide');const bt=$('bot');
+  const hk=c&&HOOK[c[4]];$('hook').classList.toggle('hide',!hk);if(hk&&$('hook').dataset.k!==c[4]){$('hook').dataset.k=c[4];$('hook').innerHTML=hk}
+  setSub(s);
+  if(!c){bt.innerHTML='';bt.dataset.k='';$('ui').innerHTML='';$('ui').dataset.k='';return}
+  if(c[3]){setWord(bt,c[3],c[3].length>9?120:160,960);bt.style.top='1180px';animWord(bt,s,c[0]+(hk?.6:.15),c[1])}else{bt.innerHTML='';bt.dataset.k=''}
+  if(c[4]&&!hk)return ui(s,c);else{$('ui').innerHTML='';$('ui').dataset.k=''}
+};
+</script></body></html>
