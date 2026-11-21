@@ -55,11 +55,11 @@ def bell():
 def key():
     n = int(0.04 * SR); return lp(rng.standard_normal(n).astype(np.float32), 0.5) * env(n, 0.0005, 0.008) * 0.9
 # ---- cues (source times) ----
-CUES = [0.05,3.75,10.80,17.50,20.83,24.33,27.40,29.85,31.91,37.48,39.96,42.21,45.91,49.85,52.20,56.86,58.70,64.25,65.70,67.20,72.00,74.95,78.40,86.55,83.45,89.22]
+CUES = [0.05,17.50,20.83,24.33,27.40,29.85,31.91,37.48,39.96,42.21,45.91,49.85,52.20,56.86,58.70,64.25,65.70,67.20,72.00,74.95,78.40,86.55,83.45,89.22]
 for c in CUES:
     put(c - 0.10, whoosh(), 0.5)
     put(c + 0.16, pop(950), 0.32)
-for h in (0.05, 3.75, 10.80): put(h + 0.6, boom(0.6), 0.5)          # hook: 2X SPEED lands
+for h in (0.05,): put(h + 0.6, boom(0.6), 0.5)          # hook: 2X SPEED lands
 for i in range(8): put(17.7 + i * 0.32, tick(2200), 0.25)            # lag spinner
 for i in range(10): put(21.0 + i * 0.12, tick(3000), 0.2)            # download creeping
 put(24.5, riser(0.7), 0.45); put(26.7, down(0.6), 0.45)               # router reset -> no change

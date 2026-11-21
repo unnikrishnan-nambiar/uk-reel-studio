@@ -1,5 +1,5 @@
 # Source-time segments in EDIT order. Hooks = same three takes as wifi3. BODY = same story, jump-cut tighter (pauses >=0.15s removed), zoom cuts via ZOOM.
-HOOKS = {'h1': [0.05, 2.85], 'h2': [3.75, 9.42], 'h3': [10.80, 15.75]}
+HOOKS = {'h1': [0.05, 2.85]}
 _BASE = [[17.50, 20.62], [20.83, 24.17], [24.33, 29.58], [29.85, 31.57], [31.91, 35.41], [35.80, 37.15],
          [37.48, 39.60], [39.96, 42.08], [42.21, 45.75], [45.91, 49.58], [49.85, 51.77], [52.20, 56.52],
          [56.86, 63.87], [64.25, 76.23], [76.48, 83.45], [86.55, 89.08], [83.45, 86.55], [89.22, 92.78]]
@@ -14,9 +14,9 @@ def _split(a, b):
             out.append([round(cur, 3), round(s + PAD, 3)]); cur = e - PAD
     out.append([round(cur, 3), b]); return out
 BODY = [x for a, b in _BASE for x in _split(a, b)]
-ALL = [HOOKS['h1'], HOOKS['h2'], HOOKS['h3']] + BODY
+ALL = [HOOKS['h1']] + BODY
 # (source time, zoom) keyframes, ascending. Open every hook punched-in (zoom cut), then cut out; body alternates every ~3-6 s.
-ZOOM = [(0.05, 1.18), (1.25, 1.0), (3.75, 1.18), (4.95, 1.0), (10.80, 1.18), (12.00, 1.0),
+ZOOM = [(0.05, 1.18), (1.25, 1.0),
         (17.50, 1.0), (20.83, 1.15), (24.33, 1.0), (27.40, 1.18), (29.85, 1.0), (31.91, 1.15), (35.80, 1.0),
         (37.48, 1.18), (39.96, 1.0), (42.21, 1.12), (45.91, 1.0), (49.85, 1.2), (52.20, 1.0), (56.86, 1.18),
         (58.70, 1.0), (64.25, 1.15), (65.70, 1.0), (69.60, 1.15), (72.00, 1.0), (74.95, 1.18), (78.40, 1.0),

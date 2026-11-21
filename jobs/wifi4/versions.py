@@ -2,8 +2,8 @@
 import json, subprocess, os
 D = '/home/claude/uk-reel-studio/jobs/wifi4'; O = '/home/claude/uk-reel-studio/output'; U = '/mnt/user-data/outputs'
 S = json.load(open(f'{D}/edit.json'))['segs']; END = json.load(open(f'{D}/edit.json'))['dur']
-H = {'h1': (S[0]['out0'], S[0]['out1']), 'h2': (S[1]['out0'], S[1]['out1']), 'h3': (S[2]['out0'], S[2]['out1'])}
-B0 = S[3]['out0']
+H = {'h1': (S[0]['out0'], S[0]['out1'])}
+B0 = S[1]['out0']
 CV = 'scale=in_color_matrix=bt601:in_range=tv,format=gbrp16le,scale=out_color_matrix=bt2020:out_range=tv,format=yuv420p10le'
 HV = ['-c:v', 'libx265', '-pix_fmt', 'yuv420p10le', '-tag:v', 'hvc1', '-color_primaries', 'bt2020', '-color_trc', 'arib-std-b67', '-colorspace', 'bt2020nc', '-color_range', 'tv']
 XP = 'colorprim=bt2020:transfer=arib-std-b67:colormatrix=bt2020nc:range=limited:hdr10=0:log-level=error'
