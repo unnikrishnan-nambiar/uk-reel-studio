@@ -15,7 +15,5 @@ for k, (a, b) in H.items():
            '-ss', f'{a}', '-to', f'{b}', '-i', f'{D}/sfx.wav', '-ss', f'{B0}', '-i', f'{D}/sfx.wav']
     subprocess.run(['ffmpeg', '-v', 'error', '-y', *ins, '-filter_complex', fc, '-map', '[vv]', '-map', '[aa]',
                     *HV, '-preset', 'fast', '-crf', '17', '-x265-params', XP + ':pools=2:frame-threads=1', '-r', '60', '-c:a', 'aac', '-b:a', '256k', '-ar', '48000', '-movflags', '+faststart', m], check=True)
-    subprocess.run(['ffmpeg', '-v', 'error', '-y', '-i', m, *HV, '-preset', 'veryfast', '-crf', '21', '-x265-params', XP + ':vbv-maxrate=8000:vbv-bufsize=16000',
-                    '-c:a', 'copy', '-movflags', '+faststart', f'{O}/wifi-v2-{k}-share.mp4'], check=True)
-    subprocess.run(['cp', m, f'{U}/wifi-v2-hook{k[1]}.mp4']); subprocess.run(['cp', f'{O}/wifi-v2-{k}-share.mp4', f'{U}/wifi-v2-hook{k[1]}-share.mp4'])
+    subprocess.run(['cp', m, f'{U}/wifi-v2-hook{k[1]}.mp4'])
     print('done', k, flush=True)
