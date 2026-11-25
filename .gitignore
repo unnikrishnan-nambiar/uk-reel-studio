@@ -100,3 +100,4 @@ jobs/widget2/*.png
 jobs/widget2/ovT/
 jobs/*/snip/*.png
 jobs/*/snip/*.jpg
+jobs/*/snip/
