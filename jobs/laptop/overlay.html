@@ -1,0 +1,186 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+@font-face{font-family:IN;src:url(../../templates/fonts/inter-latin-600-normal.woff2);font-weight:600}
+@font-face{font-family:IN;src:url(../../templates/fonts/inter-latin-700-normal.woff2);font-weight:700}
+@font-face{font-family:IN;src:url(../../templates/fonts/inter-latin-800-normal.woff2);font-weight:800}
+@font-face{font-family:ML;src:url(../../templates/fonts/noto-sans-malayalam-malayalam-700-normal.woff2);font-weight:700}
+@font-face{font-family:ML;src:url(../../templates/fonts/noto-sans-malayalam-malayalam-800-normal.woff2);font-weight:800}
+html,body{margin:0;background:transparent}
+#st{position:relative;width:1080px;height:1920px;overflow:hidden;font-family:IN;color:#fff;-webkit-font-smoothing:antialiased}
+.a{position:absolute}.hide{display:none!important}
+.word{position:absolute;left:0;right:0;text-align:center;white-space:nowrap;font-weight:800;text-transform:uppercase;letter-spacing:-.035em;line-height:.92}
+.word span{display:inline-block;-webkit-background-clip:text;background-clip:text;color:transparent}
+.win{background:none;box-sizing:border-box;filter:drop-shadow(2px 0 0 #0d0d0d) drop-shadow(-2px 0 0 #0d0d0d) drop-shadow(0 2px 0 #0d0d0d) drop-shadow(0 -2px 0 #0d0d0d) drop-shadow(0 10px 18px rgba(0,0,0,.45))}
+.win .lab{color:#fff;font-size:28px!important}
+.bar{display:none}
+.dot{width:14px;height:14px;border-radius:50%}
+.wt{margin:0 auto;font:700 18px IN;letter-spacing:.22em;color:#9aa3d6;padding:4px 16px;border-radius:999px;background:rgba(255,255,255,.06)}
+.lab{font:700 20px IN;letter-spacing:.18em;color:#9aa3d6}
+.pill{display:inline-flex;align-items:center;gap:10px;font:800 24px IN;letter-spacing:.12em;color:#0d0d0d;background:#FFD84D;border-radius:999px;padding:12px 22px}
+.btn{display:inline-flex;align-items:center;gap:14px;border-radius:999px;font:800 44px IN;padding:24px 46px;color:#fff}
+.shot{display:block;width:936px;border-radius:14px}
+.bub{max-width:640px;font:700 38px/1.3 IN,ML;padding:20px 26px;border-radius:26px}
+/* hook: ONE box, yellow text on black, static */
+#hook{left:50%;top:230px;transform:translateX(-50%);width:max-content;max-width:1010px;text-align:center;background:#0d0d0d;color:#FFF06A;font:800 54px/1.16 IN;letter-spacing:-.02em;padding:24px 36px 30px;border-radius:24px;box-shadow:0 14px 40px rgba(0,0,0,.45)}
+/* subtitles: no box, line shown in full, then covered word by word */
+#sub{left:80px;right:140px;top:1370px;text-align:center;font:700 44px/1.38 ML,IN}
+#sub b{font-weight:700;position:relative;display:inline-block;margin:0 .12em;color:#fff;
+  text-shadow:0 0 3px #000,0 0 3px #000,0 2px 0 #000,0 3px 10px rgba(0,0,0,.8)}
+#sub b i{position:absolute;left:0;top:0;font-style:normal;color:#FFD84D;white-space:nowrap}
+</style></head><body><div id="st">
+<div id="B" class="a" style="inset:0"><div id="top" class="word"></div></div>
+<div id="T" class="a" style="inset:0">
+  <div id="fade" class="a" style="left:0;right:0;top:1200px;height:720px;background:linear-gradient(180deg,rgba(0,0,0,0),rgba(0,0,0,.45) 55%,rgba(0,0,0,.6))"></div>
+  <div id="ui" class="a" style="inset:0"></div>
+  <div id="top2" class="word"></div>
+  <div id="bot" class="word"></div>
+  <div id="hook" class="a hide"></div>
+  <div id="sub" class="a"></div>
+</div>
+</div>
+<script>
+const Q=new URLSearchParams(location.search),PASS=Q.get('pass')||'T';
+const $=id=>document.getElementById(id);const cl=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
+const eo=x=>1-Math.pow(1-cl(x),3);const back=x=>{x=cl(x);const c=1.7;return 1+(c+1)*Math.pow(x-1,3)+c*Math.pow(x-1,2)};
+const p=(t,a,d=.4)=>cl((t-a)/d);
+// edit order (source in/out). Must match segs.py ALL.
+const SEGS=[[0.3, 3.67], [3.85, 5.28], [5.8, 9.41], [9.74, 13.16], [13.64, 17.8], [18.16, 20.47], [20.86, 22.19], [22.44, 26.21], [26.38, 30.89], [31.16, 34.43], [34.87, 36.57], [36.86, 38.45], [38.71, 42.39], [42.72, 45.18], [45.49, 49.52], [49.86, 51.06], [51.3, 54.16], [54.67, 57.45], [57.83, 61.4], [61.69, 62.44], [62.75, 65.23], [65.56, 68.6], [68.85, 71.41], [71.64, 73.08], [73.37, 76.42], [77.26, 81.19], [81.67, 85.04], [85.37, 89.55], [90.06, 92.16], [92.49, 95.35], [96.42, 97.66], [98.1, 99.84], [100.09, 101.96], [102.21, 103.3], [103.52, 105.67], [105.94, 108.09], [108.32, 111.68], [112.01, 115.3], [119.38, 122.34], [122.57, 126.14]];
+function src(t){let b=0;for(const [a,e] of SEGS){const d=e-a;if(t<b+d)return a+(t-b);b+=d}return SEGS[SEGS.length-1][1]}
+// ---------- cues (SOURCE time): [a, b, top word (behind head), bottom word, ui] ----------
+const CUES=[
+ [0.3,5.28,'','NO LAPTOP','h1'],
+ [5.8,9.41,'','ONE LAPTOP','fam'],
+ [9.74,13.16,'','TOO SLOW','slow'],
+ [13.64,17.8,'','SKIPPED','skip'],
+ [18.16,20.47,'','WAITING','wait'],
+ [20.86,26.21,'','ME TOO',''],
+ [26.38,30.89,'','COMPUTER BEHIND CLAUDE','cloud'],
+ [31.16,34.43,'','JUST INSTRUCTIONS','send0'],
+ [34.87,38.45,'','OFFICE WORK',''],
+ [38.71,45.18,'','DOCS · PDF · SHEETS','docs'],
+ [45.49,51.06,'','SLIDES','slides'],
+ [51.3,57.45,'','READY','chai'],
+ [57.83,68.6,'','WEBSITES','guide'],
+ [68.85,76.42,'','2-3 MINUTES','timer'],
+ [77.26,85.04,'','VIDEO EDITING','ba'],
+ [85.37,89.55,'','1+ HOUR','hour'],
+ [90.06,95.35,'','40 MIN RIDE','bike'],
+ [96.42,99.84,'','EDIT THIS','send'],
+ [100.09,103.3,'','READY','ready'],
+ [103.52,105.67,'','1 HOUR SAVED','saved'],
+ [105.94,111.68,'','12 USE CASES','twelve'],
+ [112.01,115.30,'','ALL TESTED','tested'],
+ [119.38,122.34,'','COMMENT LAPTOP','comment'],
+ [122.57,126.14,'','SEND TO A FRIEND','fs']];
+function cue(s){return CUES.find(c=>s>=c[0]&&s<c[1])}
+const HOOK={h1:"No laptop? Don't worry.<br>Your phone does 12<br>laptop jobs now."};
+// ---------- subtitles (SOURCE time) ----------
+const SUB=[
+ [0.40,3.67,'Laptop വേണ്ട. Claude വെച്ചിട്ട് laptop-ലെ work എല്ലാം'],[3.85,5.28,'ഇപ്പോ ഞാൻ phone-ലാണ് ചെയ്യാറ്'],
+ [5.85,7.30,'ഒരുപാട് പേർക്ക് laptop ഇല്ല'],[7.35,9.41,'ചിലർക്ക് family-ൽ ഒരൊറ്റ laptop ആവും'],
+ [9.78,13.16,'ചിലരുടെ laptop slow ആയതുകൊണ്ട് use ചെയ്യാനും പറ്റാറുണ്ടാവില്ല'],
+ [13.68,17.80,'Serious work-ന് laptop വേണമെന്ന് വിചാരിച്ച് നമ്മൾ പല works-ഉം skip ചെയ്യാറുണ്ട്'],
+ [18.20,20.47,'അല്ലെങ്കിൽ laptop കിട്ടുന്ന വരെ wait ചെയ്യേണ്ടി വരും'],
+ [20.90,22.19,'ഞാനും ഇങ്ങനെയൊക്കെ തന്നെയായിരുന്നു'],[22.48,26.21,'Laptop use ചെയ്യാൻ പറ്റാത്തതുകൊണ്ട് പല works-ഉം ഞാൻ skip ചെയ്തിട്ടുണ്ട്'],
+ [26.42,27.35,'ഇപ്പോ അതൊന്നുമില്ല'],[27.38,29.20,'Claude-ന്റെ back-ൽ ഒരു computer ഉണ്ട്'],[29.24,30.89,'Work നടക്കുന്നത് ആ computer-ലാണ്'],
+ [31.20,31.90,'എന്റെ phone-ൽ അല്ല'],[32.25,34.43,'ഞാൻ phone-ൽ instructions മാത്രമേ കൊടുക്കൂ'],
+ [34.90,38.45,'ഉദാഹരണത്തിന്, office work. Office-ൽ എന്തെങ്കിലും work ഉണ്ടെങ്കിൽ'],
+ [38.75,42.39,'Word document, PDF, spreadsheet ഉണ്ടാക്കാൻ'],[42.75,45.18,'Claude-ന് ഒരു instruction കൊടുക്കും. Claude ഉണ്ടാക്കി തരും'],
+ [45.52,49.52,'Presentation ആണെങ്കിൽ ഞാൻ prepare ചെയ്തതിന്റെ basis-ൽ slides ഉണ്ടാക്കി തരാൻ പറയും'],[49.88,51.06,'Just ഒരു prompt'],
+ [51.33,54.16,'Office-ൽ ഒരു ചായ കുടിക്കുമ്പോഴേക്കും സാധനം ready'],[54.70,57.45,'ഒരു last round preparation കഴിഞ്ഞ് ഞാൻ direct use ചെയ്യും'],
+ [57.86,61.40,'Second, websites. ഞാൻ നിങ്ങൾക്ക് അയക്കുന്ന guides എല്ലാം websites ആണ്'],[61.70,62.44,'ശ്രദ്ധിച്ചിട്ടുണ്ടോ?'],
+ [62.78,65.23,'ഇതെല്ലാം ഞാൻ Claude വെച്ച് എന്റെ phone-ൽ നിന്നാണ് ഉണ്ടാക്കാറ്'],[65.60,68.60,'Claude അത് host ചെയ്ത് തരും, ഞാൻ നിങ്ങൾക്ക് share ചെയ്യും'],
+ [68.88,71.41,'സത്യം പറഞ്ഞാൽ ചെറിയ improvements വരുത്തേണ്ടി വരാറുണ്ട്'],[71.68,73.08,'അപ്പോഴേ fully useful ആവൂ'],
+ [73.40,76.42,'But still 2-3 minute-ൽ കാര്യങ്ങൾ ചെയ്തെടുക്കാൻ പറ്റും'],
+ [77.30,81.19,'Third, video editing. Shoot ചെയ്ത videos ഞാൻ Claude-ന് അയച്ചുകൊടുക്കും'],[81.70,85.04,'Cuts, subtitles, animations എല്ലാം Claude തന്നെ ചെയ്തോളും'],
+ [85.40,89.55,'ഇതേ video ഞാൻ manually edit ചെയ്യുകയാണെങ്കിൽ ഒരു മണിക്കൂറിന് മേലെ എടുക്കും'],
+ [90.10,92.16,'അതുകൊണ്ട് bike കേറുന്നതിന് മുന്നേ'],[92.52,95.35,'ഞാൻ office-ലേക്ക് bike-ലാണ് പോവാറ്, ഒരു 40 minute യാത്ര'],
+ [96.45,99.84,'Claude-നോട് ഞാൻ പറയും, ഈ video ഇങ്ങനെ edit ചെയ്യണം'],
+ [100.12,103.30,'Office-ൽ എത്തി 5-10 minute-ൽ സാധനം എന്റെ കയ്യിൽ കിട്ടും'],[103.55,105.67,'ആ time-ൽ ഞാൻ save ചെയ്തത് ഏകദേശം ഒരു മണിക്കൂർ'],
+ [105.98,111.68,'ഇതേ പോലെ ഒരുപാട് time save ചെയ്യാനും efficiency improve ചെയ്യാനും പറ്റുന്ന 12 use cases ഉണ്ട്'],
+ [112.05,115.30,'50, 100 ഒന്നും ഞാൻ പറയുന്നില്ല. ഇതെല്ലാം ഞാൻ test ചെയ്തതാണ്'],
+ [119.42,122.34,'LAPTOP എന്ന് comment ചെയ്താൽ full details അയച്ചുതരാം'],
+ [122.60,126.14,'AI use ചെയ്യാൻ laptop വേണമെന്ന് പറയുന്ന friend-ന് വേഗം അയച്ചുകൊടുക്ക്']];
+function subAt(s){return SUB.find(c=>s>=c[0]&&s<c[1])}
+function setSub(s){const el=$('sub');const c=subAt(s);if(!c){el.innerHTML='';el.dataset.k='';return}
+  if(el.dataset.k!==c[2]){el.dataset.k=c[2];el.innerHTML=c[2].split(' ').map(w=>`<b>${w}<i>${w}</i></b>`).join(' ')}
+  const ws=[...el.children],L=ws.map(w=>w.textContent.length/2),T=L.reduce((x,y)=>x+y,0);
+  const d=c[1]-c[0],a=c[0]+Math.min(.25,d*.1),e=c[1]-Math.min(.35,d*.15);const pr=cl((s-a)/(e-a))*T;let acc=0;
+  ws.forEach((w,i)=>{const f=cl((pr-acc)/L[i]);acc+=L[i];const ii=w.firstElementChild;ii.style.clipPath=`inset(-20% ${100-f*100}% -20% 0)`});
+  el.style.opacity=cl((s-c[0])/.08)}
+// ---------- big 3D words (yellow + black) ----------
+function style(el,size){el.style.fontSize=size+'px';const o=Math.max(3,Math.round(size*.022));
+  el.style.filter=`drop-shadow(${o}px 0 0 #0d0d0d) drop-shadow(-${o}px 0 0 #0d0d0d) drop-shadow(0 ${o}px 0 #0d0d0d) drop-shadow(0 -${o}px 0 #0d0d0d) drop-shadow(0 5px 0 #0d0d0d) drop-shadow(0 10px 0 #0d0d0d) drop-shadow(0 16px 24px rgba(0,0,0,.55))`;
+  [...el.children].forEach(sp=>{sp.style.backgroundImage='linear-gradient(#FFD84D,#FFD84D)'})}
+function setWord(el,txt,maxSize,maxW){if(el.dataset.k!==txt){el.dataset.k=txt;el.innerHTML=txt.split('').map(ch=>`<span>${ch===' '?'&nbsp;':ch}</span>`).join('');
+  style(el,maxSize);const W=[...el.children].reduce((s,x)=>s+x.getBoundingClientRect().width,0);if(W>maxW)style(el,maxSize*maxW/W)}}
+function animWord(el,t,a,b){const n=el.children.length;const ord=[...Array(n).keys()].sort((x,y)=>((x*7+3)%n)-((y*7+3)%n));
+  [...el.children].forEach((sp,i)=>{const k=p(t,a+ord.indexOf(i)*.03,.22);sp.style.opacity=eo(k);sp.style.transform=`translateY(${(1-eo(k))*-40}px) scale(${1.5-.5*back(k)})`});
+  el.style.opacity=cl((b-t)/.1)}
+// ---------- UI ----------
+const SV=(inner,sty='')=>`<svg class="a" style="left:60px;top:170px;overflow:visible;filter:drop-shadow(0 8px 16px rgba(0,0,0,.4));${sty}" width="960" height="440" viewBox="0 0 960 440">${inner}</svg>`;
+const TX=(x,y,t,sz,col,an='middle',id='',fam='IN')=>`<text ${id?`id="${id}"`:''} x="${x}" y="${y}" text-anchor="${an}" font-family="${fam}" font-weight="800" font-size="${sz}" fill="${col}" paint-order="stroke" stroke="#0d0d0d" stroke-width="${Math.max(8,sz/5.5)}" stroke-linejoin="round" style="transform-box:fill-box;transform-origin:center">${t}</text>`;
+const LN=(d,col,w,id='',ex='')=>`<g ${id?`id="${id}"`:''} style="transform-box:fill-box;transform-origin:center"><path d="${d}" fill="none" stroke="#0d0d0d" stroke-width="${w+12}" stroke-linecap="round" stroke-linejoin="round" ${ex}/><path d="${d}" fill="none" stroke="${col}" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round" ${ex}/></g>`;
+const ICON=(x,y,s,col,inner,id='')=>`<g ${id?`id="${id}"`:''} transform="translate(${x},${y})" style="transform-box:fill-box;transform-origin:center"><rect x="${-s/2}" y="${-s/2}" width="${s}" height="${s}" rx="${s*.24}" fill="${col}" stroke="#0d0d0d" stroke-width="${Math.max(5,s/18)}"/>${inner}</g>`;
+const LAP=(x,y,w,col='#fff',scr='')=>{const h=w*.6;return `<g transform="translate(${x},${y})">${scr}${LN(`M${-w/2+w*.08} ${-h} H${w/2-w*.08} V0 H${-w/2+w*.08} Z`,col,9)}${LN(`M${-w/2} 14 H${w/2} L${w/2-16} 34 H${-w/2+16} Z`,col,9)}</g>`};
+const PHONE=(x,y,col='#fff')=>`<g transform="translate(${x},${y})">${LN('M-55 -110 H55 a18 18 0 0 1 18 18 V92 a18 18 0 0 1 -18 18 H-55 a18 18 0 0 1 -18 -18 V-92 a18 18 0 0 1 18 -18 Z',col,9)}${LN('M-15 90 H15',col,8)}</g>`;
+const HEAD=(x,y,col)=>`<g transform="translate(${x},${y})"><circle cx="0" cy="-24" r="22" fill="${col}" stroke="#0d0d0d" stroke-width="6"/><path d="M-36 30 a36 36 0 0 1 72 0 Z" fill="${col}" stroke="#0d0d0d" stroke-width="6"/></g>`;
+const DOCI=(t,col)=>`<path d="M-30 -40 H18 L34 -24 V40 H-30 Z" fill="#fff" stroke="#0d0d0d" stroke-width="6" stroke-linejoin="round"/><text x="2" y="18" text-anchor="middle" font-family="IN" font-weight="800" font-size="24" fill="${col}">${t}</text>`;
+const CARD=(src,w)=>`<div class="a" style="left:${(1080-w)/2}px;top:170px;width:${w}px"><img src="${src}" style="display:block;width:${w}px;border-radius:28px;box-shadow:0 14px 36px rgba(0,0,0,.55),0 0 0 4px #0d0d0d"></div>`;
+function ui(s,c){const k=c[4],el=$('ui'),a=c[0];let h='';
+ if(k==='fam'){h=SV(`${LAP(480,250,300)}${[[250,'#FFD84D',6.0],[480,'#2fd0f2',6.5],[710,'#ff983a',7.0]].map((p,i)=>`<g id="fh${i}" opacity="0">${HEAD(p[0],90,p[1])}</g>`).join('')}`)}
+ if(k==='slow'){h=SV(`${LAP(480,250,320,'#fff',`<rect x="-100" y="-120" width="200" height="16" rx="8" fill="#3a3f66"/><rect id="sb" x="-100" y="-120" width="10" height="16" rx="8" fill="#ff4b72"/>`)}<g id="sp" transform="translate(480,90)">${LN('M0 -40 A40 40 0 1 1 -40 0','#ff4b72',12)}</g>`)}
+ if(k==='skip'){const T=['Report','Resume','Slides'];h=SV(`${T.map((t,i)=>`<g id="sk${i}" opacity="0">${TX(480,90+i*100,t,76,'#fff')}<g id="sl${i}" opacity="0">${LN(`M${480-t.length*24} ${64+i*100} H${480+t.length*24}`,'#ff4b72',7)}</g></g>`).join('')}`)}
+ if(k==='wait'){h=SV(`<g id="hg" transform="translate(480,160)">${LN('M-70 -120 H70 M-70 120 H70 M-60 -120 C-60 -30 60 -30 60 0 C60 30 -60 30 -60 120 M60 -120 C60 -30 -60 -30 -60 0 C-60 30 60 30 60 120','#FFD84D',12)}</g>`)}
+ if(k==='cloud'||k==='send0'){h=SV(`${PHONE(180,160)}<path id="dash" d="M270 160 H620" fill="none" stroke="#FFD84D" stroke-width="10" stroke-dasharray="20 18" stroke-linecap="round"/>${LAP(780,230,260,'#fff',`<text x="0" y="-60" text-anchor="middle" font-family="IN" font-weight="800" font-size="40" fill="#FFD84D">✳</text>`)}${TX(780,300,"Claude's computer",36,'#FFD84D')}${k==='send0'?`<g id="bub" opacity="0">${TX(180,40,'"Do this"',44,'#fff')}</g>`:''}`)}
+ if(k==='docs'){const D=[['DOC','#2fd0f2',38.9],['PDF','#ff4b72',39.9],['XLS','#45dd6c',41.0]];h=SV(`${D.map((d,i)=>`<g id="dc${i}" opacity="0" transform="translate(${220+i*260},150) scale(2)">${DOCI(d[0],d[1])}</g>`).join('')}`)}
+ if(k==='slides'){h=SV(`${[0,1,2].map(i=>`<g id="sd${i}" style="transform-box:fill-box;transform-origin:center"><rect x="330" y="60" width="300" height="190" rx="16" fill="#fff" stroke="#0d0d0d" stroke-width="7"/><rect x="360" y="90" width="150" height="20" rx="8" fill="${['#FFD84D','#2fd0f2','#ff983a'][i]}"/><rect x="360" y="130" width="230" height="12" rx="6" fill="#c9c9d6"/><rect x="360" y="160" width="190" height="12" rx="6" fill="#c9c9d6"/></g>`).join('')}`)}
+ if(k==='chai'){h=SV(`<g transform="translate(400,170)">${LN('M-80 -40 H80 V40 a60 60 0 0 1 -60 60 H-20 a60 60 0 0 1 -60 -60 Z','#fff',11)}${LN('M80 -10 a34 34 0 0 1 0 68','#fff',11)}${[-40,0,40].map((x,i)=>`<path class="st" d="M${x} -70 c-14 -20 14 -30 0 -50" fill="none" stroke="#fff" stroke-width="8" stroke-linecap="round" opacity=".8"/>`).join('')}</g><g id="rd" opacity="0">${TX(690,200,'READY ✓',80,'#45dd6c')}</g>`)}
+ if(k==='guide'){h=CARD('snip/guide.jpg',560)}
+ if(k==='timer'){h=SV(`${LN('M480 60 A110 110 0 1 1 479.9 60','#fff',11)}<path id="tw" d="M480 170 L480 60 A110 110 0 0 1 480 60 Z" fill="#FFD84D" opacity=".85"/>${TX(480,320,'2-3 MIN',56,'#FFD84D')}<g id="wr" opacity="0" transform="translate(700,120) scale(.6)">${LN('M0 120 L120 0 M120 0 a40 40 0 1 1 46 -46 l-32 32 l12 26 l26 12 l32 -32 a40 40 0 0 1 -46 46','#fff',16)}</g>`)}
+ if(k==='ba'){h=`<div class="a" style="left:70px;top:170px;width:940px;display:flex;gap:40px;justify-content:center;align-items:flex-start"><div style="text-align:center"><img src="snip/raw.jpg" style="display:block;width:420px;border-radius:24px;box-shadow:0 0 0 4px #0d0d0d,0 12px 30px rgba(0,0,0,.5);filter:saturate(.8)"><div style="margin-top:12px;font:800 44px IN;color:#fff;text-shadow:0 0 5px #0d0d0d,0 4px 0 #0d0d0d">RAW</div></div><div id="ed" style="text-align:center;opacity:0"><img src="snip/edited.jpg" style="display:block;width:420px;border-radius:24px;box-shadow:0 0 0 4px #0d0d0d,0 12px 30px rgba(0,0,0,.5)"><div style="margin-top:12px;font:800 44px IN;color:#FFD84D;text-shadow:0 0 5px #0d0d0d,0 4px 0 #0d0d0d">EDITED</div></div></div>`}
+ if(k==='hour'){h=SV(`${LAP(300,240,300)}${LN('M720 40 A110 110 0 1 1 719.9 40','#fff',11)}<path id="hw" d="M720 150 L720 40 A110 110 0 0 1 720 40 Z" fill="#ff4b72" opacity=".85"/>${TX(720,310,'1+ HOUR',52,'#ff4b72')}`)}
+ if(k==='bike'){h=SV(`${LN('M40 250 H920','#fff',8)}<g id="bk"><circle cx="-60" cy="200" r="44" fill="none" stroke="#0d0d0d" stroke-width="20"/><circle cx="-60" cy="200" r="44" fill="none" stroke="#FFD84D" stroke-width="10"/><circle cx="80" cy="200" r="44" fill="none" stroke="#0d0d0d" stroke-width="20"/><circle cx="80" cy="200" r="44" fill="none" stroke="#FFD84D" stroke-width="10"/>${LN('M-60 200 L0 130 H60 L80 200 M0 130 L20 90 H60','#FFD84D',10)}</g>${TX(480,90,'40 MIN',90,'#fff')}`)}
+ if(k==='send'){h=SV(`${PHONE(300,160)}<g id="vp"><g transform="translate(300,150)"><path d="M-22 -26 L28 0 L-22 26 Z" fill="#FFD84D" stroke="#0d0d0d" stroke-width="6" stroke-linejoin="round"/></g></g>${TX(640,170,'"Edit this video"',52,'#fff')}`)}
+ if(k==='ready'){h=SV(`<g id="ck" style="transform-box:fill-box;transform-origin:center">${LN('M480 50 A110 110 0 1 1 479.9 50','#45dd6c',14)}${LN('M425 165 L470 210 L545 120','#45dd6c',20)}</g>`)}
+ if(k==='saved'){h=SV(`${TX(480,190,'1 HOUR',180,'#FFD84D','middle','sv')}${TX(480,290,'SAVED',70,'#45dd6c')}`)}
+ if(k==='twelve'){let g='';const cols=['#FFD84D','#2fd0f2','#ff983a','#45dd6c','#ff4b72','#9a6bff'];for(let i=0;i<12;i++){g+=`<g id="tw${i}" opacity="0">${ICON(150+(i%6)*132,90+Math.floor(i/6)*140,96,cols[i%6],'')}</g>`}h=SV(g+`<g id="t12" opacity="0">${TX(480,370,'12 USE CASES',60,'#fff')}</g>`)}
+ if(k==='tested'){h=SV(`${[0,1,2,3].map(i=>`<g id="tc${i}" opacity="0">${LN(`M${200+i*190} 150 l40 40 l75 -85`,'#45dd6c',22)}</g>`).join('')}${TX(480,320,'TESTED BY ME',56,'#fff')}`)}
+ if(k==='comment'){h=SV(`${TX(480,70,'COMMENT',56,'#fff')}${TX(480,270,'',170,'#FFD84D','middle','cmt')}`)}
+ if(k==='fs'){h=SV(`<g id="pl" transform="translate(380,60)"><g transform="scale(10)"><path d="M3 11 L21 3 L14 21 L11 13 Z" fill="#FFD84D" stroke="#0d0d0d" stroke-width="1.4" stroke-linejoin="round"/></g></g>`)}
+ if(el.dataset.k!==k+a){el.dataset.k=k+a;el.innerHTML=h}
+ [...el.children].forEach((e,i)=>{const q=p(s,a+.03+i*.08,.32);e.style.opacity=eo(q)*cl((c[1]-s)/.12);e.style.transform=`translateY(${(1-eo(q))*50}px) scale(${.88+.12*back(q)})`});
+ const lt=s-a;
+ if(k==='fam'){[0,1,2].forEach(i=>$('fh'+i).setAttribute('opacity',eo(p(s,[7.4,7.8,8.2][i],.3))))}
+ if(k==='slow'){$('sb').setAttribute('width',10+Math.min(40,lt*6));$('sp').setAttribute('transform',`translate(480,90) rotate(${lt*200})`)}
+ if(k==='skip'){[0,1,2].forEach(i=>{$('sk'+i).setAttribute('opacity',eo(p(s,a+.1+i*.4,.3)));$('sl'+i).setAttribute('opacity',s>a+1.6+i*.5?1:0)})}
+ if(k==='wait'){$('hg').setAttribute('transform',`translate(480,160) rotate(${Math.floor(lt/1.1)%2?180:0})`)}
+ if(k==='cloud'||k==='send0'){$('dash').setAttribute('stroke-dashoffset',-lt*80);if(k==='send0')$('bub').setAttribute('opacity',eo(p(s,32.3,.3)))}
+ if(k==='docs'){[38.9,39.9,41.0].forEach((t,i)=>{const q=back(p(s,t,.35));$('dc'+i).setAttribute('opacity',cl(q*2));$('dc'+i).setAttribute('transform',`translate(${220+i*260},150) scale(${2*Math.max(.01,q)})`)})}
+ if(k==='slides'){[0,1,2].forEach(i=>{const q=eo(p(s,a+.3+i*.25,.4));$('sd'+i).style.transform=`translate(${(i-1)*q*190}px,${(1-i)*q*10}px) rotate(${(i-1)*q*8}deg)`})}
+ if(k==='chai'){document.querySelectorAll('.st').forEach((e,i)=>e.setAttribute('transform',`translate(0,${-((lt*40+i*20)%40)})`));$('rd').setAttribute('opacity',eo(p(s,53.3,.3)))}
+ if(k==='timer'){const f=eo(cl((s-73.5)/2.5));const an=f*2*Math.PI*.75;const x=480+110*Math.sin(an),y=170-110*Math.cos(an);$('tw').setAttribute('d',`M480 170 L480 60 A110 110 0 ${an>Math.PI?1:0} 1 ${x} ${y} Z`);$('wr').setAttribute('opacity',s>68.9&&s<73.1?1:0)}
+ if(k==='ba'){$('ed').style.opacity=eo(p(s,81.7,.4))}
+ if(k==='hour'){const f=eo(cl((lt-.3)/2.5));const an=f*2*Math.PI*.999;const x=720+110*Math.sin(an),y=150-110*Math.cos(an);$('hw').setAttribute('d',`M720 150 L720 40 A110 110 0 ${an>Math.PI?1:0} 1 ${x} ${y} Z`)}
+ if(k==='bike'){$('bk').setAttribute('transform',`translate(${150+((lt*170)%700)},0)`)}
+ if(k==='send'){const f=eo(cl((s-97.2)/1.2));$('vp').setAttribute('transform',`translate(${f*600},${-f*60})`);$('vp').style.opacity=1-f}
+ if(k==='ready'){$('ck').style.transform=`scale(${back(p(s,a+.1,.4))})`}
+ if(k==='saved'){$('sv').style.transform=`scale(${.7+.3*back(p(s,a+.05,.4))})`}
+ if(k==='twelve'){for(let i=0;i<12;i++)$('tw'+i).setAttribute('opacity',s>107+i*.25?1:0);$('t12').setAttribute('opacity',eo(p(s,110.1,.3)))}
+ if(k==='tested'){[0,1,2,3].forEach(i=>$('tc'+i).setAttribute('opacity',s>113.9+i*.25?1:0))}
+ if(k==='comment'){const n=Math.floor(cl((lt-.3)/.8)*6);$('cmt').textContent='LAPTOP'.slice(0,n)+((Math.floor(s*3)%2)?'|':'')}
+ if(k==='fs'){const f=Math.max(0,lt-.5);$('pl').setAttribute('transform',`translate(${380+f*300},${60-f*60})`);$('pl').style.opacity=Math.max(0,1-f/1.6)}
+}
+window.setCaps=()=>{};
+window.frame=t=>{const s=src(t),c=cue(s);
+  if(PASS==='B'){$('T').classList.add('hide');const tp=$('top');
+    if(!c||!c[2]){tp.innerHTML='';tp.dataset.k='';return}
+    setWord(tp,c[2],230,980);tp.style.top='200px';animWord(tp,s,c[0],c[1]);return}
+  $('B').classList.add('hide');const bt=$('bot');
+  const hk=c&&HOOK[c[4]];$('hook').classList.toggle('hide',!hk);if(hk&&$('hook').dataset.k!==c[4]){$('hook').dataset.k=c[4];$('hook').innerHTML=hk}
+  setSub(s);
+  if(!c){bt.innerHTML='';bt.dataset.k='';$('top2').innerHTML='';$('top2').dataset.k='';$('ui').innerHTML='';$('ui').dataset.k='';return}
+  const t2=$('top2');if(c&&c[2]){setWord(t2,c[2],230,980);t2.style.top='200px';animWord(t2,s,c[0],c[1])}else{t2.innerHTML='';t2.dataset.k=''}
+  if(c[3]){setWord(bt,c[3],c[3].length>9?120:160,960);bt.style.top='1180px';animWord(bt,s,c[0]+(hk?.6:.15),c[1])}else{bt.innerHTML='';bt.dataset.k=''}
+  if(c[4])return ui(s,c);$('ui').innerHTML='';$('ui').dataset.k=''
+};
+</script></body></html>
