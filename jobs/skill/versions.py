@@ -9,4 +9,4 @@ fc = ("[1:a]volume=0.32[sx];[0:a][sx]amix=inputs=2:duration=first:normalize=0,lo
 m = f'{O}/skill-h1.mp4'
 subprocess.run(['ffmpeg', '-v', 'error', '-y', '-i', f'{D}/body.mp4', '-i', f'{D}/sfx.wav', '-filter_complex', fc, '-map', '[vv]', '-map', '[aa]',
                 *HV, '-preset', 'fast', '-crf', '17', '-x265-params', XP + ':pools=2:frame-threads=1', '-r', '60', '-c:a', 'aac', '-b:a', '256k', '-ar', '48000', '-movflags', '+faststart', m], check=True)
-subprocess.run(['cp', m, f'{U}/skill-reel.mp4']); print('done h1', flush=True)
+subprocess.run(['cp', m, f'{U}/skill-reel-v2.mp4']); print('done h1', flush=True)
