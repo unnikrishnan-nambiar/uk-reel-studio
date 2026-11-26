@@ -12,8 +12,9 @@ for i, (a, b) in enumerate(ALL):
     for j, (x, y) in enumerate(zip(cuts[:-1], cuts[1:])):
         z = zoom_at(x); out = f'p{i:02d}_{j}.mov'
         vf = 'fps=60,setsar=1' if z == 1.0 else f'crop=iw/{z}:ih/{z}:(iw-iw/{z})/2:(ih-ih/{z})*0.40,scale=1080:1920:flags=lanczos,fps=60,setsar=1'
-        subprocess.run(['ffmpeg', '-v', 'error', '-y', '-ss', f'{x}', '-t', f'{y - x}', '-i', 'src60.mp4', '-vf', vf,
-                        '-af', 'aresample=48000,afade=t=in:d=0.008,afade=t=out:st=%.3f:d=0.008' % (y - x - 0.008), '-ac', '2',
+        N = max(1, round((y - x) * 60)); D = N / 60  # exact frame count; audio trimmed/padded to the same length (no A/V drift)
+        subprocess.run(['ffmpeg', '-v', 'error', '-y', '-ss', f'{x}', '-t', f'{D + 0.1}', '-i', 'src60.mp4', '-vf', vf, '-frames:v', str(N),
+                        '-af', 'aresample=48000,apad,atrim=0:%.6f,asetpts=N/SR/TB,afade=t=in:d=0.008,afade=t=out:st=%.3f:d=0.008' % (D, D - 0.008), '-ac', '2',
                         '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '12', '-c:a', 'pcm_s16le', out], check=True)
         parts.append(out)
     segs.append(dict(src0=a, src1=b, out0=round(t, 3), out1=round(t + b - a, 3))); t += b - a
