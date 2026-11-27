@@ -4,8 +4,8 @@ C = {  # name: list of (file, t0, t1, cropY, blur boxes [x,y,w,h] in output px)
  'reddit': [('s4', 5.8, 9.8, 90, [])],
  'priv':   [('s1', 2.0, 4.2, 90, [])],
  'shared': [('s1', 4.0, 5.6, 90, []), ('s1', 29.0, 32.3, 300, [[40, 120, 620, 1370]])],
- 'memory': [('s3', 0.2, 5.6, 90, [])],
- 'improve':[('s2', 14.6, 18.6, 90, [])],
+ 'memory': [('s3', 0.2, 5.6, 290, [])],
+ 'improve':[('s2', 14.6, 18.6, 400, [])],
 }
 for k, parts in C.items():
     d = f'snip/{k}'; shutil.rmtree(d, ignore_errors=True); os.makedirs(d)
