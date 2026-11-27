@@ -30,6 +30,20 @@ VDONE
 === V3
 dur 83.17
 ok
-rned non-zero exit status 254.
-FAIL V1
-=== V3
+OVERLAYS
+frame 0 / 4990
+frame 300 / 4990
+frame 600 / 4990
+frame 900 / 4990
+frame 1200 / 4990
+frame 1500 / 4990
+frame 1800 / 4990
+frame 2100 / 4990
+frame 2400 / 4990
+frame 2700 / 4990
+frame 3000 / 4990
+frame 3300 / 4990
+frame 3600 / 4990
+frame 3900 / 4990
+frame 4200 / 4990
+frame 4500 / 4990
