@@ -1,0 +1,167 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+@font-face{font-family:IN;src:url(../../templates/fonts/inter-latin-600-normal.woff2);font-weight:600}
+@font-face{font-family:IN;src:url(../../templates/fonts/inter-latin-700-normal.woff2);font-weight:700}
+@font-face{font-family:IN;src:url(../../templates/fonts/inter-latin-800-normal.woff2);font-weight:800}
+@font-face{font-family:ML;src:url(../../templates/fonts/noto-sans-malayalam-malayalam-700-normal.woff2);font-weight:700}
+@font-face{font-family:ML;src:url(../../templates/fonts/noto-sans-malayalam-malayalam-800-normal.woff2);font-weight:800}
+html,body{margin:0;background:transparent}
+#st{position:relative;width:1080px;height:1920px;overflow:hidden;font-family:IN;color:#fff;-webkit-font-smoothing:antialiased}
+.a{position:absolute}.hide{display:none!important}
+.word{position:absolute;left:60px;right:140px;text-align:center;white-space:nowrap;font-weight:800;text-transform:uppercase;letter-spacing:-.035em;line-height:.92}
+.word span{display:inline-block;-webkit-background-clip:text;background-clip:text;color:transparent}
+.win{background:none;box-sizing:border-box;filter:drop-shadow(2px 0 0 #0d0d0d) drop-shadow(-2px 0 0 #0d0d0d) drop-shadow(0 2px 0 #0d0d0d) drop-shadow(0 -2px 0 #0d0d0d) drop-shadow(0 10px 18px rgba(0,0,0,.45))}
+.win .lab{color:#fff;font-size:28px!important}
+.bar{display:none}
+.dot{width:14px;height:14px;border-radius:50%}
+.wt{margin:0 auto;font:700 18px IN;letter-spacing:.22em;color:#9aa3d6;padding:4px 16px;border-radius:999px;background:rgba(255,255,255,.06)}
+.lab{font:700 20px IN;letter-spacing:.18em;color:#9aa3d6}
+.pill{display:inline-flex;align-items:center;gap:10px;font:800 24px IN;letter-spacing:.12em;color:#0d0d0d;background:#FFD84D;border-radius:999px;padding:12px 22px}
+.btn{display:inline-flex;align-items:center;gap:14px;border-radius:999px;font:800 44px IN;padding:24px 46px;color:#fff}
+.shot{display:block;width:936px;border-radius:14px}
+.bub{max-width:640px;font:700 38px/1.3 IN,ML;padding:20px 26px;border-radius:26px}
+/* hook: ONE box, yellow text on black, static */
+#hook{left:50%;top:230px;transform:translateX(-50%);width:max-content;max-width:1010px;text-align:center;background:#0d0d0d;color:#FFF06A;font:800 54px/1.16 IN;letter-spacing:-.02em;padding:24px 36px 30px;border-radius:24px;box-shadow:0 14px 40px rgba(0,0,0,.45)}
+/* subtitles: no box, line shown in full, then covered word by word */
+#sub{left:80px;right:150px;top:1370px;text-align:center;font:700 44px/1.38 ML,IN}
+#sub b{font-weight:700;position:relative;display:inline-block;margin:0 .12em;color:#fff;
+  text-shadow:0 0 3px #000,0 0 3px #000,0 2px 0 #000,0 3px 10px rgba(0,0,0,.8)}
+#sub b i{position:absolute;left:0;top:0;font-style:normal;color:#FFD84D;white-space:nowrap}
+</style></head><body><div id="st">
+<div id="B" class="a" style="inset:0"><div id="top" class="word"></div></div>
+<div id="T" class="a" style="inset:0">
+  <div id="fade" class="a" style="left:0;right:0;top:1200px;height:720px;background:linear-gradient(180deg,rgba(0,0,0,0),rgba(0,0,0,.45) 55%,rgba(0,0,0,.6))"></div>
+  <div id="ui" class="a" style="inset:0"></div>
+  <div id="top2" class="word"></div>
+  <div id="bot" class="word"></div>
+  <div id="hook" class="a hide"></div>
+  <div id="sub" class="a"></div>
+</div>
+</div>
+<script>
+const Q=new URLSearchParams(location.search),PASS=Q.get('pass')||'T';
+const $=id=>document.getElementById(id);const cl=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
+const eo=x=>1-Math.pow(1-cl(x),3);const back=x=>{x=cl(x);const c=1.7;return 1+(c+1)*Math.pow(x-1,3)+c*Math.pow(x-1,2)};
+const p=(t,a,d=.4)=>cl((t-a)/d);
+// edit order (source in/out). Must match segs.py ALL.
+const SEGS=[[15.26, 18.46], [18.58, 19.74], [21.18, 31.46], [31.57, 34.07], [34.27, 39.04], [39.47, 48.2], [48.52, 55.39], [55.53, 59.71], [59.87, 69.15], [69.45, 75.46], [75.7, 79.13], [79.44, 87.65], [87.96, 90.95], [91.22, 98.54], [98.73, 105.55]];
+function src(t){let b=0;for(const [a,e] of SEGS){const d=e-a;if(t<b+d)return a+(t-b);b+=d}return SEGS[SEGS.length-1][1]}
+// ---------- cues (SOURCE time): [a, b, top word (behind head), bottom word, ui] ----------
+const CUES=[
+ [15.2,19.8,'','','h1'],
+ [21.1,25.2,'','','stuck'],
+ [25.3,28.1,'','','head'],
+ [28.1,34.0,'','3 MIN A DAY','nocls'],
+ [34.25,39.0,'','','FSproj'],
+ [39.45,48.2,'','','FSprompt'],
+ [48.5,55.3,'','','voice'],
+ [55.5,69.1,'','','FSchat'],
+ [69.4,79.1,'','','fix'],
+ [79.4,82.1,'','','timer'],
+ [82.1,91.0,'','','FSremind'],
+ [91.2,98.5,'','','notif'],
+ [98.7,106.0,'','','cta']];
+
+function cue(s){return CUES.find(c=>s>=c[0]&&s<c[1])}
+const HOOK={h1:'ChatGPT just improved<br>my English by 90%.'};
+// ---------- subtitles (SOURCE time) ----------
+const SUB=[
+ [15.36,17.4,'ChatGPT improved my English by 90%.'],[17.4,19.7,'And it was completely free.'],
+ [21.28,25.12,'I know English, but the right words never come at the right time.'],
+ [25.4,26.6,'Because English is in my head,'],[26.6,28.04,'but not on my tongue.'],
+ [28.21,31.3,'To fix this, you don\'t need a one-hour class. Just 3 minutes a day.'],[31.67,33.91,'No tutor. No money.'],
+ [34.37,36.56,'Go to ChatGPT and create a project.'],[36.84,38.88,'Name it "3 Minutes of Speaking".'],
+ [39.57,41.03,'In the project instructions,'],[41.37,47.19,'give this prompt: Be my English conversation partner. When I make a mistake, stop me, correct me and make me say it again.'],[47.49,48.04,'That\'s it.'],
+ [48.62,51.74,'Inside the project there\'s a mic icon. Don\'t click that.'],[51.91,54.81,'Right next to it there\'s a voice icon. Tap that and start talking.'],
+ [55.63,59.55,'For example, ChatGPT asks: "Tell me something that happened at work today."'],[59.97,61.87,'You say: "Yesterday I go to office."'],
+ [62.12,64.68,'Right at that moment, ChatGPT stops you:'],[64.82,68.99,'"Not \'Yesterday I go to office\'. It\'s \'Yesterday I went to the office\'. Say it again."'],
+ [69.55,72.84,'That\'s actually the best part.'],[73.01,75.3,'We make mistakes,'],[75.8,78.97,'but it fixes the right word at the right moment, so next time you only say "went".'],
+ [79.54,81.64,'After 3 minutes, the session ends on its own.'],
+ [81.76,84.8,'To make it a habit, set a daily reminder.'],[84.8,87.49,'You can set up a scheduled task inside ChatGPT.'],[88.06,90.79,'Every day, at the time you choose, you get a notification.'],
+ [91.32,94.4,'One thing: without notifications on, there\'s no reminder.'],[94.4,98.38,'So if the reminder doesn\'t come, don\'t blame ChatGPT. Just check your settings.'],
+ [98.83,101.6,'For the full setup and prompt,'],[101.6,103.3,'comment SPEAK.'],[103.3,105.39,'Send this to a friend it will help.']];
+
+function subAt(s){return SUB.find(c=>s>=c[0]&&s<c[1])}
+function setSub(s){const el=$('sub');const c=subAt(s);if(!c){el.innerHTML='';el.dataset.k='';return}
+  if(el.dataset.k!==c[2]){el.dataset.k=c[2];el.innerHTML=c[2].split(' ').map(w=>`<b>${w}<i>${w}</i></b>`).join(' ')}
+  const ws=[...el.children],L=ws.map(w=>w.textContent.length/2),T=L.reduce((x,y)=>x+y,0);
+  const d=c[1]-c[0],a=c[0]+Math.min(.25,d*.1),e=c[1]-Math.min(.35,d*.15);const pr=cl((s-a)/(e-a))*T;let acc=0;
+  ws.forEach((w,i)=>{const f=cl((pr-acc)/L[i]);acc+=L[i];const ii=w.firstElementChild;ii.style.clipPath=`inset(-20% ${100-f*100}% -20% 0)`});
+  el.style.opacity=cl((s-c[0])/.08)}
+// ---------- big 3D words (yellow + black) ----------
+function style(el,size){el.style.fontSize=size+'px';const o=Math.max(3,Math.round(size*.022));
+  el.style.filter=`drop-shadow(${o}px 0 0 #0d0d0d) drop-shadow(-${o}px 0 0 #0d0d0d) drop-shadow(0 ${o}px 0 #0d0d0d) drop-shadow(0 -${o}px 0 #0d0d0d) drop-shadow(0 5px 0 #0d0d0d) drop-shadow(0 10px 0 #0d0d0d) drop-shadow(0 16px 24px rgba(0,0,0,.55))`;
+  [...el.children].forEach(sp=>{sp.style.backgroundImage='linear-gradient(#FFD84D,#FFD84D)'})}
+function setWord(el,txt,maxSize,maxW){if(el.dataset.k!==txt){el.dataset.k=txt;el.innerHTML=txt.split('').map(ch=>`<span>${ch===' '?'&nbsp;':ch}</span>`).join('');
+  style(el,maxSize);const W=[...el.children].reduce((s,x)=>s+x.getBoundingClientRect().width,0);if(W>maxW)style(el,maxSize*maxW/W)}}
+function animWord(el,t,a,b){const n=el.children.length;const ord=[...Array(n).keys()].sort((x,y)=>((x*7+3)%n)-((y*7+3)%n));
+  [...el.children].forEach((sp,i)=>{const k=p(t,a+ord.indexOf(i)*.03,.22);sp.style.opacity=eo(k);sp.style.transform=`translateY(${(1-eo(k))*-40}px) scale(${1.5-.5*back(k)})`});
+  el.style.opacity=cl((b-t)/.1)}
+// ---------- UI ----------
+const TI={"microphone": "<path d=\"M9 2m0 3a3 3 0 0 1 3 -3h0a3 3 0 0 1 3 3v5a3 3 0 0 1 -3 3h0a3 3 0 0 1 -3 -3z\" />\n  <path d=\"M5 10a7 7 0 0 0 14 0\" />\n  <path d=\"M8 21l8 0\" />\n  <path d=\"M12 17l0 4\" />", "wave-sine": "<path d=\"M21 12h-2c-.894 0 -1.662 -.857 -1.761 -2c-.296 -3.45 -.749 -6 -2.749 -6s-2.5 3.582 -2.5 8s-.5 8 -2.5 8s-2.452 -2.547 -2.749 -6c-.1 -1.147 -.867 -2 -1.763 -2h-2\" />", "bell-ringing": "<path d=\"M10 5a2 2 0 0 1 4 0a7 7 0 0 1 4 6v3a4 4 0 0 0 2 3h-16a4 4 0 0 0 2 -3v-3a7 7 0 0 1 4 -6\" />\n  <path d=\"M9 17v1a3 3 0 0 0 6 0v-1\" />\n  <path d=\"M21 6.727a11.05 11.05 0 0 0 -2.794 -3.727\" />\n  <path d=\"M3 6.727a11.05 11.05 0 0 1 2.792 -3.727\" />", "brain": "<path d=\"M15.5 13a3.5 3.5 0 0 0 -3.5 3.5v1a3.5 3.5 0 0 0 7 0v-1.8\" />\n  <path d=\"M8.5 13a3.5 3.5 0 0 1 3.5 3.5v1a3.5 3.5 0 0 1 -7 0v-1.8\" />\n  <path d=\"M17.5 16a3.5 3.5 0 0 0 0 -7h-.5\" />\n  <path d=\"M19 9.3v-2.8a3.5 3.5 0 0 0 -7 0\" />\n  <path d=\"M6.5 16a3.5 3.5 0 0 1 0 -7h.5\" />\n  <path d=\"M5 9.3v-2.8a3.5 3.5 0 0 1 7 0v10\" />", "clock-off": "<path d=\"M5.633 5.64a9 9 0 1 0 12.735 12.72m1.674 -2.32a9 9 0 0 0 -12.082 -12.082\" />\n  <path d=\"M12 7v1\" />\n  <path d=\"M3 3l18 18\" />", "user-off": "<path d=\"M8.18 8.189a4.01 4.01 0 0 0 2.616 2.627m3.507 -.545a4 4 0 1 0 -5.59 -5.552\" />\n  <path d=\"M6 21v-2a4 4 0 0 1 4 -4h4c.412 0 .81 .062 1.183 .178m2.633 2.618c.12 .38 .184 .785 .184 1.204v2\" />\n  <path d=\"M3 3l18 18\" />", "cash-off": "<path d=\"M13 9h6a2 2 0 0 1 2 2v6m-2 2h-10a2 2 0 0 1 -2 -2v-6a2 2 0 0 1 2 -2\" />\n  <path d=\"M12.582 12.59a2 2 0 0 0 2.83 2.826\" />\n  <path d=\"M17 9v-2a2 2 0 0 0 -2 -2h-6m-4 0a2 2 0 0 0 -2 2v6a2 2 0 0 0 2 2h2\" />\n  <path d=\"M3 3l18 18\" />", "calendar-time": "<path d=\"M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4\" />\n  <path d=\"M18 18m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0\" />\n  <path d=\"M15 3v4\" />\n  <path d=\"M7 3v4\" />\n  <path d=\"M3 11h16\" />\n  <path d=\"M18 16.496v1.504l1 1\" />", "message-circle": "<path d=\"M3 20l1.3 -3.9c-2.324 -3.437 -1.426 -7.872 2.1 -10.374c3.526 -2.501 8.59 -2.296 11.845 .48c3.255 2.777 3.695 7.266 1.029 10.501c-2.666 3.235 -7.615 4.215 -11.574 2.293l-4.7 1\" />", "message-2": "<path d=\"M8 9h8\" />\n  <path d=\"M8 13h6\" />\n  <path d=\"M9 18h-3a3 3 0 0 1 -3 -3v-8a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v8a3 3 0 0 1 -3 3h-3l-3 3l-3 -3z\" />", "x": "<path d=\"M18 6l-12 12\" />\n  <path d=\"M6 6l12 12\" />", "circle-check": "<path d=\"M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0\" />\n  <path d=\"M9 12l2 2l4 -4\" />", "folder-plus": "<path d=\"M12 19h-7a2 2 0 0 1 -2 -2v-11a2 2 0 0 1 2 -2h4l3 3h7a2 2 0 0 1 2 2v3.5\" />\n  <path d=\"M16 19h6\" />\n  <path d=\"M19 16v6\" />", "pencil": "<path d=\"M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4\" />\n  <path d=\"M13.5 6.5l4 4\" />", "clock": "<path d=\"M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0\" />\n  <path d=\"M12 7v5l3 3\" />", "user": "<path d=\"M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0\" />\n  <path d=\"M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2\" />", "users": "<path d=\"M9 7m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0\" />\n  <path d=\"M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2\" />\n  <path d=\"M16 3.13a4 4 0 0 1 0 7.75\" />\n  <path d=\"M21 21v-2a4 4 0 0 0 -3 -3.85\" />", "send": "<path d=\"M10 14l11 -11\" />\n  <path d=\"M21 3l-6.5 18a.55 .55 0 0 1 -1 0l-3.5 -7l-7 -3.5a.55 .55 0 0 1 0 -1l18 -6.5\" />", "toggle-right": "<path d=\"M16 12m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0\" />\n  <path d=\"M2 6m0 6a6 6 0 0 1 6 -6h8a6 6 0 0 1 6 6v0a6 6 0 0 1 -6 6h-8a6 6 0 0 1 -6 -6z\" />", "alert-triangle": "<path d=\"M12 9v4\" />\n  <path d=\"M10.363 3.591l-8.106 13.534a1.914 1.914 0 0 0 1.636 2.871h16.214a1.914 1.914 0 0 0 1.636 -2.87l-8.106 -13.536a1.914 1.914 0 0 0 -3.274 0z\" />\n  <path d=\"M12 16h.01\" />", "repeat": "<path d=\"M4 12v-3a3 3 0 0 1 3 -3h13m-3 -3l3 3l-3 3\" />\n  <path d=\"M20 12v3a3 3 0 0 1 -3 3h-13m3 3l-3 -3l3 -3\" />", "language": "<path d=\"M4 5h7\" />\n  <path d=\"M9 3v2c0 4.418 -2.239 8 -5 8\" />\n  <path d=\"M5 9c0 2.144 2.952 3.908 6.7 4\" />\n  <path d=\"M12 20l4 -9l4 9\" />\n  <path d=\"M19.1 18h-6.2\" />", "headphones": "<path d=\"M4 13m0 2a2 2 0 0 1 2 -2h1a2 2 0 0 1 2 2v3a2 2 0 0 1 -2 2h-1a2 2 0 0 1 -2 -2z\" />\n  <path d=\"M15 13m0 2a2 2 0 0 1 2 -2h1a2 2 0 0 1 2 2v3a2 2 0 0 1 -2 2h-1a2 2 0 0 1 -2 -2z\" />\n  <path d=\"M4 15v-3a8 8 0 0 1 16 0v3\" />", "school": "<path d=\"M22 9l-10 -4l-10 4l10 4l10 -4v6\" />\n  <path d=\"M6 10.6v5.4a6 3 0 0 0 12 0v-5.4\" />"};
+const LG={"openai":{d:"M22.2819 9.8211a5.9847 5.9847 0 0 0-.5157-4.9108 6.0462 6.0462 0 0 0-6.5098-2.9A6.0651 6.0651 0 0 0 4.9807 4.1818a5.9847 5.9847 0 0 0-3.9977 2.9 6.0462 6.0462 0 0 0 .7427 7.0966 5.98 5.98 0 0 0 .511 4.9107 6.051 6.051 0 0 0 6.5146 2.9001A5.9847 5.9847 0 0 0 13.2599 24a6.0557 6.0557 0 0 0 5.7718-4.2058 5.9894 5.9894 0 0 0 3.9977-2.9001 6.0557 6.0557 0 0 0-.7475-7.0729zm-9.022 12.6081a4.4755 4.4755 0 0 1-2.8764-1.0408l.1419-.0804 4.7783-2.7582a.7948.7948 0 0 0 .3927-.6813v-6.7369l2.02 1.1686a.071.071 0 0 1 .038.052v5.5826a4.504 4.504 0 0 1-4.4945 4.4944zm-9.6607-4.1254a4.4708 4.4708 0 0 1-.5346-3.0137l.142.0852 4.783 2.7582a.7712.7712 0 0 0 .7806 0l5.8428-3.3685v2.3324a.0804.0804 0 0 1-.0332.0615L9.74 19.9502a4.4992 4.4992 0 0 1-6.1408-1.6464zM2.3408 7.8956a4.485 4.485 0 0 1 2.3655-1.9728V11.6a.7664.7664 0 0 0 .3879.6765l5.8144 3.3543-2.0201 1.1685a.0757.0757 0 0 1-.071 0l-4.8303-2.7865A4.504 4.504 0 0 1 2.3408 7.872zm16.5963 3.8558L13.1038 8.364 15.1192 7.2a.0757.0757 0 0 1 .071 0l4.8303 2.7913a4.4944 4.4944 0 0 1-.6765 8.1042v-5.6772a.79.79 0 0 0-.407-.667zm2.0107-3.0231l-.142-.0852-4.7735-2.7818a.7759.7759 0 0 0-.7854 0L9.409 9.2297V6.8974a.0662.0662 0 0 1 .0284-.0615l4.8303-2.7866a4.4992 4.4992 0 0 1 6.6802 4.66zM8.3065 12.863l-2.02-1.1638a.0804.0804 0 0 1-.038-.0567V6.0742a4.4992 4.4992 0 0 1 7.3757-3.4537l-.142.0805L8.704 5.459a.7948.7948 0 0 0-.3927.6813zm1.0976-2.3654l2.602-1.4998 2.6069 1.4998v2.9994l-2.5974 1.4997-2.6067-1.4997Z",hex:"412991"},"instagram":{d:"M7.0301.084c-1.2768.0602-2.1487.264-2.911.5634-.7888.3075-1.4575.72-2.1228 1.3877-.6652.6677-1.075 1.3368-1.3802 2.127-.2954.7638-.4956 1.6365-.552 2.914-.0564 1.2775-.0689 1.6882-.0626 4.947.0062 3.2586.0206 3.6671.0825 4.9473.061 1.2765.264 2.1482.5635 2.9107.308.7889.72 1.4573 1.388 2.1228.6679.6655 1.3365 1.0743 2.1285 1.38.7632.295 1.6361.4961 2.9134.552 1.2773.056 1.6884.069 4.9462.0627 3.2578-.0062 3.668-.0207 4.9478-.0814 1.28-.0607 2.147-.2652 2.9098-.5633.7889-.3086 1.4578-.72 2.1228-1.3881.665-.6682 1.0745-1.3378 1.3795-2.1284.2957-.7632.4966-1.636.552-2.9124.056-1.2809.0692-1.6898.063-4.948-.0063-3.2583-.021-3.6668-.0817-4.9465-.0607-1.2797-.264-2.1487-.5633-2.9117-.3084-.7889-.72-1.4568-1.3876-2.1228C21.2982 1.33 20.628.9208 19.8378.6165 19.074.321 18.2017.1197 16.9244.0645 15.6471.0093 15.236-.005 11.977.0014 8.718.0076 8.31.0215 7.0301.0839m.1402 21.6932c-1.17-.0509-1.8053-.2453-2.2287-.408-.5606-.216-.96-.4771-1.3819-.895-.422-.4178-.6811-.8186-.9-1.378-.1644-.4234-.3624-1.058-.4171-2.228-.0595-1.2645-.072-1.6442-.079-4.848-.007-3.2037.0053-3.583.0607-4.848.05-1.169.2456-1.805.408-2.2282.216-.5613.4762-.96.895-1.3816.4188-.4217.8184-.6814 1.3783-.9003.423-.1651 1.0575-.3614 2.227-.4171 1.2655-.06 1.6447-.072 4.848-.079 3.2033-.007 3.5835.005 4.8495.0608 1.169.0508 1.8053.2445 2.228.408.5608.216.96.4754 1.3816.895.4217.4194.6816.8176.9005 1.3787.1653.4217.3617 1.056.4169 2.2263.0602 1.2655.0739 1.645.0796 4.848.0058 3.203-.0055 3.5834-.061 4.848-.051 1.17-.245 1.8055-.408 2.2294-.216.5604-.4763.96-.8954 1.3814-.419.4215-.8181.6811-1.3783.9-.4224.1649-1.0577.3617-2.2262.4174-1.2656.0595-1.6448.072-4.8493.079-3.2045.007-3.5825-.006-4.848-.0608M16.953 5.5864A1.44 1.44 0 1 0 18.39 4.144a1.44 1.44 0 0 0-1.437 1.4424M5.8385 12.012c.0067 3.4032 2.7706 6.1557 6.173 6.1493 3.4026-.0065 6.157-2.7701 6.1506-6.1733-.0065-3.4032-2.771-6.1565-6.174-6.1498-3.403.0067-6.156 2.771-6.1496 6.1738M8 12.0077a4 4 0 1 1 4.008 3.9921A3.9996 3.9996 0 0 1 8 12.0077",hex:"FF0069"},"whatsapp":{d:"M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z",hex:"25D366"},};
+
+const SV=(inner,sty='')=>`<svg class="a" style="left:60px;top:170px;overflow:visible;filter:drop-shadow(0 8px 16px rgba(0,0,0,.4));${sty}" width="960" height="440" viewBox="0 0 960 440">${inner}</svg>`;
+const TX=(x,y,t,sz,col,an='middle',id='',fam='IN')=>`<text ${id?`id="${id}"`:''} x="${x}" y="${y}" text-anchor="${an}" font-family="${fam}" font-weight="800" font-size="${sz}" fill="${col}" paint-order="stroke" stroke="#0d0d0d" stroke-width="${Math.max(8,sz/5.5)}" stroke-linejoin="round" style="transform-box:fill-box;transform-origin:center">${t}</text>`;
+const I=(n,x,y,sz,col,id='',disc='')=>`<g transform="translate(${x},${y})"><g ${id?`id="${id}"`:''} style="transform-box:fill-box;transform-origin:center">${disc?`<circle cx="0" cy="0" r="${sz*.62}" fill="${disc}" stroke="#0d0d0d" stroke-width="6"/>`:''}<g transform="translate(${-sz/2},${-sz/2}) scale(${sz/24})" fill="none" stroke-linecap="round" stroke-linejoin="round"><g stroke="#0d0d0d" stroke-width="${2+60/sz}">${TI[n]}</g><g stroke="${col}" stroke-width="2">${TI[n]}</g></g></g></g>`;
+// real brand logo (simple-icons) on a white app tile
+const LO=(n,x,y,sz,id='',bg='#fff')=>`<g transform="translate(${x},${y})"><g ${id?`id="${id}"`:''} style="transform-box:fill-box;transform-origin:center"><rect x="${-sz/2}" y="${-sz/2}" width="${sz}" height="${sz}" rx="${sz*.24}" fill="${bg}" stroke="#0d0d0d" stroke-width="6"/><g transform="translate(${-sz*.31},${-sz*.31}) scale(${sz*.62/24})"><path d="${LG[n].d}" fill="#${LG[n].hex.replace('#','')}"/></g></g></g>`;
+const LH=(n,sz,st='')=>`<svg width="${sz}" height="${sz}" viewBox="0 0 24 24" style="${st}"><path d="${LG[n].d}" fill="#${LG[n].hex.replace('#','')}"/></svg>`;
+const FSBG='background:#0f0f12;background-image:radial-gradient(circle at 50% 38%,rgba(255,216,77,.16),rgba(0,0,0,0) 58%),linear-gradient(rgba(255,255,255,.045) 2px,transparent 2px),linear-gradient(90deg,rgba(255,255,255,.045) 2px,transparent 2px);background-size:100% 100%,60px 60px,60px 60px';
+const FS=inner=>`<div class="a fsc" style="inset:0;${FSBG}">${inner}</div>`;
+const CH=(t,bg='#FFD84D',fg='#0d0d0d',id='',st='')=>`<span ${id?`id="${id}"`:''} style="display:inline-block;font:800 40px IN;letter-spacing:.06em;color:${fg};background:${bg};border-radius:999px;padding:14px 30px;box-shadow:0 0 0 5px #0d0d0d,0 10px 24px rgba(0,0,0,.5);${st}">${t}</span>`;
+const PH=(inner,st)=>`<div class="a" style="${st};border-radius:64px;background:#0d0d0d;padding:20px;box-sizing:border-box;box-shadow:0 0 0 4px #2a2a2a,0 18px 44px rgba(0,0,0,.6)"><div style="width:100%;height:100%;border-radius:46px;overflow:hidden;background:#fff;position:relative">${inner}</div></div>`;
+const PR="Be my English conversation partner. When I make a mistake, stop me, correct me and make me say it again.";
+const GP=(inner,st)=>`<div class="a" style="${st};border-radius:34px;background:#fff;color:#0d0d0d;box-shadow:0 0 0 6px #0d0d0d,0 18px 44px rgba(0,0,0,.5);overflow:hidden">${inner}</div>`;
+const OAI=(sz)=>`<svg width="${sz}" height="${sz}" viewBox="0 0 24 24"><path d="${LG.openai.d}" fill="#0d0d0d"/></svg>`;
+const OLOGO=(x,y,sz,id='')=>`<g transform="translate(${x},${y})"><g ${id?`id="${id}"`:''} style="transform-box:fill-box;transform-origin:center"><circle r="${sz*.62}" fill="#fff" stroke="#0d0d0d" stroke-width="7"/><g transform="translate(${-sz*.4},${-sz*.4}) scale(${sz*.8/24})"><path d="${LG.openai.d}" fill="#0d0d0d"/></g></g></g>`;
+function ui(s,c){const k=c[4],el=$('ui'),a=c[0],b=c[1];let h='';
+ if(k==='h1')h=`<svg class="a" style="left:0;top:600px;overflow:visible;filter:drop-shadow(0 8px 16px rgba(0,0,0,.45))" width="1080" height="600" viewBox="0 0 1080 600">${OLOGO(165,250,170,'hl')}<path d="M640 330 A140 140 0 0 1 920 330" fill="none" stroke="#0d0d0d" stroke-width="40" stroke-linecap="round"/><path d="M640 330 A140 140 0 0 1 920 330" fill="none" stroke="#2a2a32" stroke-width="26" stroke-linecap="round"/><path id="g90" d="M640 330 A140 140 0 0 1 920 330" fill="none" stroke="#FFD84D" stroke-width="26" stroke-linecap="round" pathLength="100" stroke-dasharray="0 100"/>${TX(780,320,'',84,'#FFD84D','middle','gn')}${TX(780,400,'ENGLISH',40,'#fff')}</svg>`;
+ if(k==='stuck')h=SV(`${I('message-circle',300,200,200,'#fff','sb','#1b1b22')}${[0,1,2].map(i=>`<circle class="dd" cx="${255+i*45}" cy="${200}" r="14" fill="#FFD84D" stroke="#0d0d0d" stroke-width="4"/>`).join('')}<g id="qm" opacity="0">${TX(640,250,'???',150,'#FFD84D')}</g>`);
+ if(k==='head')h=SV(`<g id="br">${I('brain',300,200,210,'#FFD84D','','#1b1b22')}</g>${TX(300,390,'IN MY HEAD',44,'#45dd6c','middle','ih')}<g id="tg" opacity="0">${I('message-circle',700,200,170,'#fff','','#1b1b22')}<path d="M630 130 L770 270 M770 130 L630 270" stroke="#0d0d0d" stroke-width="30" stroke-linecap="round"/><path d="M630 130 L770 270 M770 130 L630 270" stroke="#ff4b72" stroke-width="16" stroke-linecap="round"/>${TX(700,390,'NOT ON MY TONGUE',40,'#ff4b72')}</g>`);
+ if(k==='nocls')h=SV(`${[['clock-off','1-HOUR CLASS'],['user-off','TUTOR'],['cash-off','MONEY']].map(([n,t],i)=>`<g id="nc${i}" opacity="0">${I(n,180+i*300,170,140,'#ff4b72','','#1b1b22')}${TX(180+i*300,320,t,36,'#fff')}</g>`).join('')}`);
+ if(k==='FSproj')h=FS(GP(`<div style="display:flex;align-items:center;gap:18px;padding:26px 30px;border-bottom:3px solid #eee">${OAI(56)}<span style="font:800 46px IN">ChatGPT</span></div><div style="padding:26px 30px;display:flex;flex-direction:column;gap:18px"><div id="np" style="display:flex;align-items:center;gap:16px;font:700 42px IN;padding:16px 20px;border-radius:18px"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#0d0d0d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${TI['folder-plus']}</svg>New project</div><div style="font:700 32px IN;color:#777">Project name</div><div style="font:800 52px IN;border:4px solid #0d0d0d;border-radius:18px;padding:18px 22px;min-height:70px"><span id="pn"></span><span style="display:inline-block;width:5px;height:56px;background:#10a37f;vertical-align:-10px"></span></div></div>`,'left:80px;top:300px;width:860px'));
+ if(k==='FSprompt')h=FS(GP(`<div style="display:flex;align-items:center;gap:16px;padding:24px 30px;border-bottom:3px solid #eee"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#0d0d0d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${TI['pencil']}</svg><span style="font:800 40px IN">Project instructions</span></div><div style="padding:30px 34px;font:700 46px/1.32 IN;min-height:420px"><span id="pt"></span><span style="display:inline-block;width:5px;height:50px;background:#10a37f;vertical-align:-8px"></span></div>`,'left:80px;top:260px;width:860px')+`<div class="a" id="dn" style="left:60px;right:140px;top:1010px;text-align:center;opacity:0">${CH('THAT\'S IT','#FFD84D','#0d0d0d','','font-size:46px')}</div>`);
+ if(k==='voice')h=SV(`<g id="mc">${I('microphone',300,190,170,'#fff','','#1b1b22')}</g><g id="mx" opacity="0"><path d="M240 130 L360 250 M360 130 L240 250" stroke="#0d0d0d" stroke-width="28" stroke-linecap="round"/><path d="M240 130 L360 250 M360 130 L240 250" stroke="#ff4b72" stroke-width="14" stroke-linecap="round"/></g>${TX(300,360,'NOT THIS',40,'#ff4b72','middle','nt')}<g id="vc" opacity="0"><circle cx="680" cy="190" r="110" fill="#0d0d0d" stroke="#FFD84D" stroke-width="8"/>${[0,1,2,3,4].map(i=>`<rect class="vb" x="${622+i*26}" y="160" width="14" height="60" rx="7" fill="#fff"/>`).join('')}${TX(680,360,'TAP THIS',40,'#45dd6c')}</g>`);
+ if(k==='FSchat')h=FS(`<div class="a" style="left:80px;top:220px;width:860px;display:flex;flex-direction:column;gap:26px">${[['ai','Tell me something that happened at work today.',55.7],['me','Yesterday I go to office.',59.97],['ai','Wait. Not "I go". It\'s "Yesterday I <b style=\'background:#FFD84D;padding:0 8px;border-radius:8px\'>went</b> to the office." Say it again.',64.82]].map(([w,t,tt],i)=>`<div class="cb" data-t="${tt}" style="opacity:0;align-self:${w=='me'?'flex-end':'flex-start'};max-width:720px;display:flex;gap:16px;align-items:flex-end;${w=='me'?'flex-direction:row-reverse':''}"><div style="flex:none;width:84px;height:84px;border-radius:50%;background:${w=='me'?'#FFD84D':'#fff'};box-shadow:0 0 0 5px #0d0d0d;display:flex;align-items:center;justify-content:center">${w=='me'?'<span style="font:800 34px IN">YOU</span>':OAI(50)}</div><div style="background:${w=='me'?'#FFD84D':'#fff'};color:#0d0d0d;border-radius:30px;padding:24px 30px;font:700 42px/1.3 IN;box-shadow:0 0 0 5px #0d0d0d">${t}</div></div>`).join('')}</div><svg class="a" style="left:340px;top:1090px" width="400" height="120" viewBox="0 0 400 120">${Array.from({length:13},(_,i)=>`<rect class="wb" x="${i*31}" y="30" width="18" height="60" rx="9" fill="#FFD84D"/>`).join('')}</svg>`);
+ if(k==='fix')h=SV(`${TX(260,170,'GO',120,'#ff4b72','middle','go')}<path id="gx" d="M170 120 L350 190" stroke="#ff4b72" stroke-width="14" stroke-linecap="round" opacity="0"/>${I('repeat',480,140,90,'#fff')}${TX(720,170,'WENT',120,'#45dd6c','middle','wt')}<g id="nx" opacity="0">${TX(480,350,'NEXT TIME: WENT',56,'#FFD84D')}</g>`);
+ if(k==='timer')h=SV(`<circle cx="480" cy="210" r="150" fill="#1b1b22" stroke="#0d0d0d" stroke-width="10"/><circle id="tr" cx="480" cy="210" r="150" fill="none" stroke="#FFD84D" stroke-width="24" stroke-linecap="round" pathLength="100" stroke-dasharray="100 100" transform="rotate(-90 480 210)"/>${TX(480,240,'3:00',90,'#FFD84D','middle','tn')}`);
+ if(k==='FSremind')h=FS(GP(`<div style="display:flex;align-items:center;gap:16px;padding:24px 30px;border-bottom:3px solid #eee">${OAI(52)}<span style="font:800 40px IN">Scheduled task</span></div><div style="padding:26px 30px;display:flex;flex-direction:column;gap:16px;font:700 40px IN"><div style="display:flex;gap:14px;align-items:center"><svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="#0d0d0d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${TI['calendar-time']}</svg>Every day · 8:00 PM</div><div style="color:#555">"3 minutes of English speaking"</div></div>`,'left:80px;top:260px;width:860px')+`<div class="a" id="nb" style="left:80px;top:720px;width:860px;opacity:0;border-radius:30px;background:rgba(245,245,247,.97);box-shadow:0 0 0 5px #0d0d0d;padding:22px 26px;display:flex;gap:18px;align-items:center;color:#0d0d0d"><div style="flex:none;width:80px;height:80px;border-radius:18px;background:#fff;box-shadow:0 0 0 3px #0d0d0d;display:flex;align-items:center;justify-content:center">${OAI(52)}</div><div><div style="font:800 34px IN">ChatGPT · now</div><div style="font:700 36px IN">Time for your 3 minutes of English 🎙️</div></div></div>`);
+ if(k==='notif')h=SV(`<g id="bl">${I('bell-ringing',280,200,190,'#FFD84D','bi','#1b1b22')}</g><g transform="translate(560,140)"><rect id="tgr" x="0" y="0" width="230" height="124" rx="62" fill="#3a3a44" stroke="#0d0d0d" stroke-width="8"/><circle id="tgk" cx="62" cy="62" r="48" fill="#fff" stroke="#0d0d0d" stroke-width="6"/></g>${TX(675,360,'NOTIFICATIONS ON',40,'#45dd6c','middle','no')}`);
+ if(k==='cta')h=`<div class="a" id="cbx" style="left:80px;top:300px;width:860px;height:120px;border-radius:999px;background:#fff;box-shadow:0 0 0 6px #0d0d0d,0 14px 34px rgba(0,0,0,.5);display:flex;align-items:center;gap:24px;padding:0 34px;box-sizing:border-box">${LH('instagram',66)}<span id="cmt" style="font:800 56px IN;color:#0d0d0d;letter-spacing:.04em"></span><span id="cur" style="width:5px;height:58px;background:#FF0069"></span><span style="margin-left:auto;font:800 38px IN;color:#FF0069">Post</span></div>${SV(`<g id="wa" opacity="0">${LO('whatsapp',300,380,120)}${I('send',480,380,80,'#FFD84D')}${I('user',640,380,100,'#2fd0f2','','#1b1b22')}</g>`,'top:330px')}`;
+ if(el.dataset.k!==k+a){el.dataset.k=k+a;el.innerHTML=h}
+ const out=cl((b-s)/.12);
+ [...el.children].forEach((e,i)=>{if(e.classList.contains('fsc')){const q=eo(p(s,a,.16));e.style.opacity=q*out;e.style.transform=`scale(${1.06-.06*q})`;return}
+   const q=p(s,a+.03+i*.08,.32);e.style.opacity=eo(q)*out;e.style.transform=`translateY(${(1-eo(q))*50}px) scale(${.88+.12*back(q)})`});
+ const lt=s-a;
+ const pop=(id,t,d=.35)=>{const q=back(p(s,t,d));const e=$(id);if(!e)return;e.style.opacity=cl(q*2);e.style.transform=`scale(${Math.max(.01,q)})`};
+ const fade=(id,t,d=.3)=>{const e=$(id);if(e)e.setAttribute('opacity',eo(p(s,t,d)))};
+ const show=(id,t,d=.3,dy=30)=>{const e=$(id);if(!e)return;const q=eo(p(s,t,d));e.style.opacity=q;e.style.transform=`translateY(${(1-q)*dy}px)`};
+ const type=(id,txt,t0,dur)=>{const e=$(id);if(e)e.textContent=txt.slice(0,Math.round(cl((s-t0)/dur)*txt.length))};
+ if(k==='h1'){const q=back(p(s,a+.2,.45));$('hl').style.transform=`scale(${Math.max(.01,q)})`;const f=eo(p(s,16.2,1.4));$('g90').setAttribute('stroke-dasharray',`${f*90} 100`);$('gn').textContent=f>0?Math.round(90*f)+'%':''}
+ if(k==='stuck'){document.querySelectorAll('.dd').forEach((e,i)=>e.setAttribute('cy',200-Math.max(0,Math.sin(lt*6-i*.8))*16));fade('qm',23.7,.25)}
+ if(k==='head'){fade('tg',27.0,.25)}
+ if(k==='nocls'){[29.0,31.7,32.5].forEach((t,i)=>fade('nc'+i,t,.25))}
+ if(k==='FSproj'){$('np').style.background=s>34.9?'#f0f0f3':'';type('pn','3 Minutes of Speaking',36.9,1.4)}
+ if(k==='FSprompt'){type('pt',PR,41.4,5.6);show('dn',47.45,.25)}
+ if(k==='voice'){fade('mx',50.5,.2);$('nt').setAttribute('opacity',eo(p(s,50.5,.2)));fade('vc',52.4,.25);document.querySelectorAll('.vb').forEach((e,i)=>{const hh=20+Math.abs(Math.sin(lt*7+i))*60;e.setAttribute('height',hh);e.setAttribute('y',190-hh/2)})}
+ if(k==='FSchat'){document.querySelectorAll('.cb').forEach(e=>{const t=+e.dataset.t;const q=eo(p(s,t,.3));e.style.opacity=q;e.style.transform=`translateY(${(1-q)*30}px)`});document.querySelectorAll('.wb').forEach((e,i)=>{const hh=14+Math.abs(Math.sin(lt*8+i*.7))*80;e.setAttribute('height',hh);e.setAttribute('y',60-hh/2)})}
+ if(k==='fix'){$('gx').setAttribute('opacity',eo(p(s,70.5,.2)));$('wt').style.transform=`scale(${.5+.5*back(p(s,71.0,.4))})`;fade('nx',76.5,.3)}
+ if(k==='timer'){const f=cl((s-(a+.3))/(b-a-.5));$('tr').setAttribute('stroke-dasharray',`${(1-f)*100} 100`);const sec=Math.round(180*(1-f));$('tn').textContent=Math.floor(sec/60)+':'+String(sec%60).padStart(2,'0')}
+ if(k==='FSremind'){show('nb',88.6,.35,-40)}
+ if(k==='notif'){$('bi').style.transform=`rotate(${Math.sin(lt*12)*12}deg)`;const on=eo(p(s,93.2,.3));$('tgk').setAttribute('cx',62+on*106);$('tgr').setAttribute('fill',on>.5?'#45dd6c':'#3a3a44');$('no').setAttribute('opacity',on)}
+ if(k==='cta'){type('cmt','SPEAK',102.0,.5);$('cur').style.opacity=(Math.floor(s*3)%2)?1:0;fade('wa',103.4,.3)}
+}
+window.setCaps=()=>{};
+window.frame=t=>{const s=src(t),c=cue(s);
+  if(PASS==='B'){$('T').classList.add('hide');const tp=$('top');
+    if(!c||!c[2]){tp.innerHTML='';tp.dataset.k='';return}
+    setWord(tp,c[2],230,980);tp.style.top='200px';animWord(tp,s,c[0],c[1]);return}
+  $('B').classList.add('hide');const bt=$('bot');
+  const hk=c&&HOOK[c[4]];$('hook').classList.toggle('hide',!hk);if(hk&&$('hook').dataset.k!==c[4]){$('hook').dataset.k=c[4];$('hook').innerHTML=hk}
+  setSub(s);
+  if(!c){bt.innerHTML='';bt.dataset.k='';$('top2').innerHTML='';$('top2').dataset.k='';$('ui').innerHTML='';$('ui').dataset.k='';return}
+  const t2=$('top2');if(c&&c[2]){setWord(t2,c[2],230,980);t2.style.top='200px';animWord(t2,s,c[0],c[1])}else{t2.innerHTML='';t2.dataset.k=''}
+  if(c[3]){setWord(bt,c[3],c[3].length>9?110:150,820);bt.style.top='1180px';animWord(bt,s,c[0]+(hk?.6:.15),c[1])}else{bt.innerHTML='';bt.dataset.k=''}
+  if(c[4])return ui(s,c);$('ui').innerHTML='';$('ui').dataset.k=''
+};
+</script></body></html>

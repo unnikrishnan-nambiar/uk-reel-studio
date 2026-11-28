@@ -1,0 +1,15 @@
+const SUB=[
+ [15.36,17.4,'ChatGPT improved my English by 90%.'],[17.4,19.7,'And it was completely free.'],
+ [21.28,25.12,'I know English, but the right words never come at the right time.'],
+ [25.4,26.6,'Because English is in my head,'],[26.6,28.04,'but not on my tongue.'],
+ [28.21,31.3,'To fix this, you don\'t need a one-hour class. Just 3 minutes a day.'],[31.67,33.91,'No tutor. No money.'],
+ [34.37,36.56,'Go to ChatGPT and create a project.'],[36.84,38.88,'Name it "3 Minutes of Speaking".'],
+ [39.57,41.03,'In the project instructions,'],[41.37,47.19,'give this prompt: Be my English conversation partner. When I make a mistake, stop me, correct me and make me say it again.'],[47.49,48.04,'That\'s it.'],
+ [48.62,51.74,'Inside the project there\'s a mic icon. Don\'t click that.'],[51.91,54.81,'Right next to it there\'s a voice icon. Tap that and start talking.'],
+ [55.63,59.55,'For example, ChatGPT asks: "Tell me something that happened at work today."'],[59.97,61.87,'You say: "Yesterday I go to office."'],
+ [62.12,64.68,'Right at that moment, ChatGPT stops you:'],[64.82,68.99,'"Not \'Yesterday I go to office\'. It\'s \'Yesterday I went to the office\'. Say it again."'],
+ [69.55,72.84,'That\'s actually the best part.'],[73.01,75.3,'We make mistakes,'],[75.8,78.97,'but it fixes the right word at the right moment, so next time you only say "went".'],
+ [79.54,81.64,'After 3 minutes, the session ends on its own.'],
+ [81.76,84.8,'To make it a habit, set a daily reminder.'],[84.8,87.49,'You can set up a scheduled task inside ChatGPT.'],[88.06,90.79,'Every day, at the time you choose, you get a notification.'],
+ [91.32,94.4,'One thing: without notifications on, there\'s no reminder.'],[94.4,98.38,'So if the reminder doesn\'t come, don\'t blame ChatGPT. Just check your settings.'],
+ [98.83,101.6,'For the full setup and prompt,'],[101.6,103.3,'comment SPEAK.'],[103.3,105.39,'Send this to a friend it will help.']];
